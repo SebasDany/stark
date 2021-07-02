@@ -1,6 +1,21 @@
-{% extends 'core/base.html'%}
-        {% block title %}<title>Login - STARK</title> {% endblock title %}
-        {% block body %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+       <title>Dashboard - STARK</title> 
+        
+        <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
+        <link href="{% static 'core/css/styles.css' %}" rel="stylesheet" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
+    </head>
+  
+        
+    <body class="sb-nav-fixed">
         
     
         <div id="layoutAuthentication">
@@ -12,23 +27,25 @@
                                 <div class="card shadow-lg border-0 rounded-lg mt-5">
                                     <div class="card-header"><h3 class="text-center font-weight-light my-4">Login</h3></div>
                                     <div class="card-body">
-                                        <form>
+                                        <form action="" method="POST">
+                                         {% csrf_token %}
                                             <div class="form-floating mb-3">
-                                                <input class="form-control" id="inputEmail" type="email" placeholder="name@example.com" />
-                                                <label for="inputEmail">Email address</label>
+                                                <input class="form-control" name="username" type="text" placeholder="name@example.com" />
+                                                <label for="inputEmail">Usuario</label>
                                             </div>
                                             <div class="form-floating mb-3">
-                                                <input class="form-control" id="inputPassword" type="password" placeholder="Password" />
+                                                <input class="form-control" name="password" type="password" placeholder="Password" />
                                                 <label for="inputPassword">Password</label>
                                             </div>
                                             <div class="form-check mb-3">
-                                                <input class="form-check-input" id="inputRememberPassword" type="checkbox" value="" />
+                                                <input class="form-check-input" name="inputRememberPassword" type="checkbox" value="" />
                                                 <label class="form-check-label" for="inputRememberPassword">Remember Password</label>
                                             </div>
                                             <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
                                                 <a class="small" href="{% url 'password' %}">Forgot Password?</a>
-                                                <a class="btn btn-primary" href="{% url 'login' %}">Login</a>
-                                            </div>
+                                                <a > <button type="submit" class="btn btn-primary">LOGIN</button> </a>
+                                            
+                                            
                                         </form>
                                     </div>
                                     <div class="card-footer text-center py-3">
@@ -42,5 +59,79 @@
             </div>
             
         </div>
-        {% endblock body %}
+        <footer class="py-4 bg-light mt-auto">
+                    <div class="container-fluid px-4">
+                        <div class="d-flex align-items-center justify-content-between small">
+                            <div class="text-muted">Copyright &copy; Your Website 2021</div>
+                            <div>
+                                <a href="#">Privacy Policy</a>
+                                &middot;
+                                <a href="#">Terms &amp; Conditions</a>
+                            </div>
+                        </div>
+                    </div>
+                    </footer>
+         </body>
+</html>
+
       
+      {% comment %} <form action="" method="POST">
+                                        {% csrf_token %}
+                                            <div class="row mb-3">
+                                                <div class="col-md-6">
+                                                    <div class="form-floating mb-3 mb-md-0">
+                                                        <input class="form-control" name="first_name" type="text" placeholder="Enter your first name" />
+                                                        <label for="inputFirstName">First name</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-floating">
+                                                        <input class="form-control" name="last_name" type="text" placeholder="Enter your last name" />
+                                                        <label for="inputLastName">Last name</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                    <div class="form-floating">
+                                                        <input class="form-control" name="Username" type="text" placeholder="Enter your last name" />
+                                                        <label for="inputLastName">Username</label>
+                                                    </div>
+                                                </div>
+                                            <div class="col-md-6">
+                                                    <div class="form-floating mb-3 mb-md-0">
+
+                                            <div class="form-floating mb-3">
+                                                <input class="form-control" name="email" type="email" placeholder="name@example.com" />
+                                                <label for="inputEmail">Email address</label>
+                                            </div>
+                                            
+                                            </div>
+                                            
+                                            </div>
+                                            
+                                            </div>
+
+
+
+                                            <div class="row mb-3">
+                                                <div class="col-md-6">
+                                                    <div class="form-floating mb-3 mb-md-0">
+                                                        <input class="form-control" name="password1" type="password" placeholder="Create a password" />
+                                                        <label for="inputPassword">Password</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-floating mb-3 mb-md-0">
+                                                        <input class="form-control" name="password2" type="password" placeholder="Confirm password" />
+                                                        <label for="inputPasswordConfirm">Confirm Password</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="mt-4 mb-0">
+                                            
+                                                <div class="d-grid"><a > <button type="submit" class="btn btn-primary">Create Account</a></div>
+                                            </div>
+                                        </form> {% endcomment %}

@@ -1,0 +1,19 @@
+{% extends 'core/base.html'%}
+
+
+{% block title %}<title>Regitro Productos</title> {% endblock title %}
+        {% block body %}
+            
+<form action="" method="POST">
+                  {% csrf_token %}  
+                  <table>
+                 {{form.as_table}}
+                 </table>
+
+<button type="submit" class="btn btn-primary btn-user btn-block">Guardar</button>
+                                    
+
+       </form>
+  
+
+        {% endblock body %}

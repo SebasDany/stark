@@ -1,0 +1,23 @@
+{% extends 'core/base.html'%}
+
+
+{% block title %}<title>Regitro Productos</title> {% endblock title %}
+        {% block body %}
+            
+<form action="das" method="POST">
+                  {% csrf_token %}  
+                  <table>
+                 {{form.as_table}}
+                 </table>
+{% comment %} <a class="btn btn-primary" href="{% url 'proveedor' %}">Atras</a> {% endcomment %}
+<a class="btn btn-primary"  onClick="atras()">Atras</a>
+<button type="submit" class="btn btn-primary">Guardar y continuar</button>
+                                    
+
+       </form>
+ <script> 
+function atras(){
+    window.history.go(-1);
+}
+</script>
+        {% endblock body %}

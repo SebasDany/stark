@@ -1,0 +1,92 @@
+{% extends 'core/base.html'%}
+
+
+{% block title %}<title>Productos</title> {% endblock title %}
+        {% block body %}
+            
+<form action="das" method="POST">
+                  {% csrf_token %} 
+                
+                  Detalle factura
+                  <br>
+ Fecha de importacion: <label name='fecha' value={{fecha.id}}>{{fecha.fecha}}</label>
+                  <br>
+                  <table class="table">
+                  
+    
+  <tr>
+    <td>Proveedor</td>
+    <td>Num cajas</td>
+    <td>V_envio</td>
+    <td>V_factura</td>
+    <td>Comis_envio</td>
+    <td>comis_tarjeta</td>
+    <td>ISD</td>
+    <td>T pago</td>
+    <td>Extra</td>
+  </tr>     
+  
+  <input type="number" style="display:none;" id="n" name="ncajas" value={{cant}} onChange="sumar()">
+  
+          
+        {% for lista in cantidad %}
+        
+                    <tr>
+                <td>  
+                <select name="proveedor">
+                            {% for prv in proveedores %}
+                            
+                        <option value={{ prv.id }} selected>{{ prv.nombre }}</option>
+                                        {% endfor %}
+                                            </select></td>
+                   <td>  <input type="number" id='num_cajas{{lista}}' name="ncajas" value=0 onChange="sumar()"></td>
+                   <td>  <input type="number" id='v_envio{{lista}}' step="0.1" name="v_envio" value=0.0 onChange="sumar()" /></td>
+                   <td>  <input type="number" id='v_factura{{lista}}' step="0.1" name="v_factura" value=0.0 onChange="sumar()" /></td>
+                   <td>  <input type="number" id='comis_envio{{lista}}' step="0.1" name="comis_envio" value=0.0 onChange="sumar()" /></td>
+                   <td>  <input type="number" id='comis_tarjeta{{lista}}' step="0.1" name="comis_tarjeta" value=0.0  onChange="sumar()"/></td>
+                   <td>  <input type="number" id='isd{{lista}}' step="0.1" name='isd'} value=0.0 disabled = true onChange="sumar()"/></td>
+                   <td>  <input type="number" id='t_pago{{lista}}' step="0.1" name='t_pago' value=0.0 disabled = true onChange="sumar()" /></td>
+                   <td>  <input type="number" id='extra{{lista}}' step="0.1" name='extra' value=0.0 disabled = true onChange="sumar()" /></td>
+            </tr>
+        {% endfor %}
+</table> 
+
+<div class="d-flex align-items-center justify-content-between mt-4 mb-0">
+
+        {% comment %} <a class="btn btn-primary" href="{% url 'importacion' %}">Atras</a> {% endcomment %}
+        <a class="btn btn-primary"  href="{% url 'atras' fecha.id %}">Atras</a>
+        
+
+        <button type="submit" class="btn btn-primary" href="{% url 'das' %}">Guardar y continuar</button>
+        {% comment %} <a class="btn btn-primary" type="submit"  href="{% url 'das' %}">Guardar y continuar</a> {% endcomment %}
+        
+    </div>
+        <script>       
+function sumar(){
+    var s=document.getElementById("n").value;
+    for (var i = 0; i < s; i++) {
+    var nc=parseFloat(document.getElementById("num_cajas"+i+"").value);
+    var ve=parseFloat(document.getElementById("v_envio"+i+"").value);
+    var vf=parseFloat(document.getElementById("v_factura"+i+"").value);
+    var ce=parseFloat(document.getElementById("comis_envio"+i+"").value);
+    var ct=parseFloat(document.getElementById("comis_tarjeta"+i+"").value);
+    console.log("valor factura",vf)
+    var isd=document.getElementById("isd"+i+"").value=(vf+ve)*0.05;
+     console.log(isd)
+     var t_pago=document.getElementById("t_pago"+i+"").value=ve+vf+ce+ct+((vf+ve)*0.05);
+    var extra=document.getElementById("extra"+i+"").value=ve+ce+ct+((vf+ve)*0.05);
+    console.log(extra)
+
+
+}
+    }
+
+function atras(){
+    window.history.go(-1);
+}
+</script>                            
+</form>
+       
+  
+
+        {% endblock body %}

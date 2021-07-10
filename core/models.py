@@ -12,7 +12,7 @@ class Mercancia(models.Model):
 class Producto(models.Model):
     mercancia=models.ForeignKey(Mercancia, on_delete=models.CASCADE, null=True,blank=True, default=None)
    
-    id_woocommerce=models.IntegerField()
+    id_woocommerce=models.IntegerField(blank=True)
     sku=models.CharField(max_length=16)
     nombre=models.CharField(max_length=80)
     precio_compra=models.DecimalField(max_digits=9, decimal_places=4, default=0)
@@ -46,11 +46,14 @@ class Proveedor(models.Model):
         return self.nombre
         
 class Importacion(models.Model):
-    fecha=models.DateField()
+    fecha=models.DateField(null = False, help_text="Ejemplo: 2021-07-07")
     descripcion=models.CharField(max_length=64, blank=True)
-    tipo=models.CharField(max_length=2, blank=True)
+    tipo=models.CharField(max_length=64, blank=True)
     origen=models.CharField(max_length=64, blank=True)
+    estado=models.IntegerField(default=1)
     def __str__(self):
+        print("////////////////")
+        
         return str(self.fecha)
 
 class Factura_proveedor(models.Model):

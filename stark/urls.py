@@ -33,7 +33,8 @@ urlpatterns = [
     
     
 
-    path('atras/<int:id>/',views.imporAtras,name='atras'),
+    path('editar/<int:id>/',views.editar,name='editar'),
+    #path('actualizar/<int:id>/',views.actualizar,name='actualizar'),
 
     path('das',views.das,name='das'),
     path('admin/', admin.site.urls),

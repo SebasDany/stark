@@ -250,29 +250,29 @@ def saveImport(request):
     
     return render(request,'core/importacion.html',context)
 
-def imporAtras(request,id):
+def editar(request,id):
     datos = Importacion.objects.get(id=id)  
     context={
                 'form':FormImportacion(instance=datos)
             }
-    if request.method=='POST':
-        form=FormImportacion(request.POST,instance=datos)
-        if form.is_valid():
-            fecha=form['fecha'].value()
-            form.save()
-            proveedores=Proveedor.objects.select_related().all()
-            cantidad=request.POST.get('cantidad')
-            cant=[]
-            for k in  range(int(cantidad)):
-                cant.append(k)
-            print(cantidad)
-            fecha=Importacion.objects.select_related().last()
-            messages.success(request, 'Se ha registrado correctamente!')
-            return render(request,'core/proveedor.html',{"cantidad":cant,"cant":cantidad,"proveedores":proveedores,'fecha':fecha})
+    
+    return render(request,'core/actualizaImport.html',context,{'fecha':datos})
+# def actualizar(request,id):
+#     datos = Importacion.objects.get(id=id) 
+#     form=FormImportacion(request.POST,instance=datos) 
+#     if form.is_valid():
+#         form.save()
+#         fecha=form['fecha'].value()
+#         proveedores=Proveedor.objects.select_related().all()
+#         cantidad=request.POST.get('cantidad')
+#         cant=[]
+#         for k in  range(int(cantidad)):
+#             cant.append(k)
+#         print(cantidad)
         
+#         messages.success(request, 'Se ha registrado correctamente!')
+#     return render(request,'core/proveedor.html',{"cantidad":cant,"cant":cantidad,"proveedores":proveedores,'fecha':datos})
     
-    return render(request,'core/importacion.html',context)
-    
-    
+
 
 

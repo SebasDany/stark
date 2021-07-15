@@ -37,6 +37,7 @@ urlpatterns = [
     #path('actualizar/<int:id>/',views.actualizar,name='actualizar'),
 
     path('das',views.das,name='das'),
+    path('detalledas',views.detalleDas,name='detalledas'),
     path('admin/', admin.site.urls),
     path('accounts/login/',LoginView.as_view(template_name='core/login.html'),name='login'),
     path('logout/',LogoutView.as_view(template_name='core/inicio.html'),name='logout')

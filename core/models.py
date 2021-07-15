@@ -85,7 +85,8 @@ class Proveedor_producto(models.Model):
 class Das(models.Model):
     importacion=models.OneToOneField(Importacion, on_delete=models.CASCADE, null=True,blank=True, default=None)
     
-    numero_entrega=models.CharField(max_length=128)
+   
+    numero_entrega=models.CharField(max_length=128,null=True,blank=True)
     numero_atribuido= models.CharField(max_length=64)
     
     fecha_embarque=models.DateField()
@@ -95,9 +96,9 @@ class Das(models.Model):
     pais_procedncia=models.CharField(max_length=128,null=True,blank=True)
     via_transporte=models.CharField(max_length=64,null=True,blank=True)
     puerto_enbarque=models.CharField(max_length=128,null=True,blank=True)
-    ciuda_importador=models.CharField(max_length=128,null=True,blank=True)
+    ciudad_importador=models.CharField(max_length=128,null=True,blank=True)
     empresa_tranporte=models.CharField(max_length=128,null=True)
-    numero_entrega=models.CharField(max_length=128,null=True,blank=True)
+    
     identificacion_carga=models.CharField(max_length=128,null=True,blank=True)
     monto_flete=models.DecimalField(max_digits=9, decimal_places=2, default=0,null=True,blank=True)
     total_items=models.IntegerField(default=0,null=True,blank=True)

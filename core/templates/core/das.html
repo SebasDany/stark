@@ -4,11 +4,44 @@
 {% block title %}<title>Regitro Productos</title> {% endblock title %}
         {% block body %}
             
-<form action="" method="POST">
+<form action="detalledas" method="POST">
                   {% csrf_token %}  
-                  <table>
-                 {{form.as_table}}
-                 </table>
+
+                   Fecha de importacion:<label>{{fecha.fecha}}</label>
+                <br>
+                <input type="number"  name="idfechaImport"  value={{fecha.id}} style="display:none;" >
+                
+                                    <table>
+                 <tbody><tr><th><label for="id_numero_entrega">Numero entrega:</label></th><td><input type="text" name="numero_entrega" maxlength="128" id="id_numero_entrega"></td></tr>
+                 <tr><th><label for="id_numero_atribuido">Numero atribuido:</label></th><td><input type="text" name="numero_atribuido" maxlength="128" id="id_numero_atribuido"></td></tr>
+<tr><th><label for="id_fecha_embarque">Fecha embarque:</label></th><td><input type="text" name="fecha_embarque" required="" id="id_fecha_embarque"></td></tr>
+<tr><th><label for="id_fecha_llegada">Fecha llegada:</label></th><td><input type="text" name="fecha_llegada" required="" id="id_fecha_llegada"></td></tr>
+<tr><th><label for="id_documento_transporte">Documento transporte:</label></th><td><input type="text" name="documento_transporte" maxlength="64" required="" id="id_documento_transporte"></td></tr>
+<tr><th><label for="id_tipo_carga">Tipo carga:</label></th><td><input type="text" name="tipo_carga" maxlength="64" id="id_tipo_carga"></td></tr>
+<tr><th><label for="id_pais_procedncia">Pais procedncia:</label></th><td><input type="text" name="pais_procedncia" maxlength="128" id="id_pais_procedncia"></td></tr>
+<tr><th><label for="id_via_transporte">Via transporte:</label></th><td><input type="text" name="via_transporte" maxlength="64" id="id_via_transporte"></td></tr>
+<tr><th><label for="id_puerto_enbarque">Puerto enbarque:</label></th><td><input type="text" name="puerto_enbarque" maxlength="128" id="id_puerto_enbarque"></td></tr>
+<tr><th><label for="id_ciudad_importador">Ciudad importador:</label></th><td><input type="text" name="ciudad_importador" maxlength="128" id="id_ciudad_importador"></td></tr>
+<tr><th><label for="id_empresa_tranporte">Empresa tranporte:</label></th><td><input type="text" name="empresa_tranporte" maxlength="128" required="" id="id_empresa_tranporte"></td></tr>
+<tr><th><label for="id_identificacion_carga">Identificacion carga:</label></th><td><input type="text" name="identificacion_carga" maxlength="128" id="id_identificacion_carga"></td></tr>
+<tr><th><label for="id_monto_flete">Monto flete:</label></th><td><input type="number" name="monto_flete" value="0" step="0.01" id="id_monto_flete"></td></tr>
+<tr><th><label for="id_total_items">Total items:</label></th><td><input type="number" name="total_items" value="0" id="id_total_items"></td></tr>
+<tr><th><label for="id_peso_neto">Peso neto:</label></th><td><input type="number" name="peso_neto" value="0" step="0.01" id="id_peso_neto"></td></tr>
+<tr><th><label for="id_total_bultos">Total bultos:</label></th><td><input type="number" name="total_bultos" value="0" required="" id="id_total_bultos"></td></tr>
+<tr><th><label for="id_unidades_comerciales">Unidades comerciales:</label></th><td><input type="number" name="unidades_comerciales" value="0" required="" id="id_unidades_comerciales"></td></tr>
+<tr><th><label for="id_total_tributos">Total tributos:</label></th><td><input type="number" name="total_tributos" value="0" step="0.01" required="" id="id_total_tributos"></td></tr>
+<tr><th><label for="id_valor_seguros">Valor seguros:</label></th><td><input type="number" name="valor_seguros" value="0" step="0.01" required="" id="id_valor_seguros"></td></tr>
+<tr><th><label for="id_cif">Cif:</label></th><td><input type="number" name="cif" value="0" step="0.01" required="" id="id_cif"></td></tr>
+<tr><th><label for="id_peso_bruto">Peso bruto:</label></th><td><input type="number" name="peso_bruto" value="0" step="0.01" required="" id="id_peso_bruto"></td></tr>
+<tr><th><label for="id_unidades_fisicas">Unidades fisicas:</label></th><td><input type="number" name="unidades_fisicas" value="0" required="" id="id_unidades_fisicas"></td></tr>
+<tr><th><label for="id_valor_fob">Valor fob:</label></th><td><input type="number" name="valor_fob" value="0" step="0.01" required="" id="id_valor_fob"></td></tr>
+                 <tr>
+                 <td><b>Numero de mercancia </b></td>
+                 <td><input type="number" name="cantidad" value=2  requiered > </td>
+                 </tr>
+                 </tbody></table>
+
+
 {% comment %} <a class="btn btn-primary" href="{% url 'proveedor' %}">Atras</a> {% endcomment %}
 <a class="btn btn-primary"  onClick="atras()">Atras</a>
 <button type="submit" class="btn btn-primary">Guardar y continuar</button>

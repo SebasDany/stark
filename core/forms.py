@@ -42,7 +42,7 @@ class FormImportacion(forms.ModelForm):
             model=Importacion
             fields=['fecha','descripcion','tipo','origen']
 
-class FacturaProveedor(forms.ModelForm):
+class FormFacturaProveedor(forms.ModelForm):
         class Meta:
             model=Factura_proveedor
             fields='__all__'
@@ -51,4 +51,31 @@ class FormDas(forms.ModelForm):
         class Meta:
             model=Das
             fields='__all__'
+            # fields=['numero_entrega',
+            #'numero_atribuido',
+            # 'fecha_embarque',
+            # 'fecha_llegada',
+            # 'documento_transporte',
+            # 'tipo_carga',
+            # 'pais_procedncia',
+            # 'via_transporte',
+            # 'puerto_enbarque',
+            # 'ciudad_importador',
+            # 'empresa_tranporte',
+            # 'identificacion_carga',
+            # 'monto_flete',
+            # 'total_items',
+            # 'peso_neto',
+            # 'total_bultos',
+            # 'unidades_comerciales',
+            # 'total_tributos',
+            # 'valor_seguros',
+            # 'cif',
+            # 'peso_bruto',
+            # 'unidades_fisicas',
+            # 'valor_fob'
+
+            
+            # ]
+            
             

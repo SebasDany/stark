@@ -1,0 +1,45 @@
+{% extends 'core/base.html'%}
+
+
+{% block title %}<title>Productos</title> {% endblock title %}
+        {% block body %}
+            
+<form action="" method="POST">
+                  {% csrf_token %} 
+                
+                  Detalle factura
+                  <br>
+ Fecha de importacion: <label name='fecha' value={{fecha.id}}>{{fecha.fecha}}</label>
+ <br>
+ <input type="number"  name="idfechaImport"  value={{fecha.id}} >
+ <input type="date"  name="fecha"  value={{fecha}} >
+                  <br>
+                  <table class="table">
+                  {{form.as_p}}
+                
+          
+</table> 
+
+<div class="d-flex align-items-center justify-content-between mt-4 mb-0">
+
+        {% comment %} <a class="btn btn-primary" href="{% url 'importacion' fecha.id %}">Atras</a> {% endcomment %}
+        {% comment %} <a class="btn btn-primary"  href="{% url 'editar' fecha.id %}">editar</a> {% endcomment %}
+        
+
+        <button type="submit" class="btn btn-primary" href="{% url 'das' %}">Guardar y continuar</button>
+        {% comment %} <a class="btn btn-primary" type="submit"  href="{% url 'das' %}">Guardar y continuar</a> {% endcomment %}
+        
+    </div>
+        <script>       
+
+    
+
+function atras(){
+    window.history.go(-1);
+}
+</script>                            
+</form>
+       
+  
+
+        {% endblock body %}

@@ -83,7 +83,7 @@ DATABASES = {
         'NAME': 'db_sistemaimportacion',
         'HOST':'localhost',
         'USER': 'postgres',
-        'PASSWORD':'sebastian',
+        'PASSWORD':'12345',
         'PORT':''}
 }
 

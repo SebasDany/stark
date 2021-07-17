@@ -4,7 +4,7 @@
 {% block title %}<title>Productos</title> {% endblock title %}
         {% block body %}
             
-<form action="das" method="POST">
+<form action="facturaproveedor" method="POST">
                   {% csrf_token %} 
                 
                   Detalle factura
@@ -60,7 +60,7 @@
         <a class="btn btn-primary"  href="{% url 'editar' fecha.id %}">editar</a>
         
 
-        <button type="submit" class="btn btn-primary" href="{% url 'das' %}">Guardar y continuar</button>
+        <button type="submit" class="btn btn-primary" >Guardar y continuar</button>
         {% comment %} <a class="btn btn-primary" type="submit"  href="{% url 'das' %}">Guardar y continuar</a> {% endcomment %}
         
     </div>

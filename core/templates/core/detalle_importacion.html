@@ -1,0 +1,78 @@
+{% extends 'core/base.html'%}
+
+
+{% block title %}<title>Productos</title> {% endblock title %}
+        {% block body %}
+
+
+            
+<form action="{% url 'crearimportacion' %}" method="POST">
+
+                  {% csrf_token %} 
+
+                  
+
+                    <div class="col-md-2 mb-3">
+                                                <label for="id_sku">Ingrese los sku</label>
+                                                <input type="text" class="form-control" id="id_sku"
+                                                       name="skus"  required>
+                                            </div>
+{% comment %} 
+        <a href="{% url 'detalleimportacion' %}" class="btn btn-secondary btn-full">Cancelar</a>
+                            <input type="submit" class="btn btn-success btn-full" value="Buscar">
+
+                                </div>
+                            </div>
+                   {% endcomment %}
+
+                   <table class="default">
+
+  <tr>
+    <td>Detalle</td>
+  </tr>
+
+                       
+
+        {% for lista in productos %}
+        <tr>
+
+    <td>  
+        
+        <input type="checkbox" name="checkbox" value={{ lista.id}}> {{ lista.nombre}}
+        <input type="number" name="cantidad" value=0>
+        <input type="text" name="pre" value={{ lista.precio_compra }}>
+        <input type="text" name="sub" value={{ lista.mercancia.subpartida }}>
+                <select name="proveedor">
+                {% for prv in proveedores %}
+                
+            <option value={{ prv.id }} selected>{{ prv.nombre }}</option>
+                               {% endfor %}
+                                </select>
+        <select name="mercancia">
+        <option value={{ lista.mercancia.id }} selected>{{ lista.mercancia }}</option>
+                {% for mer in mercancias %}
+                
+                        <option value={{ mer.id }}>{{ mer.nombre }}</option>
+                
+                {% endfor %}
+                </select>
+
+             
+             </td>
+
+    
+
+  </tr>
+        {% endfor %}
+
+        
+
+</table>  
+
+<button type="submit" class="btn btn-primary btn-user btn-block">Acceder</button>
+                                    
+
+       
+  
+
+        {% endblock body %}

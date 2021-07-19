@@ -157,19 +157,20 @@ class Factura_afianzado(models.Model):
     
     fecha=models.DateField()
     numero=models.CharField(max_length=64, blank=True)
-    subtotal=models.CharField(max_length=64, blank=True)
+    subtotal=models.DecimalField(max_digits=9, decimal_places=4)
     def __str__(self):
-        return self.fecha
+        return str(self.fecha)
 
 
 class Detalle_afianzado(models.Model):
     factura_afianzado=models.ForeignKey(Factura_afianzado, on_delete=models.CASCADE, null=True,blank=True, default=None)
-    
-    total=models.DecimalField(max_digits=9, decimal_places=4, default=0)
-    al_precio=models.DecimalField(max_digits=9, decimal_places=4, default=0)
-    al_peso=models.DecimalField(max_digits=9, decimal_places=4, default=0)
-    iva=models.DecimalField(max_digits=9, decimal_places=4, default=0)
     descripcion=models.CharField(max_length=255, blank=True)
+    al_peso=models.DecimalField(max_digits=9, decimal_places=4, default=0)
+    al_precio=models.DecimalField(max_digits=9, decimal_places=4, default=0)
+    
+    iva=models.DecimalField(max_digits=9, decimal_places=4, default=0)
+    total=models.DecimalField(max_digits=9, decimal_places=4, default=0)
+    
     
 
 

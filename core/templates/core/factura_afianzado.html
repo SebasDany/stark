@@ -4,19 +4,29 @@
 {% block title %}<title>Productos</title> {% endblock title %}
         {% block body %}
             
-<form action="" method="POST">
+<form action="datosafianzado" method="POST">
                   {% csrf_token %} 
                 
-                  Detalle factura
+                  Factura afianzado
                   <br>
- Fecha de importacion: <label name='fecha' value={{fecha.id}}>{{fecha.fecha}}</label>
+ {% comment %} Fecha de importacion: <label name='fecha' value={{fecha.id}}>{{fecha.fecha}}</label>
  <br>
  <input type="number"  name="idfechaImport"  value={{fecha.id}} >
- <input type="date"  name="fecha"  value={{fecha}} >
+ <input type="date"  name="fecha"  value={{fecha}} > {% endcomment %}
                   <br>
+
+                  <br>
+                <input type="number"  name="idfechaImport"  value={{fecha.id}}  >
                   <table class="table">
-                  {{form.as_p}}
-                
+                  <p><label for="id_afianzado">Afianzado:</label> <select name="afianzado" id="id_afianzado">
+
+                  {% for af in afianzado %}
+        <option value={{af.id}} selected>{{af.nombre}}</option>
+        {% endfor %}</select></p>
+                <p><label for="id_fecha">Fecha:</label> <input type="text" name="fecha" required="" id="id_fecha"></p>
+                <p><label for="id_numero">Numero:</label> <input type="text" name="numero" maxlength="64" id="id_numero"></p>
+                <p><label for="id_subtotal">Subtotal:</label> <input type="text" name="subtotal" maxlength="64" id="id_subtotal"></p>
+                <table class="table">
           
 </table> 
 <h1>HOLA MUNDO</h1>
@@ -27,7 +37,7 @@
         {% comment %} <a class="btn btn-primary"  href="{% url 'editar' fecha.id %}">editar</a> {% endcomment %}
         
 
-        <button type="submit" class="btn btn-primary" href="{% url 'das' %}">Guardar y continuar</button>
+        <button type="submit" class="btn btn-primary" >Guardar y continuar</button>
         {% comment %} <a class="btn btn-primary" type="submit"  href="{% url 'das' %}">Guardar y continuar</a> {% endcomment %}
         
     </div>
@@ -35,9 +45,6 @@
 
     
 
-function atras(){
-    window.history.go(-1);
-}
 </script>                            
 </form>
        

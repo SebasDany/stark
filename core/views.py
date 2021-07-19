@@ -3,8 +3,8 @@ from django.utils.html import escape
 from .models import Mercancia,Producto,Detalle_afianzado,Detalle_das, Detalle_importacion,Das,Factura_afianzado,Factura_proveedor,Importacion,Afianzado,Proveedor,Proveedor_producto
 from django.http import HttpResponse
 from woocommerce import API
-from .forms import UserRegisterForm, ProductRegister, FormImportacion, FormDas,FormFacturaProveedor
-from .models import Mercancia,Producto,Detalle_afianzado,Detalle_das, Detalle_importacion,Das,Factura_afianzado,Factura_proveedor,Importacion,Afianzado,Proveedor,Proveedor_producto
+from .forms import UserRegisterForm, ProductRegister, FormImportacion, FormDas,FormFacturaProveedor,FormFacturaAfianzado,FormDetalleAfianzado
+
 
 from django.contrib import messages
 import json
@@ -67,20 +67,9 @@ def conexionApiWoo():
 def inicio(request):
     return render(request,'core/inicio.html')
 def home(request):
-   # product=conexionApiWoo()
-    print("=================")
-    #print(product)
-    productos=Producto.objects.select_related().all()
-    proveedores=Proveedor.objects.select_related().all()
-    mercancias=Mercancia.objects.select_related().all()
-    print(proveedores[0].nombre)
-    print(mercancias[2].nombre)
-    
-    productos=Producto.objects.all()
-    for producto in productos:
-        print(producto.mercancia)
+   
 
-    return render(request,'core/home.html',{"productos":productos,"proveedores":proveedores,"mercancias":mercancias})
+    return render(request,'core/home.html')
 
 def login(request):
     return render(request,'core/login.html')
@@ -111,10 +100,10 @@ def facturaProveedor(request):
 def das(request):
     fecha=request.POST.get('fecha')
     fechaImport=request.POST.get('idfechaImport')
-    fc=Importacion.objects.get(id = 365)
-    print("valor de fc",fc)
+    #fc=Importacion.objects.get(id = 365)
+    
     prove= request.POST.getlist('proveedor')
-    pr=Proveedor.objects.get(id = 2)
+    
     print("valor de proveedor",prove)
     ncajas=request.POST.getlist('ncajas')
     v_envio=request.POST.getlist('v_envio')
@@ -356,3 +345,94 @@ def detalleDas(request):
     print(cantidad)
     mercancias=Mercancia.objects.select_related().all()
     return render (request, 'core/detalle_das.html',{'cantidad':cant,'mercancia':mercancias})
+def facturaAfianzado(request):
+    mercancia=request.POST.getlist('mercancia')
+    advalorem=request.POST.getlist('advalorem')
+    fodinfa=request.POST.getlist('fodinfa')
+    iva=request.POST.getlist('iva')
+
+    print(mercancia)
+    print(advalorem)
+    print(fodinfa)
+    print(iva)
+
+    das=Das.objects.last()# obtiene el utlimo dato del la consulta
+
+    
+    for i in  range(len(mercancia)):
+        dD=Detalle_das()
+        
+        dD.mercancia=Mercancia.objects.get(id = mercancia[i])
+        dD.das=das
+        dD.advalorem1=advalorem[i]
+        dD.fodinfa1=fodinfa[i]
+        dD.iva1=iva[i]
+        dD.save()
+        print(i)
+        fecha=Importacion.objects.last()
+        afianzado=Afianzado.objects.all()
+        
+
+    return render(request,'core/factura_afianzado.html',{'fecha':fecha,'afianzado':afianzado})
+
+def detalleAfianzado(request):
+    af=Factura_afianzado()
+    af.afianzado=Afianzado.objects.get(id=request.POST.get('afianzado'))
+    af.importacion=Importacion.objects.get(id=request.POST.get('idfechaImport'))
+    print(af.importacion.fecha)
+    af.fecha=request.POST.get('fecha')
+    af.numero=request.POST.get('numero')
+    af.subtotal=request.POST.get('subtotal')
+    #af.save()
+    print("$$$$$$$$$$$$$$$$$$$$$$$$$$$guardada factura afinazado guardado")
+    
+
+    
+    afz=Factura_afianzado.objects.last()
+    
+    cant=[]
+    for k in  range(4):
+        cant.append(k)
+      
+
+    return render(request,'core/detalle_afianzado.html',{'cantidad':cant, 'afz':afz})
+
+
+def detalleImportacion(request):
+    af=request.POST.getlist('id_afianzado')
+    print("················ ", af)
+    desc=request.POST.getlist('descripcion')
+    ape=request.POST.getlist('alpeso')
+    apr=request.POST.getlist('alprecio')
+    iv=request.POST.getlist('iva')
+    t=request.POST.getlist('total')
+    print(t)
+
+    for i in  range(len(af)):
+        dA=Detalle_afianzado()
+        dA.factura_afianzado=Factura_afianzado.objects.get(id=af[0])
+        dA.descripcion=desc[i]
+        dA.al_peso=ape[i]
+        dA.al_precio=apr[i]
+        dA.iva=iv[i]
+        dA.t=t[i]
+      
+        dA.save()
+
+
+        # product=conexionApiWoo()
+    print("=================")
+    #print(product)
+    productos=Producto.objects.select_related().all()
+    proveedores=Proveedor.objects.select_related().all()
+    mercancias=Mercancia.objects.select_related().all()
+    # print(proveedores[0].nombre)
+    # print(mercancias[2].nombre)
+    
+    productos=Producto.objects.all()
+    for producto in productos:
+        print(producto.mercancia)
+       
+        
+
+    return render(request,'core/detalle_importacion.html',{"productos":productos,"proveedores":proveedores,"mercancias":mercancias})

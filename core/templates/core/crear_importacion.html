@@ -1,0 +1,19 @@
+{% extends 'core/base.html'%}
+
+
+{% block title %}<title>Creacion de Importacion</title> {% endblock title %}
+    {% block body %}
+        <form role="form" method="POST" action="">
+                            {% csrf_token %}
+
+                         {{producto.id }}
+
+                           
+
+                           {% for lista in producto %}
+                                {{lista.nombre }}
+                                   hola
+                           {% endfor %}
+                        </form>
+
+{% endblock body %}

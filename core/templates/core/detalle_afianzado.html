@@ -1,0 +1,91 @@
+
+            
+
+                 
+
+{% extends 'core/base.html'%}
+
+
+{% block title %}<title>Pregsitro detalle DAS</title> {% endblock title %}
+        {% block body %}
+            
+<form action="detalleafianzado" method="POST">
+                  {% csrf_token %} 
+                
+                  Detalle afianzado
+                  <br>
+
+
+
+                  <table class="table">
+                  
+    
+  <tr>
+    <td>Afianzado </td>
+    <td>Descripcion</td>
+    <td>Al perso</td>
+    <td>Al precio</td>
+    <td>Iva</td>
+   
+    <td>Total</td>
+    
+  </tr>     
+  
+   <input type="number" style="display:none;" id="n"  value=4 onChange="sumar()"> 
+  
+          
+        {% for lista in cantidad %}
+        
+                    <tr>
+                <td>  
+                <select name="id_afianzado">
+                
+        
+               
+                
+                        <option value={{ afz.id }}>{{ afz.afianzado.nombre }}</option>
+                
+                
+                </select>
+</td>
+                   <td>  <input type="text"  name="descripcion"   required></td>
+                   <td>  <input type="number"  step="0.1" id='alpe{{lista}}' name="alpeso" value=0.0 onChange="sumar()" /></td>
+                   <td>  <input type="number"  step="0.1" id='alpr{{lista}}' name="alprecio" value=0.0 onChange="sumar()" /></td>
+                   <td>  <input type="number"  step="0.1" id='iv{{lista}}' name="iva" value=0.0 onChange="sumar()" /></td>
+                 <td>  <input type="number"  step="0.1" id='tot{{lista}}' name="total" value=0.0  onChange="sumar()" /></td>
+            </tr>
+        {% endfor %}
+</table> 
+
+<div class="d-flex align-items-center justify-content-between mt-4 mb-0">
+
+        {% comment %} <a class="btn btn-primary" href="{% url 'importacion' fecha.id %}">Atras</a> {% endcomment %}
+        {% comment %} <a class="btn btn-primary"  href="{% url 'editar' fecha.id %}">editar</a>
+         {% endcomment %}
+
+        <button type="submit" class="btn btn-primary" >Guardar y continuar</button>
+        {% comment %} <a class="btn btn-primary" type="submit"  href="{% url 'das' %}">Guardar y continuar</a> {% endcomment %}
+        
+    </div>
+        <script>       
+
+function sumar(){
+    var s=document.getElementById("n").value;
+    for (var i = 0; i < s; i++) {
+    console.log(i)
+    var ape=parseFloat(document.getElementById("alpe"+i+"").value);
+     console.log(ape)
+    var apr=parseFloat(document.getElementById("alpr"+i+"").value);
+    var iva=document.getElementById("iv"+i+"").value=(ape+apr)*0.12;
+    var ce=parseFloat(document.getElementById("tot"+i+"").value=ape+apr+parseFloat(iva));
+    
+
+
+}
+    }
+</script>                            
+</form>
+       
+  
+
+        {% endblock body %}

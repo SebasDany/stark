@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-      'import_export',
+    'import_export',
     'core',
     #'django_extensions',
 ]
@@ -80,7 +80,7 @@ WSGI_APPLICATION = 'stark.wsgi.application'
 DATABASES = {
    'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'db_sistemaimportacion',
+        'NAME': 'db_stark',
         'HOST':'localhost',
         'USER': 'postgres',
         'PASSWORD':'12345',

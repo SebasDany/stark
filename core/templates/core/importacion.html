@@ -13,6 +13,11 @@
                  
                  
                  </table>
+                 {% for message in messages %}
+                        <div style="text-align: center;"  class="alert {{ message.tags }} alert-dismissible" role="alert">
+                            <button type="button" class="btn btn-primary" data-dismiss="alert" aria-label="Close"> {{ message }}</button> 
+                        </div>
+                        {% endfor %}
 
 
 <div class="d-flex align-items-center justify-content-between mt-4 mb-0">

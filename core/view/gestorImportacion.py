@@ -2,7 +2,7 @@
 from django.shortcuts import render, redirect
 
 from ..controlador import buscarProductos
-from ..ecommerce import Woocommerce
+#from ..ecommerce import Woocommerce
 
 from django.shortcuts import render, redirect
 from django.utils.html import escape

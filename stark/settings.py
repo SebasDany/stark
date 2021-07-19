@@ -80,7 +80,7 @@ WSGI_APPLICATION = 'stark.wsgi.application'
 DATABASES = {
    'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'db_stark',
+        'NAME': 'db_sistemaimportacion',
         'HOST':'localhost',
         'USER': 'postgres',
         'PASSWORD':'12345',

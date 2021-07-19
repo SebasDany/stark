@@ -2,11 +2,22 @@
 
 
 {% block title %}<title>Productos</title> {% endblock title %}
+
         {% block body %}
-            
+        <div class="container">
+            <div class="progress-container">
+                <div class="progress" id="progress"></div>
+                    <div class="circle active"><i class="fa-html5">1</i><li>Proveedor</li></div>
+                    <div class="circle "><i class="fa-js">2</i><li>DAS</li></div>
+                    <div class="circle "><i class="fa-react">3</i><li>Afianzado</li></div>
+                    <div class="circle "><i class="fa-html5">5</i><li>Importación</li></div>
+                </div>
+        </div> 
+<br/>
+<br/>
 <form action="facturaproveedor" method="POST">
                   {% csrf_token %} 
-                
+        
                   Detalle factura
                   <br>
  Fecha de importacion: <label name='fecha' value={{fecha.id}}>{{fecha.fecha}}</label>
@@ -55,12 +66,14 @@
 </table> 
 
 <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
+        <input type="text" id="page"></input>
 
-        {% comment %} <a class="btn btn-primary" href="{% url 'importacion' fecha.id %}">Atras</a> {% endcomment %}
+        {% comment %}     <button class="btn" id="prev" href="{% url 'importacion' fecha.id %}" disabled >Prev</button>
+       {% endcomment %}
         <a class="btn btn-primary"  href="{% url 'editar' fecha.id %}">editar</a>
         
 
-        <button type="submit" class="btn btn-primary" >Guardar y continuar</button>
+        <button class="btn" id="next" type="submit">Next</button>
         {% comment %} <a class="btn btn-primary" type="submit"  href="{% url 'das' %}">Guardar y continuar</a> {% endcomment %}
         
     </div>

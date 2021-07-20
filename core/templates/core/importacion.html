@@ -1,9 +1,10 @@
 {% extends 'core/base.html'%}
 
 
-{% block title %}<title>Imporatacion</title> {% endblock title %}
+{% block title %}<title>Importacion</title> {% endblock title %}
+
         {% block body %}
-            
+      
 <form action="importacion" method="POST">
                   {% csrf_token %}  
                   <table>
@@ -22,9 +23,8 @@
 
 <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
 
-        <
         <button type="submit" class="btn btn-primary btn-user btn-block">Comenzar</button>
-        <a class="btn btn-primary"  href="{% url 'facturaproveedor' %}">cintinue</a>
+        <!-- <a class="btn btn-primary"  href="{% url 'facturaproveedor' %}">cintinue</a> -->
     </div>                                 
 
        </form>

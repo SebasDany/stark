@@ -3,7 +3,17 @@
 
 {% block title %}<title>Productos</title> {% endblock title %}
         {% block body %}
-            
+        
+
+      <div class="container">
+        <div class="progress-container">
+            <div class="progress" id="progress"></div>
+                <div class="circle active"><i class="fa-html5">1</i><li>Proveedor</li></div>
+                <div class="circle active"><i class="fa-js">2</i><li>DAS</li></div>
+                <div class="circle active"><i class="fa-react">3</i><li>Afianzado</li></div>
+                <div class="circle "><i class="fa-html5">5</i><li>Importación</li></div>
+            </div>
+    </div> 
 <form action="datosafianzado" method="POST">
                   {% csrf_token %} 
                 

@@ -129,7 +129,9 @@ class Detalle_importacion(models.Model):
     detalle_das=models.ForeignKey(Detalle_das, on_delete=models.CASCADE, null=True,blank=True, default=None)
     factura_proveedor=models.ForeignKey(Factura_proveedor, on_delete=models.CASCADE, null=True,blank=True, default=None)
     importacion=models.ForeignKey(Importacion, on_delete=models.CASCADE, null=True,blank=True, default=None)
-    
+    mercancia=models.ForeignKey(Mercancia, on_delete=models.CASCADE, null=True,blank=True, default=None)
+    proveedor=models.ForeignKey(Proveedor, on_delete=models.CASCADE, null=True,blank=True, default=None)
+   
     cantidad=models.IntegerField(default=0)
     novedades=models.CharField(max_length=255, blank=True)
     valor_unitario=models.DecimalField(max_digits=9, decimal_places=4, default=0)

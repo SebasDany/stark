@@ -83,7 +83,7 @@ DATABASES = {
         'NAME': 'db_stark',
         'HOST':'localhost',
         'USER': 'postgres',
-        'PASSWORD':'12345',
+        'PASSWORD':'sebastian',
         'PORT':''}
 }
 

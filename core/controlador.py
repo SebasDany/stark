@@ -1,4 +1,5 @@
 
+from requests.api import get
 from .models import Mercancia,Producto,Detalle_afianzado,Detalle_das, Detalle_importacion,Das,Factura_afianzado,Factura_proveedor,Importacion,Afianzado,Proveedor,Proveedor_producto
 
 import numpy as np  
@@ -6,15 +7,54 @@ import numpy as np
 def buscarProductos(skus):
     sku=skus.split(';')
     pr =[] 
-    result, indices=np.unique(sku,return_index=True)  
+    provedor_prod=[]
+    result, indices=np.unique(sku,return_index=True) 
+    print(result) 
     # print(result)  
     # print(indices ) 
     # print(sku[indices] )
-
     for i in  range(len(result)):
         p = Producto.objects.get(sku=result[i])
+        pr_p=Proveedor_producto.objects.get(producto=p.id)
+        print(pr_p)
+        provedor_prod.append(pr_p)
+        #pr.append(pr_p)
         pr.append(p)
-    return  {'producto':pr}
+    
+
+    
+    proveedores=Proveedor.objects.select_related().all()
+    mercancias=Mercancia.objects.select_related().all()
+    
+        
+
+    return {'error':False,
+    "productos":pr,
+    "pr_p":provedor_prod,
+    "proveedores":proveedores,
+    "mercancias":mercancias
+            }
+
+def saveDetalleImportacion(peso=[],precio=[],cantidad=[],id_prod=[],mercancia=[],proveedor=[]):
+    dtdas=Detalle_das.objects.last()
+    factProv=Factura_proveedor.objects.last()
+    importacion=Importacion.objects.last()
+
+    for i in range(len(id_prod)):
+        dtImport=Detalle_importacion()
+        dtImport.producto=Producto.objects.get(id=id_prod[i])
+        dtImport.detalle_das=dtdas
+        dtImport.factura_proveedor=factProv
+        dtImport.importacion=importacion
+        dtImport.mercancia=Mercancia.objects.get(id=mercancia[i])
+        dtImport.proveedor=Proveedor.objects.get(id=proveedor[i])
+        dtImport.valor_unitario=precio[i]
+        dtImport.cantidad=cantidad[i]
+        dtImport.peso=peso[i]
+        dtImport.save()
+
+    
+    return {'error':False}    
 
 def saveFacuturaProveedor(prove=[],fechaImport='',ncajas=[],v_envio=[],v_factura=[],comis_envio=[],comis_tarjeta=[],isd=[],t_pago=[],extra=[]):
     
@@ -132,7 +172,7 @@ def saveDetalleAfianzado(af=[],desc=[],ape=[],apr=[],iv=[], t=[]):
         productos=Producto.objects.select_related().all()
         proveedores=Proveedor.objects.select_related().all()
         mercancias=Mercancia.objects.select_related().all()
-        productos=Producto.objects.all()
+        
 
 
     return {'error':False,
@@ -140,3 +180,40 @@ def saveDetalleAfianzado(af=[],desc=[],ape=[],apr=[],iv=[], t=[]):
     "proveedores":proveedores,
     "mercancias":mercancias
             }
+def saveMercacia(mer=[],sub=[],adv=[]):
+    print(len(mer))
+    print(len(sub))
+    print(len(adv))
+    for i in range(len(mer)):
+        print(mer[i])
+        m=Mercancia()
+        m.nombre=mer[i]
+        m.subpartida=sub[i]
+        m.por_advalorem=adv[i]
+        m.save()
+def saveProducto(mercancia=[],id_wo=[],sku=[],nombre=[],precio_compra=[],precio_neto=[],variacion =[],
+parent_id=[],imagen=[],categorias=[],observaciones=[]):
+    print(len(mercancia))
+    print(len(nombre))
+    print(len(sku))
+    print(mercancia[0])
+
+    for i in range(len(mercancia)):
+        pr=Producto()
+        pr.mercancia=Mercancia.objects.get(nombre=mercancia[i])
+        pr.id_woocommerce=2
+        pr.sku=sku[i]
+        pr.nombre=nombre[i]
+        pr.precio_compra=45.0
+        pr.precio_neto=50.5
+        pr.variacion=1
+        pr.parent_id=3
+        pr.imagen="djsfjdnjfndjn.jpg"
+        pr.categorias=mercancia[i]
+        pr.observaciones="descripcion del producto"
+        pr.save()
+
+
+
+
+

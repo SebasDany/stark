@@ -3,17 +3,62 @@
 
 {% block title %}<title>Creacion de Importacion</title> {% endblock title %}
     {% block body %}
-        <form role="form" method="POST" action="">
-                            {% csrf_token %}
+      <form role="form" method="POST" action="{% url 'calcular' %}">
+                            {% csrf_token %}                        
 
-                         {{producto.id }}
+                        Producto importados     
+               <table class="table">               
+               <tr>
+                  <td>SKU</td>
+                  <td>Tienda</td>
+                  <td>Nombre</td>
+                  <td>Precio</td>
+                  <td>Peso</td>
+                  <td>Mercancia</td>
+               
+                  <td>Cantidad</td>
+                  <td>SKU Proveedor</td>
+                  <td>Nombre Proveedor</td>
+                  
+               </tr>   
 
-                           
+                   {% for lista in productos %}
+                     <tr>
 
-                           {% for lista in producto %}
-                                {{lista.nombre }}
-                                   hola
-                           {% endfor %}
-                        </form>
+                     
+                     <td><input type="checkbox" name="id_producto" value={{ lista.id}} checked> {{ lista.sku}}</td>
+                        <td><select name="proveedor">
+                              {% for prv in proveedores %}
+                              <option value={{ prv.id }} >{{ prv.nombre }}</option>
+                                             {% endfor %}
+                                    </select></td>
+                        <td><label>{{ lista.nombre}} </label> </td>
+                        <td><input type="number"  name="precio" value={{ lista.precio_compra }}></td>
+                     
+                    
+                     <td><input type="number" name="peso" value={{ lista.peso }}></td>
+                    
+                              
+                     <td><select name="mercancia">
+                     <option value={{ lista.mercancia.id }} selected>{{ lista.mercancia }}</option>
+                     
+                              {% for mer in mercancias %}
+                              
+                                       <option value={{ mer.id }}>{{ mer.nombre }}</option>
+                              
+                              {% endfor %}
+                              </select></td>
+                            <td><input type="number" name="cantidad" value=0></td>
+                     <td><input type="text" name="sk_prove" ></td>
+                     <td><input type="text" name="nombreProve" ></td>
+                              </tr>
+                     {% endfor %}
+
+                     
+
+               </table>  
+
+               <button type="submit" class="btn btn-primary btn-user btn-block">Acceder</button>        
+   </form>
 
 {% endblock body %}

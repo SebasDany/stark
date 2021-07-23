@@ -14,7 +14,7 @@
                 <div class="circle "><i class="fa-html5">5</i><li>Importación</li></div>
             </div>
     </div> 
-<form action="datosafianzado" method="POST">
+<form action="" method="POST">
                   {% csrf_token %} 
                 
                   Factura afianzado
@@ -26,16 +26,16 @@
                   <br>
 
                   <br>
-                <input type="number"  name="idfechaImport"  value={{fecha.id}}  >
+               
                   <table class="table">
                   <p><label for="id_afianzado">Afianzado:</label> <select name="afianzado" id="id_afianzado">
 
                   {% for af in afianzado %}
         <option value={{af.id}} selected>{{af.nombre}}</option>
         {% endfor %}</select></p>
-                <p><label for="id_fecha">Fecha:</label> <input type="text" name="fecha" required="" id="id_fecha"></p>
-                <p><label for="id_numero">Numero:</label> <input type="text" name="numero" maxlength="64" id="id_numero"></p>
-                <p><label for="id_subtotal">Subtotal:</label> <input type="text" name="subtotal" maxlength="64" id="id_subtotal"></p>
+                <p><label for="id_fecha">Fecha:</label> <input type="date" name="fecha" value={{faf.fecha}} required="" id="id_fecha"></p>
+                <p><label for="id_numero">Numero:</label> <input type="text" name="numero"  value={{faf.numero}} maxlength="64" id="id_numero"></p>
+                <p><label for="id_subtotal">Subtotal:</label> <input type="text" name="subtotal" value={{faf.subtotal}} maxlength="64" id="id_subtotal"></p>
                 <table class="table">
           
 </table> 
@@ -46,9 +46,10 @@
         {% comment %} <a class="btn btn-primary" href="{% url 'importacion' fecha.id %}">Atras</a> {% endcomment %}
         {% comment %} <a class="btn btn-primary"  href="{% url 'editar' fecha.id %}">editar</a> {% endcomment %}
         
-
+ <a class="btn btn-primary"  href="{% url 'detalledas' id idas %}">Atras</a>
         <button type="submit" class="btn btn-primary" >Guardar y continuar</button>
         {% comment %} <a class="btn btn-primary" type="submit"  href="{% url 'das' %}">Guardar y continuar</a> {% endcomment %}
+       
         
     </div>
         <script>       

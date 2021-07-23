@@ -1,10 +1,11 @@
 
+
 from requests.api import get
 from .models import Mercancia,Producto,Detalle_afianzado,Detalle_das, Detalle_importacion,Das,Factura_afianzado,Factura_proveedor,Importacion,Afianzado,Proveedor,Proveedor_producto
 
 import numpy as np  
 
-def buscarProductos(skus):
+def buscarSKU(skus):
     sku=skus.split(';')
     pr =[] 
     provedor_prod=[]
@@ -15,9 +16,9 @@ def buscarProductos(skus):
     # print(sku[indices] )
     for i in  range(len(result)):
         p = Producto.objects.get(sku=result[i])
-        pr_p=Proveedor_producto.objects.get(producto=p.id)
-        print(pr_p)
-        provedor_prod.append(pr_p)
+        #pr_p=Proveedor_producto.objects.get(producto=p.id)
+        #print(pr_p)
+        #provedor_prod.append(pr_p)
         #pr.append(pr_p)
         pr.append(p)
     
@@ -56,38 +57,43 @@ def saveDetalleImportacion(peso=[],precio=[],cantidad=[],id_prod=[],mercancia=[]
     
     return {'error':False}    
 
-def saveFacuturaProveedor(prove=[],fechaImport='',ncajas=[],v_envio=[],v_factura=[],comis_envio=[],comis_tarjeta=[],isd=[],t_pago=[],extra=[]):
+def saveFacuturaProveedor(idfp,prove,id,ncajas,v_envio,v_factura,comis_envio,comis_tarjeta,isd,t_pago,extra):
     
-    for i in range (len(prove)):
+    
+    for j in range (len(prove)):
+        
+       
         fp = Factura_proveedor()
-        try:
+        
             #entero = int(posible_numero)
+        fp.id=idfp[j]
+       
+        fp.proveedor=Proveedor.objects.get(id = prove[j])
+        fp.importacion=Importacion.objects.get(id=id)
+        fp.num_cajas=ncajas[j]
+        fp.valor_factura=v_factura[j]
+        fp.valor_envio=v_envio[j]
+        fp.comision_envio=comis_envio[j]
+        fp.comision_tarjeta=comis_tarjeta[j]
+        fp.isd=isd[j]
+        fp.total_pago=t_pago[j]
+        fp.extra=extra[j]
+        
+        fp.save() 
+                   
+       
+         
 
-            fp.proveedor=Proveedor.objects.get(id = prove[i])
-            fp.importacion=Importacion.objects.get(id=fechaImport)
-            fp.num_cajas=ncajas[i]
-            fp.valor_factura=v_factura[i]
-            fp.valor_envio=v_envio[i]
-            fp.comision_envio=comis_envio[i]
-            fp.comision_tarjeta=comis_tarjeta[i]
-            fp.isd=isd[i]
-            fp.total_pago=t_pago[i]
-            fp.extra=extra[i]
-            fp.save()            
-            print("Lo que escribiste es un entero")
-            estado=False
-        except ValueError:
-            estado=True
+    return {'error':False}
 
-    return {'error':estado}
-
-def saveDas(idfechaImport,numero_atribuido,numero_entrega,
+def saveDas(idas,idfechaImport,numero_atribuido,numero_entrega,
 fecha_embarque,fecha_llegada,documento_transporte,
 tipo_carga,pais_procedncia,via_transporte,puerto_enbarque,
 ciudad_importador,empresa_tranporte,identificacion_carga,
 monto_flete,total_items,peso_neto,total_bultos,unidades_comerciales,
 total_tributos,valor_seguros,cif,peso_bruto,unidades_fisicas,valor_fob):
     das = Das()
+    
     das.importacion=Importacion.objects.get(id=idfechaImport)
     das.numero_atribuido=numero_atribuido
     das.numero_entrega=numero_entrega
@@ -112,14 +118,15 @@ total_tributos,valor_seguros,cif,peso_bruto,unidades_fisicas,valor_fob):
     das.peso_bruto=peso_bruto
     das.unidades_fisicas=unidades_fisicas
     das.valor_fob=valor_fob
+    das.id=idas
     
-    #das.save() #Contiene una realcion de uno auno
+    das.save() #Contiene una realcion de uno auno
 
     return {'error':False}
 
-def saveDetalleDas(mercancia=[],advalorem=[],fodinfa=[],iva=[]):
+def saveDetalleDas(id_dd,idas,mercancia=[],advalorem=[],fodinfa=[],iva=[]):
 
-    das=Das.objects.last()# obtiene el utlimo dato del la consulta
+    das=Das.objects.get(id=idas)# obtiene el utlimo dato del la consulta
     
     for i in  range(len(mercancia)):
         dD=Detalle_das()
@@ -129,12 +136,13 @@ def saveDetalleDas(mercancia=[],advalorem=[],fodinfa=[],iva=[]):
         dD.advalorem1=advalorem[i]
         dD.fodinfa1=fodinfa[i]
         dD.iva1=iva[i]
+        dD.id=id_dd[i]
         dD.save()
         print(i)
 
     return {'error':False}
 
-def saveAfianzado(afianzado,idfechaImport,fecha,numero,subtotal):
+def saveAfianzado(idaf,afianzado,idfechaImport,fecha,numero,subtotal):
     af=Factura_afianzado()
 
     af.afianzado=Afianzado.objects.get(id=afianzado)
@@ -142,7 +150,8 @@ def saveAfianzado(afianzado,idfechaImport,fecha,numero,subtotal):
     af.fecha=fecha
     af.numero=numero
     af.subtotal=subtotal
-    #af.save() #Descomentar relacion de uno a uno entre eimprotaacion y factua afianzado
+    af.id=idaf
+    af.save() #Descomentar relacion de uno a uno entre eimprotaacion y factua afianzado
     afz=Factura_afianzado.objects.last()
     
     cant=[]
@@ -155,18 +164,19 @@ def saveAfianzado(afianzado,idfechaImport,fecha,numero,subtotal):
             'cantidad':cant, 
             'afz':afz
             }
-def saveDetalleAfianzado(af=[],desc=[],ape=[],apr=[],iv=[], t=[]):
+def saveDetalleAfianzado(id,idda,desc=[],ape=[],apr=[],iv=[], t=[]):
 
-    faf=Factura_afianzado.objects.get(id=af[0])
+    faf=Factura_afianzado.objects.get(importacion=id)
 
-    for i in  range(len(af)):
+    for i in  range(len(ape)):
         dA=Detalle_afianzado()
         dA.factura_afianzado=faf
         dA.descripcion=desc[i]
         dA.al_peso=ape[i]
         dA.al_precio=apr[i]
         dA.iva=iv[i]
-        dA.t=t[i]
+        dA.total=t[i]
+        dA.id=idda[i]
         dA.save()
 
         productos=Producto.objects.select_related().all()

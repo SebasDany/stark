@@ -14,7 +14,7 @@
                 <div class="circle "><i class="fa-html5">5</i><li>Importación</li></div>
             </div>
     </div> 
-<form action="detalledas" method="POST">
+<form action="" method="POST">
                   {% csrf_token %} 
                 
                   Detalle Das
@@ -39,7 +39,7 @@
   <input type="number" style="display:none;" id="n"  value={{cant}} onChange="sumar()">
   
           
-        {% for lista in cantidad %}
+        {% for lista in ddas %}
         
                     <tr>
                 <td>  
@@ -52,11 +52,11 @@
                 {% endfor %}
                 </select>
 </td>
-                   <td>  <input type="text"  name="subpartida"  onChange="sumar()" required></td>
-                   <td>  <input type="number"  step="0.1" name="advalorem" value=0.0 onChange="sumar()" /></td>
-                   <td>  <input type="number"  step="0.1" name="fodinfa" value=0.0 onChange="sumar()" /></td>
-                   <td>  <input type="number"  step="0.1" name="iva" value=0.0 onChange="sumar()" /></td>
-                 <td>  <input type="number"  step="0.1" name="sub_total" value=0.0  onChange="sumar()" disabled=True /></td>
+                   <td>  <input type="text"  name="subpartida"  onChange="sumar()" value={{lista.mercancia.subpartida}}  required></td>
+                   <td>  <input type="number"  step="0.1" name="advalorem" value={{lista.advalorem1}} onChange="sumar()" /></td>
+                   <td>  <input type="number"  step="0.1" name="fodinfa" value={{lista.fodinfa1}} onChange="sumar()" /></td>
+                   <td>  <input type="number"  step="0.1" name="iva" value={{lista.iva1}} onChange="sumar()" /></td>
+                 <td>  <input type="number"  step="0.1" name="sub_total" value={{lista.subtotal1}}  onChange="sumar()" disabled=True /></td>
             </tr>
         {% endfor %}
 </table> 
@@ -66,7 +66,7 @@
         {% comment %} <a class="btn btn-primary" href="{% url 'importacion' fecha.id %}">Atras</a> {% endcomment %}
         {% comment %} <a class="btn btn-primary"  href="{% url 'editar' fecha.id %}">editar</a>
          {% endcomment %}
-
+<a class="btn btn-primary"  href="{% url 'datosdas' id idas %}">Atras</a>
         <button type="submit" class="btn btn-primary" >Guardar y continuar</button>
         {% comment %} <a class="btn btn-primary" type="submit"  href="{% url 'das' %}">Guardar y continuar</a> {% endcomment %}
         

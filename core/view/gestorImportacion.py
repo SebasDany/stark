@@ -2,7 +2,7 @@
 from time import perf_counter
 from django.shortcuts import render, redirect
 
-from ..controlador import buscarProductos, saveDetalleImportacion,saveMercacia ,saveProducto, saveDetalleImportacion
+from ..controlador import  buscarSKU, saveDetalleImportacion,saveMercacia ,saveProducto, saveDetalleImportacion
 from ..ecommerce import Woocommerce
 
 from django.shortcuts import render, redirect
@@ -15,6 +15,7 @@ from ..forms import UserRegisterForm, ProductRegister, FormImportacion, FormDas,
 
 from django.contrib import messages
 import json
+import datetime
 
 # wcapi = API(
 #             url="https://avelectronics.cc",  # Your store URL
@@ -194,50 +195,38 @@ mercan=["TARJETAS ELECTRÓNICAS", "CIRCUITOS INTEGRADOS", "CIRCUITOS INTEGRADOS"
 
     #print(wcapi1.put("products/"+str(id),data)
 
-def crearImportacion(request):
+
+#Permite realizar
+def buscarProductos(request,id,idas,idfa):
     print("estoy denr¡ntro de crear importAIOCN")
     if request.method == 'POST':
         print("estoy denr¡ntro de crear importAIOCN")
 
         list_sku = request.POST.get('skus')
         print(list_sku)
-        productos=buscarProductos(list_sku)
+        productos=buscarSKU(list_sku)
         print(productos)
         print(productos)
+        datos={
+                "id":id,
+                "idas":idas,
+                "idfa":idfa
+
+        }
+        productos.update(datos)
     return render(request, 'core/crear_importacion.html', productos )
 
 
 def startImport(request):
+    imp=Importacion(fecha=str(datetime.datetime.today()).split()[0],descripcion="",tipo="",origen="",estado=0)
+    imp.save()
+    print("estoy creando la importacion")
+    id_impor=Importacion.objects.last()
+    id=id_impor.id
+    print("estoy creando la importacion1")
+    print("valor de l id ", id)
     
-    if request.method=='POST':
-        form=FormImportacion(request.POST)
-        if form.is_valid():
-            fecha=form['fecha'].value()
-            form.save()
-            proveedores=Proveedor.objects.select_related().all()
-            cantidad=request.POST.get('cantidad')
-            cant=[]
-            for k in  range(int(cantidad)):
-                cant.append(k)
-            print(cantidad)
-            fecha=Importacion.objects.last()
-            messages.success(request, 'Se ha registrado correctamente!')
-            return render(request,'core/proveedor.html',{"cantidad":cant,"cant":cantidad,"proveedores":proveedores,'fecha':fecha})
-        else: 
-            form=FormImportacion()
-            messages.success(request, 'No se ha podido registrar! ')
-            context={
-                'form':form
-            }
-        return render(request,'core/importacion.html',context)
-    else: 
-        form=FormImportacion()
-    
-        context={
-                'form':form
-            }
-    
-    return render(request,'core/importacion.html',context)
+    return redirect('importacion',id)
 
 
 # Create your views here.
@@ -304,6 +293,15 @@ def home(request):
 
 def login(request):
     return render(request,'core/login.html')
+ 
+
+def detalleImportacion(request,id,idas,idfa):
+    datos={ "id":id,
+            "idfa":idfa,
+            "idas":idas }
+    
+
+    return render(request,'core/detalle_importacion.html',datos)
  
 
 
@@ -381,7 +379,8 @@ def saveProduct(request):
 
 
 
-def editar(request,id):
+def importacion(request,id):
+    print("estoy dentro del editar")
     datos = Importacion.objects.get(id=id)  
     context={
                 'form':FormImportacion(instance=datos)
@@ -391,16 +390,28 @@ def editar(request,id):
         if form.is_valid():
             fecha=form['fecha'].value()
             form.save()
-            proveedores=Proveedor.objects.select_related().all()
+            
             cantidad=request.POST.get('cantidad')
             cant=[]
-            for k in  range(int(cantidad)):
-                cant.append(k)
-            print(cantidad)
-            fecha=Importacion.objects.select_related().last()
+            proveedor=Proveedor.objects.last()
+            importacion=Importacion.objects.get(id=id)
+            fac=Factura_proveedor.objects.filter(importacion=id)
+            if(len(fac) < int(cantidad)):
+                print(len(fac),int(cantidad))
+                print(len(fac)-int(cantidad))
+            
+                for k in  range(int(cantidad)-len(fac)):
+                    pf=Factura_proveedor(proveedor=proveedor,importacion=importacion,num_cajas=0,valor_factura=0,valor_envio=0,comision_envio=0,isd=23333,total_pago=0,extra=0)
+                   
+                    
+                    pf.save()
+            
+                
+            
             messages.success(request, 'Se ha registrado correctamente!')
-            return render(request,'core/proveedor.html',{"cantidad":cant,"cant":cantidad,"proveedores":proveedores,'fecha':fecha})
-
+            return redirect('startFP',id)
+            
+            #return render(request,'core/proveedor.html',{"cantidad":cant,"cant":cantidad,"proveedores":proveedores,'fecha':fecha})
 
     return render(request,'core/importacion.html',context)
 # def actualizar(request,id):

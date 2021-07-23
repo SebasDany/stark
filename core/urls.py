@@ -18,15 +18,21 @@ urlpatterns = [
     
     
 
-    path('editar/<int:id>/',gestorImportacion.editar,name='editar'),
+    path('importacion/<int:id>/',gestorImportacion.importacion,name='importacion'),
     #path('actualizar/<int:id>/',views.actualizar,name='actualizar'),
-
+    path('startFP/<int:id>/',gestorProveedor.startFactProve,name='startFP'),
     path('facturaproveedor',gestorProveedor.facturaProveedor,name='facturaproveedor'),
-    path('datosdas',gestorDas.datosDas,name='datosdas'),
-    path('detalledas',gestorDas.detalleDas,name='detalledas'),
-    path('datosafianzado',gestorAfianzado.datosAfianzado,name='datosafianzado'),
-    path('detalleafianzado',gestorAfianzado.detalleAfianzado,name='detalleafianzado'),
-    path('crearimportacion',gestorImportacion.crearImportacion,name='crearimportacion'),
+    path('startdas/<int:id>/',gestorDas.startDas,name='startdas'),
+    path('datosdas/<int:id>/<int:idas>/',gestorDas.datosDas,name='datosdas'),
+    path('detalledas/<int:id>/<int:idas>/',gestorDas.detalleDas,name='detalledas'),
+
+
+    path('creardetalleafianzado/<int:id>/<int:idas>/<int:idfa>/',gestorAfianzado.crearDetalleAfianzado,name='creardetalleafianzado'),
+    path('startafianzado/<int:id>/<int:idas>/',gestorAfianzado.startAfianzado,name='startafianzado'),
+    path('datosafianzado/<int:id>/<int:idas>/<int:idfa>/',gestorAfianzado.datosAfianzado,name='datosafianzado'),
+    path('detalleafianzado/<int:id>/<int:idas>/<int:idfa>/',gestorAfianzado.detalleAfianzado,name='detalleafianzado'),
+    path('detalleimportacion/<int:id>/<int:idas>/<int:idfa>/',gestorImportacion.detalleImportacion,name='detalleimportacion'),
+    path('buscarproducto/<int:id>/<int:idas>/<int:idfa>/',gestorImportacion.buscarProductos,name='buscarproducto'),
 
         ]))),
     

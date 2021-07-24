@@ -1,0 +1,44 @@
+{% extends 'core/base.html'%}
+
+
+{% block title %}<title>Creacion de Importacion</title> {% endblock title %}
+    {% block body %}
+      <form role="form" method="POST" action="{% url 'addproductimport' id idas idfa %}">
+                            {% csrf_token %}                        
+
+                        <h1> Alerta estos productos ya no podran ser modificados una vez prsionado continuar </h1> 
+               <table class="table">               
+               <tr>
+                  <td>SKU</td>
+                 
+                  <td>Nombre</td>
+                 
+               
+                  
+                  
+               </tr>   
+
+                   {% for lista in productos %}
+                     <tr>
+
+                     
+                     <td><input type="checkbox" name="id_producto" value={{lista.sku}} checked> {{ lista.sku}}</td>
+                        <td>
+                              
+                        <td><label>{{ lista.nombre}} </label> </td>
+                        
+                    
+                     
+                              </tr>
+                     {% endfor %}
+
+                     
+
+               </table>  
+<a class="btn btn-primary"  href="{% url 'detalleimportacion' id idas idfa %}">Atras</a> 
+              <button type="submit" class="btn btn-primary btn-user btn-block">Continuar</button>   
+              
+                
+   </form>
+
+{% endblock body %}

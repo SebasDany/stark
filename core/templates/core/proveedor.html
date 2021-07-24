@@ -40,13 +40,14 @@
   
           
         {% for lista in cantidad %}
-       
+       {{ lista.proveedor }}
                     <tr>
                 <td>  
                 <select name="proveedor">
+                 <option value={{ lista.proveedor.id }} selected >{{ lista.proveedor }}</option>
                             {% for prv in proveedores %}
                             
-                        <option value={{ prv.id }} selected>{{ prv.nombre }}</option>
+                        <option value={{ prv.id }} >{{ prv.nombre }}</option>
                                         {% endfor %}
                                             </select></td>
                    <td>  <input type="number" id='num_cajas{{lista.id}}' name="ncajas" value={{lista.num_cajas}} onChange="sumar()"></td>

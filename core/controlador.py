@@ -1,11 +1,11 @@
 
 
-from requests.api import get
+
 from .models import Mercancia,Producto,Detalle_afianzado,Detalle_das, Detalle_importacion,Das,Factura_afianzado,Factura_proveedor,Importacion,Afianzado,Proveedor,Proveedor_producto
 
 import numpy as np  
 
-def buscarSKU(skus):
+def buscarSKU(skus,id,idas):
     sku=skus.split(';')
     pr =[] 
     provedor_prod=[]
@@ -14,45 +14,120 @@ def buscarSKU(skus):
     # print(result)  
     # print(indices ) 
     # print(sku[indices] )
-    for i in  range(len(result)):
-        p = Producto.objects.get(sku=result[i])
-        #pr_p=Proveedor_producto.objects.get(producto=p.id)
-        #print(pr_p)
-        #provedor_prod.append(pr_p)
-        #pr.append(pr_p)
-        pr.append(p)
     
+    di1=Detalle_importacion.objects.filter(importacion=id).first()
+    
+    # if(di1!=None):
+    #     di=Detalle_importacion.objects.filter(importacion=id)
+    #     pim=[]
+    #     for i in  range(len(di)):
+    #         pim.append(di[i].producto.sku)
+    #     indices = result
+    #     ind1 = pim
+    #     ind2 = [x for x in indices if x not in ind1]
+    #     if(len(ind2)!=0):
+    #         print(ind2)
+    #         for i in  range(len(ind2)):
+    #             p = Producto.objects.get(sku=ind2[i])
+    #             mercan=Mercancia.objects.get(id=p.mercancia.id)
+    #             dtp=Detalle_importacion(producto=p,das=das,importacion=imp, mercancia=mercan,proveedor=prove,valor_unitario=p.precio_compra)
+    #             dtp.save()
+    #             pr.append(p)
+        #pr=Detalle_importacion.objects.filter(importacion=id)
+        
+    # else:
 
-    
-    proveedores=Proveedor.objects.select_related().all()
-    mercancias=Mercancia.objects.select_related().all()
-    
+    for i in  range(len(result)):
+            
+        p = Producto.objects.get(sku=result[i])
+        mercan=Mercancia.objects.get(id=p.mercancia.id)
+        v=p.proveedor_producto_set.all()
+        print("###################################",len(v))
+        if(len(v)!=0):
+            print(v[0].sku)
+        
+        
+        # dtp=Detalle_importacion(producto=p,das=das,importacion=imp, mercancia=mercan,proveedor=prove,valor_unitario=p.precio_compra)
+        # dtp.save()
+        pr.append(p)
+    #pr=Detalle_importacion.objects.filter(importacion=id)
+            
+            
         
 
+    
+    proveedores=Factura_proveedor.objects.filter(importacion=id)
+    mercancias=Mercancia.objects.select_related().all()
+    
+    
     return {'error':False,
     "productos":pr,
     "pr_p":provedor_prod,
     "proveedores":proveedores,
     "mercancias":mercancias
-            }
+  
+           }
 
-def saveDetalleImportacion(peso=[],precio=[],cantidad=[],id_prod=[],mercancia=[],proveedor=[]):
-    dtdas=Detalle_das.objects.last()
-    factProv=Factura_proveedor.objects.last()
-    importacion=Importacion.objects.last()
+def guardarProductoImport(sku,ide): 
+    das=Das.objects.get(importacion=ide)
+    imp=Importacion.objects.get(id=ide)
+    fp=Factura_proveedor.objects.last()
+    print(fp.proveedor)
+    print(fp.proveedor.id)
+    prove=Proveedor.objects.get(id=fp.proveedor.id)
+    print("provedor",prove)
+
+    di1=Detalle_importacion.objects.filter(importacion=ide).first()
+    
+    if(di1!=None):
+        di=Detalle_importacion.objects.filter(importacion=ide)
+        pim=[]
+        for i in  range(len(di)):
+            pim.append(di[i].producto.sku)
+        indices = sku
+        ind1 = pim
+        ind2 = [x for x in indices if x not in ind1]
+        print("s ku encontado", ind2)
+        if(len(ind2)!=0):
+            print(ind2)
+            for i in  range(len(ind2)):
+                p = Producto.objects.get(sku=ind2[i])
+                mercan=Mercancia.objects.get(id=p.mercancia.id)
+                dtp=Detalle_importacion(producto=p,das=das,importacion=imp, mercancia=mercan,proveedor=prove,valor_unitario=p.precio_compra)
+                dtp.save()
+    else:
+
+        for i in  range(len(sku)):
+                
+            p = Producto.objects.get(sku=sku[i])
+            mercan=Mercancia.objects.get(id=p.mercancia.id)            
+            dtp=Detalle_importacion(producto=p,das=das,importacion=imp, mercancia=mercan,proveedor=prove,valor_unitario=p.precio_compra)
+            dtp.save()
+                
+        
+
+    return 1
+
+def saveDetalleImportacion(ide,id_df,peso=[],precio=[],cantidad=[],id_prod=[],mercancia=[],proveedor=[]):
+    
+    das=Das.objects.get(importacion=ide)
+    imp=Importacion.objects.get(id=ide)
+    fp=Factura_proveedor.objects.last()
+    
 
     for i in range(len(id_prod)):
         dtImport=Detalle_importacion()
+        dtImport.id=id_df[i]
         dtImport.producto=Producto.objects.get(id=id_prod[i])
-        dtImport.detalle_das=dtdas
-        dtImport.factura_proveedor=factProv
-        dtImport.importacion=importacion
+        dtImport.das=das
+        dtImport.importacion=imp
         dtImport.mercancia=Mercancia.objects.get(id=mercancia[i])
         dtImport.proveedor=Proveedor.objects.get(id=proveedor[i])
         dtImport.valor_unitario=precio[i]
         dtImport.cantidad=cantidad[i]
         dtImport.peso=peso[i]
         dtImport.save()
+        print("################# hola estoy dentro saveDetalleImportacion")
 
     
     return {'error':False}    

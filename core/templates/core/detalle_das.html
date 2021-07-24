@@ -27,7 +27,7 @@
     
   <tr>
     <td>Tipo mercancia</td>
-    <td>Subpartida</td>
+  
     <td>Advalorem</td>
     <td>Fodinfa</td>
     <td>Iva</td>
@@ -44,6 +44,7 @@
                     <tr>
                 <td>  
                 <select name="mercancia">
+                <option value={{ lista.mercancia.id }} selected >{{ lista.mercancia }}</option>
         
                 {% for mer in mercancia %}
                 
@@ -52,7 +53,7 @@
                 {% endfor %}
                 </select>
 </td>
-                   <td>  <input type="text"  name="subpartida"  onChange="sumar()" value={{lista.mercancia.subpartida}}  required></td>
+                   
                    <td>  <input type="number"  step="0.1" name="advalorem" value={{lista.advalorem1}} onChange="sumar()" /></td>
                    <td>  <input type="number"  step="0.1" name="fodinfa" value={{lista.fodinfa1}} onChange="sumar()" /></td>
                    <td>  <input type="number"  step="0.1" name="iva" value={{lista.iva1}} onChange="sumar()" /></td>

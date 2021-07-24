@@ -1,7 +1,7 @@
 from core.view.gestorImportacion import importacion
 from ..controlador import saveFacuturaProveedor, saveDas,saveDetalleDas
 from django.shortcuts import render, redirect
-from ..models import Detalle_das, Factura_afianzado, Importacion,Mercancia,Afianzado,Das
+from ..models import Detalle_das, Factura_afianzado, Importacion,Mercancia,Afianzado,Das, Producto,Proveedor_producto
 import datetime
 
 def startDas(request,id):
@@ -155,7 +155,8 @@ def detalleDas(request,id,idas):
     else:
         
         print("estoy dentro del detallae das")
-            
+
+        
 
         
         dd=Detalle_das.objects.filter(das=idas)

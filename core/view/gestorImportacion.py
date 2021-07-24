@@ -2,7 +2,7 @@
 from time import perf_counter
 from django.shortcuts import render, redirect
 
-from ..controlador import  buscarSKU, saveDetalleImportacion,saveMercacia ,saveProducto, saveDetalleImportacion
+from ..controlador import  saveDetalleImportacion,saveMercacia ,saveProducto, saveDetalleImportacion
 from ..ecommerce import Woocommerce
 
 from django.shortcuts import render, redirect
@@ -55,98 +55,7 @@ sku=['AA001', 'AA002', 'AA003', 'AC001', 'AC002', 'AC003', 'AC004', 'AC009', 'AG
      'MD001', 'MD002', 'MD003', 'MD006', 'MD005', 'AU002', 'ME003', 'ME004', 'ME005', 'ME006', 
      'ME007', 'MI008', 'MI009', 'MI010', 'MI011', 'MI012', 'AC020', 'AC021', 'AC019', 'AC018', 
      'AC016']
-nombre=["NFC NTAG®215 Round White Sticker",
-"TI DIP 0,1USD/PCS   ",
-"TI  DIP 0,1USD/PCS   ",
-"TI  DIP 0,12USD/PCS   ",
-"TI DIP 0,12USD/PCS  ",
-"TI  DIP 0,12USD/PCS   ",
-"TI DIP 0,16USD/PCS   ",
-"BUZZER 12*9,5  0,1USD/PCS   ",
-"Zocalo base DIP CI 18 pin ",
-"Zocalo base DIP CI 20 pin ",
-"Zocalo base DIP CI  28 pin  ",
-"Zocalo base DIP CI 40 pin  ",
-"2N2222A ST TO92   ",
-" BC547C NXP  T092 ",
-"MAX485CPA  MAXIM  DIP ",
-"MCP3208-CI/SL  MICROCHIP ",
-" LM741CN TI   DIP8 0,36USD/PCS  200PCS  ",
-"TL082CN  ST DIP  0,37USD/PCS    ",
-"Resistencias carbón 1/4W 1K   ",
-"Resistencias carbón 1/4W 10K    ",
-"Resistencias carbón 1/4W 100K  ",
-"Resistencias metálica 1/4W 10K ",
-"BTA16-600BWRG   ST  TO220  17+  ",
-"BTA12-600CRG   ST  TO220 ",
-"BT131-600   NXP  TO-92",
-"SN7448N TI DIP 0,22USD/PCS   ",
-"SN7411N  TI  DIP  13+  0,4USD/EA   ",
-"SN7421N TI DIP  0,   ",
-"SN7483N TI DIP  0,62USD/PCS    ",
-"SN7410N TI DIP  0,46USD/PCS   ",
-"SN7420N TI DIP 0,4USD/PCS    ",
-"SN7427N  TI DIP 0,35USD/PCS    ",
-"SN7425N TI DIP 0,83USD/PCS  ",
-"SN74373N TI DIP 0,54USD/PCS ",
-" CD4008BE DIP16 0,55USD/PCS   ",
-"CD4063BE TI DIP 0,18USD/PCS   ",
-"led holder 5mm 0,015USD/PCS  ",
-"5MM RGB LED  Ánodo Común  0,03USD/PCS  500PCS  ",
-"5MM RGB LED  Cátodo Común 0,03USD/PCS  500PCS  ",
-"L7805CV ST TO220  0,08USD/PCS 500PCS  ",
-"M3*11+6 mm male-female  0,05USD/PCS   ",
-"M3*15+6mm male-female 0,06USD/PCS ",
-"M3*20+6mm  male-female 0,062USD/PCS    ",
-"0,39INCH 4digital  ",
-"LM35DZ  TI  TO92  0,54USD/PCS  ",
-"PIC16F628A-I/P  ",
-"3-pin DPDT toggle switch 0, ",
-"TIP120 FAIRCHILD  TO-220 0,456USD/PCS   ",
-" TIP32C   ST  TO220  0,157USD/PCS    ",
-"TIP31C    ST TO220 0,18USD/PCS    ",
-" ULN2803APG TOSHIBA  DIP  ",
-"MOC3020M  FSC  DIP 0,128USD/PCS    ",
-"4N35M FSC DIP  0,11USD/PCS   ",
-"L293D ST DIP 1,32USD/PCS     ",
-"MEGA 2560 R3 with arduino logo",
-"UNO R3 with arduino logo ",
-"Digital Sound Sensor",
-"Pro mini 5V/16MHz",
-"W1209 Digital thermostat with ",
-"acrylic case for UNO R3",
-"Microphone sensor k",
-"MQ-2 Sensor",
-"TTP223B touch sensor",
-"CSI interface camera ",
-"Infrared Obstacle Avoidance Module Arduino",
-"ADS1115 16ch Digital Analog Converter",
-"RTC DS1302 (with battery) without battery",
-"RTC DS1307 without battery",
-"13,56mhz IC tag",
-"LDR Light Sensor Module",
-"0,96 White I2C IIC",
-"2 Channel Relay Module 5V",
-"ST LINK Stlink ST-Link ",
-"Dupont Cable Female – Male 10cm 40pcs",
-"Dupont Cable Female – Female 10cm 40pcs",
-"Dupont Cable Male – Male 10cm 40pcs",
-"Dupont Cable Male – Male 20cm 40pcs",
-"Dupont Cable Female – Male 20cm 40pcs",
-"Dupont Cable Female – Female 20cm 40pcs",
-"3S 12V 18650 10A BMS ",
-"5x7cm DIY Prototype T",
-"Raspberry pi 3 model",
-"Raspberry Pi Pi2 5 ",
-"7 inch Raspberry ",
-"XL6009 4A 3V-32V ",
-"2262/2272 315Mhz ",
-"Nano V3,0 ATMEGA328P   cable",
-"MEGA 2560 R3 CH340 WITH 30cm USB CABLE",
-"Motor Smart Robot Car Chassis ",
-"2,8 TFT 320x240 NX3224T028 HMI Resistive",
-"315MHz RF 4 Channel Remote Control EV1527"
-]
+nombre=["NFC NTAG®215 Round White Sticker", "TI DIP 0,1USD/PCS   ", "TI  DIP 0,1USD/PCS   ", "TI  DIP 0,12USD/PCS   ", "TI DIP 0,12USD/PCS  ", "TI  DIP 0,12USD/PCS   ", "TI DIP 0,16USD/PCS   ", "BUZZER 12*9,5  0,1USD/PCS   ", "Zocalo base DIP CI 18 pin ", "Zocalo base DIP CI 20 pin ", "Zocalo base DIP CI  28 pin  ", "Zocalo base DIP CI 40 pin  ", "2N2222A ST TO92   ", " BC547C NXP  T092 ", "MAX485CPA  MAXIM  DIP ", "MCP3208-CI/SL  MICROCHIP ", " LM741CN TI   DIP8 0,36USD/PCS  200PCS  ", "TL082CN  ST DIP  0,37USD/PCS    ", "Resistencias carbón 1/4W 1K   ", "Resistencias carbón 1/4W 10K    ", "Resistencias carbón 1/4W 100K  ", "Resistencias metálica 1/4W 10K ", "BTA16-600BWRG   ST  TO220  17+  ", "BTA12-600CRG   ST  TO220 ", "BT131-600   NXP  TO-92", "SN7448N TI DIP 0,22USD/PCS   ", "SN7411N  TI  DIP  13+  0,4USD/EA   ", "SN7421N TI DIP  0,   ", "SN7483N TI DIP  0,62USD/PCS    ", "SN7410N TI DIP  0,46USD/PCS   ", "SN7420N TI DIP 0,4USD/PCS    ", "SN7427N  TI DIP 0,35USD/PCS    ", "SN7425N TI DIP 0,83USD/PCS  ", "SN74373N TI DIP 0,54USD/PCS ", " CD4008BE DIP16 0,55USD/PCS   ", "CD4063BE TI DIP 0,18USD/PCS   ", "led holder 5mm 0,015USD/PCS  ", "5MM RGB LED  Ánodo Común  0,03USD/PCS  500PCS  ", "5MM RGB LED  Cátodo Común 0,03USD/PCS  500PCS  ", "L7805CV ST TO220  0,08USD/PCS 500PCS  ", "M3*11+6 mm male-female  0,05USD/PCS   ", "M3*15+6mm male-female 0,06USD/PCS ", "M3*20+6mm  male-female 0,062USD/PCS    ", "0,39INCH 4digital  ", "LM35DZ  TI  TO92  0,54USD/PCS  ", "PIC16F628A-I/P  ", "3-pin DPDT toggle switch 0, ", "TIP120 FAIRCHILD  TO-220 0,456USD/PCS   ", " TIP32C   ST  TO220  0,157USD/PCS    ", "TIP31C    ST TO220 0,18USD/PCS    ", " ULN2803APG TOSHIBA  DIP  ", "MOC3020M  FSC  DIP 0,128USD/PCS    ", "4N35M FSC DIP  0,11USD/PCS   ", "L293D ST DIP 1,32USD/PCS     ", "MEGA 2560 R3 with arduino logo", "UNO R3 with arduino logo ", "Digital Sound Sensor", "Pro mini 5V/16MHz", "W1209 Digital thermostat with ", "acrylic case for UNO R3", "Microphone sensor k", "MQ-2 Sensor", "TTP223B touch sensor", "CSI interface camera ", "Infrared Obstacle Avoidance Module Arduino", "ADS1115 16ch Digital Analog Converter", "RTC DS1302 (with battery) without battery", "RTC DS1307 without battery", "13,56mhz IC tag", "LDR Light Sensor Module", "0,96 White I2C IIC", "2 Channel Relay Module 5V", "ST LINK Stlink ST-Link ", "Dupont Cable Female – Male 10cm 40pcs", "Dupont Cable Female – Female 10cm 40pcs", "Dupont Cable Male – Male 10cm 40pcs", "Dupont Cable Male – Male 20cm 40pcs", "Dupont Cable Female – Male 20cm 40pcs", "Dupont Cable Female – Female 20cm 40pcs", "3S 12V 18650 10A BMS ", "5x7cm DIY Prototype T", "Raspberry pi 3 model", "Raspberry Pi Pi2 5 ", "7 inch Raspberry ", "XL6009 4A 3V-32V ", "2262/2272 315Mhz ", "Nano V3,0 ATMEGA328P   cable", "MEGA 2560 R3 CH340 WITH 30cm USB CABLE", "Motor Smart Robot Car Chassis ", "2,8 TFT 320x240 NX3224T028 HMI Resistive", "315MHz RF 4 Channel Remote Control EV1527" ]
 id_w=[]
 id_w.append(1)
 precio_compra=[]
@@ -197,25 +106,6 @@ mercan=["TARJETAS ELECTRÓNICAS", "CIRCUITOS INTEGRADOS", "CIRCUITOS INTEGRADOS"
 
 
 #Permite realizar
-def buscarProductos(request,id,idas,idfa):
-    print("estoy denr¡ntro de crear importAIOCN")
-    if request.method == 'POST':
-        print("estoy denr¡ntro de crear importAIOCN")
-
-        list_sku = request.POST.get('skus')
-        print(list_sku)
-        productos=buscarSKU(list_sku)
-        print(productos)
-        print(productos)
-        datos={
-                "id":id,
-                "idas":idas,
-                "idfa":idfa
-
-        }
-        productos.update(datos)
-    return render(request, 'core/crear_importacion.html', productos )
-
 
 def startImport(request):
     imp=Importacion(fecha=str(datetime.datetime.today()).split()[0],descripcion="",tipo="",origen="",estado=0)
@@ -414,22 +304,6 @@ def importacion(request,id):
             #return render(request,'core/proveedor.html',{"cantidad":cant,"cant":cantidad,"proveedores":proveedores,'fecha':fecha})
 
     return render(request,'core/importacion.html',context)
-# def actualizar(request,id):
-#     datos = Importacion.objects.get(id=id) 
-#     form=FormImportacion(request.POST,instance=datos) 
-#     if form.is_valid():
-#         form.save()
-#         fecha=form['fecha'].value()
-#         proveedores=Proveedor.objects.select_related().all()
-#         cantidad=request.POST.get('cantidad')
-#         cant=[]
-#         for k in  range(int(cantidad)):
-#             cant.append(k)
-#         print(cantidad)
-        
-#         messages.success(request, 'Se ha registrado correctamente!')
-#     return render(request,'core/proveedor.html',{"cantidad":cant,"cant":cantidad,"proveedores":proveedores,'fecha':datos})
-    
 
 
 

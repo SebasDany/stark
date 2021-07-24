@@ -1,4 +1,4 @@
-from core.view import gestorAfianzado
+from core.view import gestorAfianzado, gestorProducto
 from django.urls import include, path
 from .view import gestorImportacion, gestorProveedor,gestorDas
 from django.urls import path, include
@@ -11,9 +11,9 @@ urlpatterns = [
         [
             path('register',gestorImportacion.register,name='register'),
     path('password',gestorImportacion.password,name='password'),
-    path('calcular',gestorImportacion.calcular,name='calcular'),
+    path('productosimportados/<int:id>/<int:idas>/<int:idfa>/',gestorProducto.productosImportados,name='productosimportados'),
     path('product',gestorImportacion.saveProduct,name='product'),
-    path('importacion',gestorImportacion.startImport,name='importacion'),
+    path('startimport',gestorImportacion.startImport,name='startimport'),
     #path('facturaproveedor',gestorImportacion.facturaProveedor,name='facturaproveedor'),
     
     
@@ -32,7 +32,9 @@ urlpatterns = [
     path('datosafianzado/<int:id>/<int:idas>/<int:idfa>/',gestorAfianzado.datosAfianzado,name='datosafianzado'),
     path('detalleafianzado/<int:id>/<int:idas>/<int:idfa>/',gestorAfianzado.detalleAfianzado,name='detalleafianzado'),
     path('detalleimportacion/<int:id>/<int:idas>/<int:idfa>/',gestorImportacion.detalleImportacion,name='detalleimportacion'),
-    path('buscarproducto/<int:id>/<int:idas>/<int:idfa>/',gestorImportacion.buscarProductos,name='buscarproducto'),
+    path('buscarproducto/<int:id>/<int:idas>/<int:idfa>/',gestorProducto.buscarProductos,name='buscarproducto'),
+    path('viewproduct/<int:id>/<int:idas>/<int:idfa>/',gestorProducto.viewProduct,name='viewproduct'),
+    path('addproductimport/<int:id>/<int:idas>/<int:idfa>/',gestorProducto.addProductImport,name='addproductimport'),
 
         ]))),
     

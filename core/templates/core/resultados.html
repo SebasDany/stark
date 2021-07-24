@@ -1,35 +1,68 @@
+
+
+
 {% extends 'core/base.html'%}
 
 
 {% block title %}<title>Creacion de Importacion</title> {% endblock title %}
-    {% block body  %} 
-    <body onload="nobackbutton();"></body>
+    {% block body %}
       <form role="form" method="POST" action="{% url 'productosimportados' id idas idfa %}">
                             {% csrf_token %}                        
 
-                        Producto importados     
-               <table class="table">               
+                      <h2>  Resultado de los productos importados </h2>
+                     
+
+<div class="row">
+  <div class="col"><td>SKU</td></div>
+  <div class="col"> <td>Tienda</td></div>
+  <div class="col"><td>Nombre</td></div>
+  <div class="col"><td>Precio</td></div>
+  <div class="col"><td>Peso</td></div>
+  <div class="col"><td>Mercancia</td></div>
+  <div class="col"><td>Cantidad</td></div>
+  <div class="col">col</div>
+  <div class="col">col</div>
+</div>    
+
+<div class="row"><td>SKU</td></div>
+  <div class="col"> <td>Tienda</td></div>
+  <div class="col"><td>Nombre</td></div>
+  <div class="col"><td>Precio</td></div>
+  <div class="col"><td>Peso</td></div>
+  <div class="col"><td>Mercancia</td></div>
+  <div class="col"><td>Cantidad</td></div>
+  <div class="col">col</div>
+  <div class="col">col</div>
+</div>  
+               <table class="table"> 
+
+    
                <tr>
-                  <td>SKU</td>
-                  <td>Tienda</td>
-                  <td>Nombre</td>
-                  <td>Precio</td>
-                  <td>Peso</td>
-                  <td>Mercancia</td>
+                  
+                 
+                  
+                  
+                  
+                  
                
-                  <td>Cantidad</td>
-                  <td>SKU Proveedor</td>
-                  <td>Nombre Proveedor</td>
+                  
+                  
                   
                </tr>   
 
                    {% for lista in productos %}
+                   
                      <tr>
-
                      <input type="number"  style="display:none;" name="id_df" value={{ lista.id }} >
+                     <label></label>
                      <td><input type="checkbox" name="id_producto" value={{ lista.producto.id}} checked> {{ lista.producto.sku}}</td>
-                        <td><select name="proveedor">
+                        <td>
+                        
+                        <select name="proveedor">
+                        
                               {% for prv in proveedores %}
+                              
+
                               <option value={{ prv.proveedor.id }} >{{ prv.proveedor }}</option>
                                              {% endfor %}
                                     </select></td>
@@ -37,41 +70,24 @@
                         <td><input type="number"  name="precio" value={{ lista.valor_unitario }}></td>
                      
                     
-                     <td><input type="number" name="peso" value={{ lista.peso }}></td>
-                    
-                              
+                     <td><input type="number" name="peso" value={{ lista.peso }}></td>                              
                      <td><select name="mercancia">
                      <option value={{ lista.mercancia.id }} selected>{{ lista.mercancia }}</option>
                      
                               {% for mer in mercancias %}
                               
                                        <option value={{ mer.id }}>{{ mer.nombre }}</option>
-                              
                               {% endfor %}
                               </select></td>
-                            <td><input type="number" name="cantidad" value=0></td>
-                     <td><input type="text" name="sk_prove" ></td>
-                     <td><input type="text" name="nombreProve" ></td>
+                            <td><input type="number" name="cantidad" value={{lista.cantidad}} ></td>
+                    
                               </tr>
-                     {% endfor %}
-
-                     
+                     {% endfor %}                    
 
                </table>  
- {% comment %} <a class="btn btn-primary"  href="{% url 'detalleimportacion' id idas idfa %}">Atras</a>  {% endcomment %}
+ <a class="btn btn-primary"  href="{% url 'viewproduct' id idas idfa %}">Atras</a> 
               <button type="submit" class="btn btn-primary btn-user btn-block">Guardar</button>   
-              <a class="btn btn-primary"  href="{% url 'detalleimportacion' id idas idfa %}">Calcular</a>      
+              <a class="btn btn-primary"  href="">Sincronizar</a>      
    </form>
-<script>
-	
-function nobackbutton(){
-	
-   window.location.hash="no-back-button";
-	
-   window.location.hash="Again-No-back-button" //chrome
-	
-   window.onhashchange=function(){window.location.hash="no-back-button";}
-	
-}
-</script>
+
 {% endblock body %}

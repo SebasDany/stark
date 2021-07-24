@@ -126,8 +126,9 @@ class Detalle_das(models.Model):
 
 class Detalle_importacion(models.Model):
     producto=models.ForeignKey(Producto, on_delete=models.CASCADE, null=True,blank=True, default=None)
-    detalle_das=models.ForeignKey(Detalle_das, on_delete=models.CASCADE, null=True,blank=True, default=None)
-    factura_proveedor=models.ForeignKey(Factura_proveedor, on_delete=models.CASCADE, null=True,blank=True, default=None)
+    # detalle_das=models.ForeignKey(Detalle_das, on_delete=models.CASCADE, null=True,blank=True, default=None)
+    # factura_proveedor=models.ForeignKey(Factura_proveedor, on_delete=models.CASCADE, null=True,blank=True, default=None)
+    das=models.ForeignKey(Das, on_delete=models.CASCADE, null=True,blank=True, default=None)#aumentado
     importacion=models.ForeignKey(Importacion, on_delete=models.CASCADE, null=True,blank=True, default=None)
     mercancia=models.ForeignKey(Mercancia, on_delete=models.CASCADE, null=True,blank=True, default=None)
     proveedor=models.ForeignKey(Proveedor, on_delete=models.CASCADE, null=True,blank=True, default=None)

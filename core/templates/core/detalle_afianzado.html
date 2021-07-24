@@ -17,7 +17,7 @@
 <form action="" method="POST">
                   {% csrf_token %} 
                 
-                  Detalle afianzado
+                  Detalle afianzado {{afz.afianzado.nombre }}
                   <br>
 
 
@@ -26,7 +26,7 @@
                   
     
   <tr>
-    <td>Afianzado </td>
+    
     <td>Descripcion</td>
     <td>Al perso</td>
     <td>Al precio</td>
@@ -42,17 +42,8 @@
         {% for lista in dat_d %}
         
                     <tr>
-                <td>  
-                <select name="id_afianzado">
-                
-        
-               
-                
-                        <option value={{ afz.id }}>{{ afz.afianzado.nombre }} {{ afz.id }} </option>
-                
-                
-                </select>
-</td>
+                {% comment %} <td>  <input type="text"  name="id_afianzado" value={{afz.afianzado.nombre }}  disabled></td> {% endcomment %}
+                        
                    <td>  <input type="text"  name="descripcion" value={{lista.descripcion}}  required></td>
                    <td>  <input type="number"  step="0.1" id='alpe{{lista}}' name="alpeso" value={{lista.al_peso}}  onChange="sumar()" /></td>
                    <td>  <input type="number"  step="0.1" id='alpr{{lista}}' name="alprecio" value={{lista.al_precio}} onChange="sumar()" /></td>

@@ -12,82 +12,63 @@
                       <h2>  Resultado de los productos importados </h2>
                      
 
-<div class="row">
-  <div class="col"><td>SKU</td></div>
-  <div class="col"> <td>Tienda</td></div>
-  <div class="col"><td>Nombre</td></div>
-  <div class="col"><td>Precio</td></div>
-  <div class="col"><td>Peso</td></div>
-  <div class="col"><td>Mercancia</td></div>
-  <div class="col"><td>Cantidad</td></div>
-  <div class="col">col</div>
-  <div class="col">col</div>
-</div>    
-
-<div class="row"><td>SKU</td></div>
-  <div class="col"> <td>Tienda</td></div>
-  <div class="col"><td>Nombre</td></div>
-  <div class="col"><td>Precio</td></div>
-  <div class="col"><td>Peso</td></div>
-  <div class="col"><td>Mercancia</td></div>
-  <div class="col"><td>Cantidad</td></div>
-  <div class="col">col</div>
-  <div class="col">col</div>
-</div>  
-               <table class="table"> 
-
-    
-               <tr>
-                  
-                 
-                  
-                  
-                  
-                  
-               
-                  
-                  
-                  
-               </tr>   
-
+<table class="table">
+  <thead>
+      <tr>
+          <th scope="col">SKU</th>
+          <th scope="col">Proveedor</th>
+          <th scope="col">Nombre</th>
+          <th scope="col">ValorUnid</th>
+          <th scope="col">Cantidad</th>
+          <th scope="col">Subtotal</th>
+          <th scope="col">Mercancia</th>
+          <th scope="col">Peso</th>
+          <th scope="col">Advalorem</th>
+          <th scope="col">Fodinfa</th>
+          <th scope="col">Iva</th>
+          <th scope="col">Ps(%)</th>
+          <th scope="col">Pr(%)</th>
+          <th scope="col">PrT(%)</th>
+          <th scope="col">Costo1</th>
+          <th scope="col">Costo2</th>
+          <th scope="col">Costo3</th>
+          <th scope="col">C_Unit</th>
+          <th scope="col">INC(%)</th>
+          <th scope="col">INC($)</th>
+      </tr>
+    </thead>
+    <tbody>
                    {% for lista in productos %}
-                   
-                     <tr>
-                     <input type="number"  style="display:none;" name="id_df" value={{ lista.id }} >
-                     <label></label>
-                     <td><input type="checkbox" name="id_producto" value={{ lista.producto.id}} checked> {{ lista.producto.sku}}</td>
-                        <td>
-                        
-                        <select name="proveedor">
-                        
-                              {% for prv in proveedores %}
-                              
+        <tr>
+            <th scope="row">{{ lista.producto.sku}}</th>
+            <td>{{ lista.proveedor }}</td>
+            <td>{{ lista.producto}}</td>
+            <td>{{ lista.valor_unitario }}</td>
+            <td>{{ lista.cantidad }}</td>
+            <td>{{ lista.subtotal2 }}</td>
+            <td>{{ lista.mercancia }}</td>
+            <td>{{ lista.peso }}</td>
+            <td>{{ lista.advalorem2 }}</td>
+            <td>{{ lista.fodinfa2 }}</td>
+            <td>{{ lista.iva2 }}</td>
+            <td>{{ lista.ps }}</td>
+            <td>{{ lista.pr }}</td>
+            <td>{{ lista.prt }}</td>
+            <td>{{ lista.costo1 }}</td>
+            <td>{{ lista.costo2 }}</td>
+            <td>{{ lista.costo3 }}</td>
+            <td>{{ lista.costo_unitario }}</td>
+            <td>{{ lista.inc_porcentual }}</td>
+            <td>{{ lista.inc_dolares }}</td>
 
-                              <option value={{ prv.proveedor.id }} >{{ prv.proveedor }}</option>
-                                             {% endfor %}
-                                    </select></td>
-                        <td><label>{{ lista.producto.nombre}} </label> </td>
-                        <td><input type="number"  name="precio" value={{ lista.valor_unitario }}></td>
-                     
-                    
-                     <td><input type="number" name="peso" value={{ lista.peso }}></td>                              
-                     <td><select name="mercancia">
-                     <option value={{ lista.mercancia.id }} selected>{{ lista.mercancia }}</option>
-                     
-                              {% for mer in mercancias %}
-                              
-                                       <option value={{ mer.id }}>{{ mer.nombre }}</option>
-                              {% endfor %}
-                              </select></td>
-                            <td><input type="number" name="cantidad" value={{lista.cantidad}} ></td>
-                    
-                              </tr>
+        </tr>
                      {% endfor %}                    
 
-               </table>  
+      </tbody>
+  </table>
  <a class="btn btn-primary"  href="{% url 'viewproduct' id idas idfa %}">Atras</a> 
-              <button type="submit" class="btn btn-primary btn-user btn-block">Guardar</button>   
-              <a class="btn btn-primary"  href="">Sincronizar</a>      
+                
+ <a class="btn btn-primary"  href="">Sincronizar</a>      
    </form>
 
 {% endblock body %}

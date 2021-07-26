@@ -3,7 +3,7 @@ from time import perf_counter
 from django.shortcuts import render, redirect
 
 from ..controlador import  saveDetalleImportacion,saveMercacia ,saveProducto, saveDetalleImportacion
-from ..ecommerce import Woocommerce
+# from ..ecommerce import Woocommerce
 
 from django.shortcuts import render, redirect
 from django.utils.html import escape
@@ -209,7 +209,6 @@ def calcular(request):
         
         mercancia=request.POST.getlist('mercancia')
         peso=request.POST.getlist('peso')
-
         saveDetalleImportacion(peso,precio,cantidad,product_id,mercancia,proveedor)
 
        

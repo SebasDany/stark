@@ -1,5 +1,5 @@
 from core.models import Detalle_importacion, Factura_proveedor, Mercancia
-from ..controlador import  buscarSKU, guardarProductoImport,saveDetalleImportacion
+from ..controlador import  aranceles, buscarSKU, guardarProductoImport,saveDetalleImportacion, subtotal1, subtotal2
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 
@@ -72,7 +72,7 @@ def productosImportados(request,id,idas,idfa):
             
             mercancia=request.POST.getlist('mercancia')
             peso=request.POST.getlist('peso')
-
+            subtotal2(id)
             saveDetalleImportacion(id,id_df,peso,precio,cantidad,product_id,mercancia,proveedor)
             pr=Detalle_importacion.objects.filter(importacion=id)
     

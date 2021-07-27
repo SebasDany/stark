@@ -108,7 +108,7 @@ def guardarProductoImport(sku,ide):
 
     return 1
 
-def saveDetalleImportacion(ide,id_df,peso=[],precio=[],cantidad=[],id_prod=[],mercancia=[],proveedor=[]):
+def saveDetalleImportacion(ide,id_df,peso=[],precio=[],cantidad=[],id_prod=[],mercancia=[],proveedor=[],subtotal=[],advalorem=[],fodinfa=[],iva=[],ps=[],pr=[],prT=[],costo1=[],costo2=[],costo3=[], costo_unitario=[], inc_porcentual=[], inc_dolares=[]):
     
     das=Das.objects.get(importacion=ide)
     imp=Importacion.objects.get(id=ide)
@@ -126,6 +126,19 @@ def saveDetalleImportacion(ide,id_df,peso=[],precio=[],cantidad=[],id_prod=[],me
         dtImport.valor_unitario=precio[i]
         dtImport.cantidad=cantidad[i]
         dtImport.peso=peso[i]
+        dtImport.subtotal2=subtotal[i]
+        dtImport.advalorem2=advalorem[i]
+        dtImport.fodinfa2=fodinfa[i]
+        dtImport.iva2=iva[i]
+        dtImport.ps=ps[i]
+        dtImport.pr=pr[i]
+        dtImport.prt=prT[i]
+        dtImport.costo1=costo1[i]
+        dtImport.costo2=costo2[i]
+        dtImport.costo3=costo3[i]
+        dtImport.costo_unitario=costo_unitario[i]
+        dtImport.inc_porcentual=inc_porcentual[i]
+        dtImport.inc_dolares=inc_dolares[i]
         dtImport.save()
         print("################# hola estoy dentro saveDetalleImportacion")
 
@@ -311,36 +324,28 @@ def tablaAfianzado(id_imp):
     peso=[]
     iva=[]
     for valores in Detalle_afianzado.objects.filter(factura_afianzado=factur.id):
+        #print(valores.id)
         precios.append(valores.al_precio)
         peso.append(valores.al_peso)
         iva.append(valores.iva)
+    #print(precios, )
     sum_precios=sum(precios)
     sum_peso=sum(peso)
     sum_iva=sum(iva)
     # print("factura afianzado",sum(precios))
     # print("factura afianzado",sum(peso))
     # print("factura afianzado",sum(iva))
-    return  [sum_precios, sum_peso, sum_iva]
-
-def tablaProveedor(id_imp):
-    ##importacion_proveedor
-    print("importacion",id_imp)
-    imp = Importacion.objects.get(id=id_imp)
-    print("impresp",imp.id)
-    subt_tienda=[]
-    extra_tienda=[]
-    for valores in Factura_proveedor.objects.filter(importacion=imp.id):
-        subt_tienda.append(valores.valor_factura)
-        extra_tienda.append(valores.extra)
-    # print("factura id",subt_tienda)
-    # print("factura id",extra_tienda)
-    return  [subt_tienda, extra_tienda]
+    datos={"sum_precios": sum_precios,
+        "sum_peso": sum_peso,
+        "sum_iva": sum_iva
+        }
+    return  datos
 
 def subtotal2(id_imp):
     ##Suma de subtotal2
-    print("importacion",id_imp)
+    # print("importacion",id_imp)
     imp = Importacion.objects.get(id=id_imp)
-    print("impresp",imp.id)
+    # print("impresp",imp.id)
     sub2_pro=[]
     producto_id=[]
     for valores in Detalle_importacion.objects.filter(importacion=imp.id):
@@ -350,17 +355,21 @@ def subtotal2(id_imp):
 
     # saveDetalleImportacion
     suma_subt2=sum(sub2_pro)
-    print(producto_id)
+    print("suma", suma_subt2)
+    datos={"producto_id": producto_id,
+    "Subtotales2": sub2_pro,
+    "SumaSub2": suma_subt2
+    }
     # print("factura id",extra_tienda)
-    return  suma_subt2
+    return datos
 
 def subtotal1(id_imp):
     ##Suma de subtotal1
-    print("importacion",id_imp)
+    # print("importacion",id_imp)
     imp = Importacion.objects.get(id=id_imp)
-    print("impresp",imp.id)
+    # print("impresp",imp.id)
     das_imp=Das.objects.get(importacion=imp)
-    print("DAS",das_imp.id)
+    # print("DAS",das_imp.id)
     sub1_merc=[]
     for valores in Detalle_das.objects.filter(das=das_imp):
         sub1_merc.append(valores.subtotal1)
@@ -378,40 +387,118 @@ def validacion(subt1,subt2):
 
 def aranceles(id_imp):
     #Calculos de advalorem, fodinfa e iva
-    print("importacion",id_imp)
+    # print("importacion",id_imp)
     imp = Importacion.objects.get(id=id_imp)
-    print("impresp",imp.id)
+    # print("impresp",imp.id)
     das_imp=Das.objects.get(importacion=imp)
-    print("DAS",das_imp.id)
+    # print("DAS",das_imp.id)
     advalorem=[]
     fodinfa=[]
     iva=[]
+    producto_id=[]
 
     for valores in Detalle_importacion.objects.filter(importacion=imp.id):
-        print(valores.subtotal2)
+        producto_id.append(valores.id)
         for valor in Detalle_das.objects.filter(das=das_imp):
+            #print(valores.mercancia," ", valor.mercancia," " )
+            #print(valores.producto," ", valores.subtotal2," ",valor.subtotal1," ", valor.advalorem1 ," ")
             if valores.mercancia==valor.mercancia:  
-                advalorem.append(float(valores.subtotal2/(valor.subtotal1*valor.advalorem1)))
-                fodinfa.append(float(valores.subtotal2/(valor.subtotal1*valor.fodinfa1)))
-                iva.append(float(valores.subtotal2/(valor.subtotal1*valor.iva1)))
-                print(valores.producto," ", valores.subtotal2," ",valor.subtotal1," ", valor.advalorem1 ," ") 
-    print(advalorem)
-    print(fodinfa)
-    print(iva)
+                advalorem.append(valores.subtotal2/(valor.subtotal1*valor.advalorem1))
+                fodinfa.append(valores.subtotal2/(valor.subtotal1*valor.fodinfa1))
+                iva.append(valores.subtotal2/(valor.subtotal1*valor.iva1))
+                #print(valores.producto," ", valores.subtotal2," ",valor.subtotal1," ", valor.advalorem1 ," ") 
+    suma_ad=sum(advalorem)
+    suma_fod=sum(fodinfa)
+    suma_iva=sum(iva)
+    datos={"producto_id": producto_id,
+        "advalorem": advalorem,
+        "fodinfa": fodinfa,
+        "iva": iva,
+        "suma_ad":suma_ad,
+        "suma_fod":suma_fod,
+        "suma_iva":suma_iva,
+        }
 
-    return [advalorem,fodinfa,iva]
+    return datos
 
 
-def sumaPeso(id_imp):
-    print("importacion",id_imp)
+def porcentuales(id_imp):
+    # print("importacion",id_imp)
     imp = Importacion.objects.get(id=id_imp)
-    print("impresp",imp.id)
+    # print("impresp",imp.id)
     pesos=[]
+    ps=[]
+    pr=[]
+    prT=[]
+    producto_id=[]
     for valores in Detalle_importacion.objects.filter(importacion=imp.id):
         pesos.append(valores.peso)
+        producto_id.append(valores.id)
     suma_peso=sum(pesos)
-    print(suma_peso)
-    # print("factura id",extra_tienda)
-    return  suma_peso
+    suma_subtotal2=subtotal2(id_imp)
+    for valores in Detalle_importacion.objects.filter(importacion=imp.id):
+        ps.append(valores.peso/suma_peso)
+        pr.append(valores.subtotal2/suma_subtotal2["SumaSub2"])
+        for valor in Factura_proveedor.objects.filter(importacion=imp.id):
+            if(valores.proveedor==valor.proveedor):
+                #print("**************",valor.proveedor, " ",valor.valor_factura," ", valores.proveedor, " ",valores.subtotal2)
+                prT.append(valores.subtotal2/valor.valor_factura)
+    #print("PRT",prT)
+    # print("**************",suma_subtotal2["SumaSub2"], " ", valores.subtotal2)
+    datos={"producto_id": producto_id,
+        "ps": ps,
+        "pr": pr,
+        "prT": prT
+        }
+    return  datos
+
+def costos(id_imp):
+    imp = Importacion.objects.get(id=id_imp)
+    tabla_afianz=tablaAfianzado(id_imp)
+    costo1=[]
+    costo2=[]
+    costo3=[]
+    producto_id=[]
+    for valores in Detalle_importacion.objects.filter(importacion=imp.id):
+        producto_id.append(valores.id)
+        costo1.append((tabla_afianz["sum_precios"]+tabla_afianz["sum_iva"])*valores.pr)
+        costo2.append(tabla_afianz["sum_peso"]*valores.ps)
+        for valor in Factura_proveedor.objects.filter(importacion=imp.id):
+            if(valores.proveedor==valor.proveedor):
+                costo3.append(valor.extra*valores.prt)
+                #print("**************",valor.proveedor, " ",valor.extra," ", valores.proveedor, " ",valores.prt)
+        #print(valores.ps," ", tabla_afianz["sum_peso"] )
+        #print(valores.pr," ", tabla_afianz["sum_precios"], " ", tabla_afianz["sum_iva"] )
+    datos={"producto_id": producto_id,
+        "costo1": costo1,
+        "costo2": costo2,
+        "costo3": costo3
+        }
+    return  datos
 
 
+def costo_unitario(id_imp):
+    imp = Importacion.objects.get(id=id_imp)
+    costo_unitario=[]
+    producto_id=[]
+    for valores in Detalle_importacion.objects.filter(importacion=imp.id):
+        producto_id.append(valores.id)
+        costo_unitario.append(valores.valor_unitario+((valores.advalorem2+valores.fodinfa2+valores.iva2+valores.costo1+valores.costo2+valores.costo3)/valores.cantidad))
+
+    return  costo_unitario
+
+def incrementos(id_imp):
+    imp = Importacion.objects.get(id=id_imp)
+    inc_porcentual=[]
+    inc_dolares=[]
+    producto_id=[]
+    for valores in Detalle_importacion.objects.filter(importacion=imp.id):
+        producto_id.append(valores.id)
+        inc_porcentual.append((valores.costo_unitario-valores.valor_unitario)/valores.valor_unitario)
+        inc_dolares.append(valores.costo_unitario-valores.valor_unitario)
+    print(inc_porcentual,inc_dolares)
+    datos={"producto_id": producto_id,
+        "inc_porcentual": inc_porcentual,
+        "inc_dolares": inc_dolares
+        }
+    return  datos

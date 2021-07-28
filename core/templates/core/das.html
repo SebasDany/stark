@@ -15,10 +15,7 @@
 <form action="" method="POST">
                   {% csrf_token %}  
 
-                   Fecha de importacion:<label>{{fecha.fecha}}</label>
-                <br>
-                <input type="number"  name="idfechaImport"  value={{fecha.id}} style="display:none;" >
-                {{das.fecha_embarque}}
+                
                                     <table>
                  <tbody><tr><th><label for="id_numero_entrega">Numero entrega:</label></th><td><input type="text" name="numero_entrega" value={{das.numero_entrega}} maxlength="128" id="id_numero_entrega"></td></tr>
                  <tr><th><label for="id_numero_atribuido">Numero atribuido:</label></th><td><input type="text" name="numero_atribuido" value={{das.numero_atribuido}} maxlength="128" id="id_numero_atribuido"></td></tr>

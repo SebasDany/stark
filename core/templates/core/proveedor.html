@@ -55,9 +55,9 @@
                    <td>  <input type="number" id='v_factura{{lista.id}}' step="0.1" name="v_factura" value={{lista.valor_factura}} onChange="sumar()" /></td>
                    <td>  <input type="number" id='comis_envio{{lista.id}}' step="0.1" name="comis_envio" value={{lista.comision_envio}} onChange="sumar()" /></td>
                    <td>  <input type="number" id='comis_tarjeta{{lista.id}}' step="0.1" name="comis_tarjeta" value={{lista.comision_tarjeta}} onChange="sumar()"/></td>
-                   <td>  <input type="text" id='isd{{lista.id}}'  name="isd" value={{lista.isd}}  onChange="sumar()"/></td>
-                   <td>  <input type="text" id='t_pago{{lista.id}}'  name="t_pago" value={{lista.total_pago}}  onChange="sumar()" /></td>
-                   <td>  <input type="text" id='extra{{lista.id}}'  name="extra"  value={{lista.extra}} onChange="sumar()" /></td>
+                   <td>  <input type="text" id='isd{{lista.id}}'  name="isd" value={{lista.isd}}  onChange="sumar()" readonly/></td>
+                   <td>  <input type="text" id='t_pago{{lista.id}}'  name="t_pago" value={{lista.total_pago}}  onChange="sumar()" readonly /></td>
+                   <td>  <input type="text" id='extra{{lista.id}}'  name="extra"  value={{lista.extra}} onChange="sumar()"  readonly/></td>
             </tr>
         {% endfor %}
 </table> 

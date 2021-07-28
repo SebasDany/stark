@@ -3,7 +3,7 @@ from time import perf_counter
 from django.shortcuts import render, redirect
 
 from ..controlador import  saveDetalleImportacion,saveMercacia ,saveProducto, saveDetalleImportacion
-from ..ecommerce import Woocommerce
+# from ..ecommerce import Woocommerce
 
 from django.shortcuts import render, redirect
 from django.utils.html import escape

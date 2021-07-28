@@ -36,7 +36,8 @@
     
   </tr>     
   
-  <input type="number" style="display:none;" id="n"  value={{cant}} onChange="sumar()">
+  
+  <input type="text" style="display:none;" id="n"  value={{cant}} >
   
           
         {% for lista in ddas %}
@@ -54,10 +55,10 @@
                 </select>
 </td>
                    
-                   <td>  <input type="number"  step="0.1" name="advalorem" value={{lista.advalorem1}} onChange="sumar()" /></td>
-                   <td>  <input type="number"  step="0.1" name="fodinfa" value={{lista.fodinfa1}} onChange="sumar()" /></td>
-                   <td>  <input type="number"  step="0.1" name="iva" value={{lista.iva1}} onChange="sumar()" /></td>
-                 <td>  <input type="number"  step="0.1" name="sub_total" value={{lista.subtotal1}}  onChange="sumar()" disabled=True /></td>
+                   <td>  <input type="number"  step="0.1" id='advalorem{{lista.id}}' name="advalorem" value={{lista.advalorem1}} onChange="sumar()" /></td>
+                   <td>  <input type="number"  step="0.1"  id='fodinfa{{lista.id}}' name="fodinfa" value={{lista.fodinfa1}} onChange="sumar()" /></td>
+                   <td>  <input type="number"  step="0.1" id='iva{{lista.id}}' name="iva" value={{lista.iva1}} onChange="sumar()" /></td>
+                 <td>  <input type="text"    id='sub_total{{lista.id}}' name="sub_total" value={{lista.subtotal1}}  onChange="sumar()" readonly /></td>
             </tr>
         {% endfor %}
 </table> 
@@ -73,6 +74,29 @@
         
     </div>
         <script>       
+function sumar(){
+    var s=document.getElementById("n").value;
+    var ss=s.split(';')
+    
+    for (var i = 0; i < ss.length; i++) {
+        
+    var nc=parseFloat(document.getElementById("num_cajas"+ss[i]+"").value);
+    console.log(s.split(';'),ss.length,ss[i],nc)
+    var ve=parseFloat(document.getElementById("v_envio"+ss[i]+"").value);
+    var vf=parseFloat(document.getElementById("v_factura"+ss[i]+"").value);
+    var ce=parseFloat(document.getElementById("comis_envio"+ss[i]+"").value);
+    var ct=parseFloat(document.getElementById("comis_tarjeta"+ss[i]+"").value);
+    
+    console.log("valor factura",vf)
+    var isd=document.getElementById("isd"+ss[i]+"").value=(vf+ve)*0.05;
+     console.log(isd)
+     var t_pago=document.getElementById("t_pago"+ss[i]+"").value=ve+vf+ce+ct+((vf+ve)*0.05);
+    var extra=document.getElementById("extra"+ss[i]+"").value=ve+ce+ct+((vf+ve)*0.05);
+    console.log(extra)
+
+
+}
+    }
 
 
 </script>                            

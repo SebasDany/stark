@@ -138,12 +138,13 @@ def detalleDas(request,id,idas):
         advalorem=request.POST.getlist('advalorem')
         fodinfa=request.POST.getlist('fodinfa')
         iva=request.POST.getlist('iva')
+        sub_total=request.POST.getlist('sub_total')
         id_dd=[]
         for i in range(len(id_d)):
             
             id_dd.append(id_d[i].id)
 
-        saveDetalleDas(id_dd,idas,mercancia,advalorem,fodinfa,iva)
+        saveDetalleDas(id_dd,idas,mercancia,advalorem,fodinfa,iva,sub_total)
 
         fa=Factura_afianzado.objects.filter(importacion=id).first()
         if(fa!=None):
@@ -161,10 +162,19 @@ def detalleDas(request,id,idas):
         
         dd=Detalle_das.objects.filter(das=idas)
         mercancias=Mercancia.objects.select_related().all()
+        ### si es posible hay que omitir
 
+        dtd=Detalle_das.objects.filter(das=idas)
+        
+        cant=""
+        for i in range(len(dtd)):
+            print("el tamaño de ñ cantidad es ",dtd[i].id)
+            cant=cant+str(dtd[i].id)+";"
+        ## hasta aca e eliminar de datos la varible cant
         
         datos={"id":id,"idas":idas,
                 "ddas":dd,'mercancia':mercancias,
+                "cant":cant
         }
 
     

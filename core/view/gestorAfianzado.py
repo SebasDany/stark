@@ -83,12 +83,20 @@ def detalleAfianzado(request,id,idas,idfa):
         dat_d=Detalle_afianzado.objects.filter(factura_afianzado=idfa)
         afz=Factura_afianzado.objects.get(importacion=id)
         print("si encontre datoe ne el factura afianzado",afz)
+
+        factAf=Detalle_afianzado.objects.filter(factura_afianzado=idfa)
+        
+        cant=""
+        for i in range(len(factAf)):
+            print("el tamaño de ñ cantidad es ",factAf[i].id)
+            cant=cant+str(factAf[i].id)+";"
         
         dato={ "dat_d":dat_d,
             "afz":afz,
             "id":id,
             "idfa":idfa,
-            "idas":idas
+            "idas":idas,
+            "cant":cant
 
 
         }

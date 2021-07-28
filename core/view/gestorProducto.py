@@ -1,6 +1,6 @@
 from core.view.woocommerce import calcular, sincronizar
-from core.models import Detalle_importacion, Factura_proveedor, Mercancia, Proveedor
-from ..controlador import  buscarSKU, guardarProductoImport,saveDetalleImportacion
+from core.models import Detalle_das, Detalle_importacion, Factura_proveedor, Mercancia, Proveedor
+from ..controlador import  aranceles, buscarSKU, costo_unitario, costos, guardarProductoImport, incrementos, porcentuales,saveDetalleImportacion, subtotal1, subtotal2
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 import numpy
@@ -61,7 +61,7 @@ def viewProduct(request,id,idas,idfa):
     #     k=Proveedor.objects.get(id=unicos[j])
     #     h.append(k)
 
-    mercancias=Mercancia.objects.select_related().all()
+    mercancias=Detalle_das.objects.filter(das=idas)
     datos={
                 "id":id,
                 "idas":idas,
@@ -87,10 +87,24 @@ def productosImportados(request,id,idas,idfa):
         
         mercancia=request.POST.getlist('mercancia')
         peso=request.POST.getlist('peso')
-
-        saveDetalleImportacion(id,id_df,peso,precio,cantidad,product_id,mercancia,proveedor)
+        vector=numpy.zeros(len(product_id))
+        saveDetalleImportacion(id,id_df,peso,precio,cantidad,product_id,mercancia,proveedor,vector,vector,vector,vector,vector,vector,vector,vector,vector,vector,vector,vector,vector)
+        subtotal=subtotal2(id)
+        saveDetalleImportacion(id,id_df,peso,precio,cantidad,product_id,mercancia,proveedor,subtotal["Subtotales2"],vector,vector,vector,vector,vector,vector,vector,vector,vector,vector,vector,vector)
+        arancel=aranceles(id)
+        print(arancel["advalorem"])
+        saveDetalleImportacion(id,id_df,peso,precio,cantidad,product_id,mercancia,proveedor,subtotal["Subtotales2"], arancel["advalorem"],arancel["fodinfa"],arancel["iva"],vector,vector,vector,vector,vector,vector,vector,vector,vector)
+        porcent=porcentuales(id)
+        saveDetalleImportacion(id,id_df,peso,precio,cantidad,product_id,mercancia,proveedor,subtotal["Subtotales2"], arancel["advalorem"],arancel["fodinfa"],arancel["iva"],porcent["ps"],porcent["pr"],porcent["prT"], vector,vector,vector,vector, vector,vector)
+        costo=costos(id)
+        saveDetalleImportacion(id,id_df,peso,precio,cantidad,product_id,mercancia,proveedor,subtotal["Subtotales2"], arancel["advalorem"],arancel["fodinfa"],arancel["iva"],porcent["ps"],porcent["pr"],porcent["prT"], costo["costo1"],costo["costo2"],costo["costo3"],vector,vector,vector)
+        costo_unit=costo_unitario(id)
+        saveDetalleImportacion(id,id_df,peso,precio,cantidad,product_id,mercancia,proveedor,subtotal["Subtotales2"], arancel["advalorem"],arancel["fodinfa"],arancel["iva"],porcent["ps"],porcent["pr"],porcent["prT"], costo["costo1"],costo["costo2"],costo["costo3"],costo_unit,vector,vector)
+        incremento=incrementos(id)
+        saveDetalleImportacion(id,id_df,peso,precio,cantidad,product_id,mercancia,proveedor,subtotal["Subtotales2"], arancel["advalorem"],arancel["fodinfa"],arancel["iva"],porcent["ps"],porcent["pr"],porcent["prT"], costo["costo1"],costo["costo2"],costo["costo3"],costo_unit, incremento["inc_porcentual"],incremento["inc_dolares"] )
         pr=Detalle_importacion.objects.filter(importacion=id)
-
+        
+        
         proveedores=Factura_proveedor.objects.filter(importacion=id)
         mercancias=Mercancia.objects.select_related().all()
         datos={

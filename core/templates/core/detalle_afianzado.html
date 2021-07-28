@@ -19,7 +19,7 @@
                 
                   Detalle afianzado {{afz.afianzado.nombre }}
                   <br>
-
+ <input type="text" style="display:none;" id="n"  value={{cant}} >
 
 
                   <table class="table">
@@ -45,10 +45,10 @@
                 {% comment %} <td>  <input type="text"  name="id_afianzado" value={{afz.afianzado.nombre }}  disabled></td> {% endcomment %}
                         
                    <td>  <input type="text"  name="descripcion" value={{lista.descripcion}}  required></td>
-                   <td>  <input type="number"  step="0.1" id='alpe{{lista}}' name="alpeso" value={{lista.al_peso}}  onChange="sumar()" /></td>
-                   <td>  <input type="number"  step="0.1" id='alpr{{lista}}' name="alprecio" value={{lista.al_precio}} onChange="sumar()" /></td>
-                   <td>  <input type="number"  step="0.1" id='iv{{lista}}' name="iva" value={{lista.iva}} onChange="sumar()" /></td>
-                 <td>  <input type="number"  step="0.1" id='tot{{lista}}' name="total" value={{lista.total}}  onChange="sumar()" /></td>
+                   <td>  <input type="number"  step="0.1" id='alpe{{lista.id}}' name="alpeso" value={{lista.al_peso}}  onChange="sumar()" /></td>
+                   <td>  <input type="number"  step="0.1" id='alpr{{lista.id}}' name="alprecio" value={{lista.al_precio}} onChange="sumar()" /></td>
+                   <td>  <input type="text"   id='iv{{lista.id}}' name="iva" value={{lista.iva}} onChange="sumar()" readonly /></td>
+                 <td>  <input type="text"   id='tot{{lista.id}}' name="total" value={{lista.total}}  onChange="sumar()" readonly /></td>
             </tr>
         {% endfor %}
 </table> 
@@ -65,20 +65,27 @@
     </div>
         <script>       
 
+       
 function sumar(){
     var s=document.getElementById("n").value;
-    for (var i = 0; i < s; i++) {
-    console.log(i)
-    var ape=parseFloat(document.getElementById("alpe"+i+"").value);
-     console.log(ape)
-    var apr=parseFloat(document.getElementById("alpr"+i+"").value);
-    var iva=document.getElementById("iv"+i+"").value=(ape+apr)*0.12;
-    var ce=parseFloat(document.getElementById("tot"+i+"").value=ape+apr+parseFloat(iva));
+    var ss=s.split(';')
+    
+    for (var i = 0; i < ss.length; i++) {
+        
+    
+    var alpe=parseFloat(document.getElementById("alpe"+ss[i]+"").value);
+    var alpr=parseFloat(document.getElementById("alpr"+ss[i]+"").value);
+    
+  
+    var iv=document.getElementById("iv"+ss[i]+"").value=(alpe+alpr)*0.12;
+    
+    var tot=document.getElementById("tot"+ss[i]+"").value=alpe+alpr+iv;
     
 
 
 }
     }
+
 </script>                            
 </form>
        

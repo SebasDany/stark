@@ -112,7 +112,7 @@ def calcular(id):
        nv=t_cost/t_cant
        nuevo_costo.append(nv)
         
-    print(nuevo_costo)
+    
 
     datos={
         "id_producto_base":id_producto_base,

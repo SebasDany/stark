@@ -12,7 +12,7 @@ from django.http import HttpResponse
 from woocommerce import API
 from ..forms import UserRegisterForm, ProductRegister, FormImportacion, FormDas,FormFacturaProveedor,FormFacturaAfianzado,FormDetalleAfianzado
 
-
+from .woocommerce import calcular
 from django.contrib import messages
 import json
 import datetime
@@ -116,6 +116,7 @@ def startImport(request):
     print("estoy creando la importacion1")
     print("valor de l id ", id)
     
+    
     return redirect('importacion',id)
 
 
@@ -199,21 +200,21 @@ def detalleImportacion(request,id,idas,idfa):
 def password(request):
     return render(request,'core/password.html')
 
-def calcular(request):
-    if "id_producto" in request.POST:
-        product_id=request.POST.getlist('id_producto')
-        print(product_id)
-        precio=request.POST.getlist('precio')
-        proveedor=request.POST.getlist('proveedor')
-        cantidad=request.POST.getlist('cantidad')
+# def calcular(request):
+#     if "id_producto" in request.POST:
+#         product_id=request.POST.getlist('id_producto')
+#         print(product_id)
+#         precio=request.POST.getlist('precio')
+#         proveedor=request.POST.getlist('proveedor')
+#         cantidad=request.POST.getlist('cantidad')
         
-        mercancia=request.POST.getlist('mercancia')
-        peso=request.POST.getlist('peso')
+#         mercancia=request.POST.getlist('mercancia')
+#         peso=request.POST.getlist('peso')
 
-        saveDetalleImportacion(peso,precio,cantidad,product_id,mercancia,proveedor)
+#         saveDetalleImportacion(peso,precio,cantidad,product_id,mercancia,proveedor)
 
        
-    return HttpResponse("<h1>"+str(product_id)+"</h>")
+#     return HttpResponse("<h1>"+str(product_id)+"</h>")
 
 def register(request):
     if request.method=='POST':

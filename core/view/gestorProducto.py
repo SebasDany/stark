@@ -1,3 +1,4 @@
+from core.view.woocommerce import calcular, sincronizar
 from core.models import Detalle_importacion, Factura_proveedor, Mercancia, Proveedor
 from ..controlador import  buscarSKU, guardarProductoImport,saveDetalleImportacion
 from django.shortcuts import render, redirect
@@ -102,8 +103,10 @@ def productosImportados(request,id,idas,idfa):
             "proveedores":proveedores,
             "mercancias":mercancias
         }
+        
+        
 
         return render(request, 'core/resultados.html',datos  )
-
+    sincronizar(id)
        
-    return HttpResponse("<h1>"+"</h>")
+    return HttpResponse("<h1>Productos actualizados correctamente</h>")

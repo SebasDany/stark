@@ -1,6 +1,6 @@
 from core.view.woocommerce import calcular, sincronizar
 from core.models import Detalle_das, Detalle_importacion, Factura_proveedor, Mercancia, Proveedor
-from ..controlador import  aranceles, buscarSKU, costo_unitario, costos, guardarProductoImport, incrementos, porcentuales,saveDetalleImportacion, subtotal1, subtotal2
+from ..controlador import  aranceles, buscarSKU, costo_unitario, costos, guardarProductoImport, incrementos, porcentuales,saveDetalleImportacion, subtotal1, subtotal2, updateEstado, updateH
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 import numpy
@@ -39,6 +39,8 @@ def addProductImport(request,id,idas,idfa):
             sku=request.POST.getlist('id_producto')
             print(sku)
             guardarProductoImport(sku,id)
+            updateEstado(id,6)
+            updateH(id,idas,idfa,6)
 
     
 
@@ -102,25 +104,40 @@ def productosImportados(request,id,idas,idfa):
         saveDetalleImportacion(id,id_df,peso,precio,cantidad,product_id,mercancia,proveedor,subtotal["Subtotales2"], arancel["advalorem"],arancel["fodinfa"],arancel["iva"],porcent["ps"],porcent["pr"],porcent["prT"], costo["costo1"],costo["costo2"],costo["costo3"],costo_unit,vector,vector)
         incremento=incrementos(id)
         saveDetalleImportacion(id,id_df,peso,precio,cantidad,product_id,mercancia,proveedor,subtotal["Subtotales2"], arancel["advalorem"],arancel["fodinfa"],arancel["iva"],porcent["ps"],porcent["pr"],porcent["prT"], costo["costo1"],costo["costo2"],costo["costo3"],costo_unit, incremento["inc_porcentual"],incremento["inc_dolares"] )
-        pr=Detalle_importacion.objects.filter(importacion=id)
+        updateEstado(id,7)
+        updateH(id,idas,idfa,7)
         
-        
-        proveedores=Factura_proveedor.objects.filter(importacion=id)
-        mercancias=Mercancia.objects.select_related().all()
-        datos={
-                "id":id,
-                "idas":idas,
-                "idfa":idfa,
-                'error':False,
-            "productos":pr,
-        
-            "proveedores":proveedores,
-            "mercancias":mercancias
-        }
         
         
 
-        return render(request, 'core/resultados.html',datos  )
-    sincronizar(id)
+        return redirect( 'viewresults',id,idas,idfa )
+    
        
-    return HttpResponse("<h1>Productos actualizados correctamente</h>")
+    return 1
+
+def viewResults(request,id,idas,idfa):
+    if request.method=='POST':
+        sincronizar(id)#comentar para probar
+        updateEstado(id,8)
+        updateH(id,idas,idfa,8)
+        
+        return HttpResponse("<h1>Productos actualizados correctamente</h>")
+
+    pr=Detalle_importacion.objects.filter(importacion=id)
+        
+        
+    proveedores=Factura_proveedor.objects.filter(importacion=id)
+    mercancias=Mercancia.objects.select_related().all()
+    datos={
+            "id":id,
+            "idas":idas,
+            "idfa":idfa,
+            'error':False,
+        "productos":pr,
+    
+        "proveedores":proveedores,
+        "mercancias":mercancias
+    }
+
+    return render(request, 'core/resultados.html',datos  )
+     

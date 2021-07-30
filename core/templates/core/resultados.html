@@ -6,7 +6,7 @@
 
 {% block title %}<title>Creacion de Importacion</title> {% endblock title %}
     {% block body %}
-      <form role="form" method="POST" action="{% url 'productosimportados' id idas idfa %}">
+      <form role="form" method="POST" action="{% url 'viewresults' id idas idfa %}">
                             {% csrf_token %}                        
 
                       <h2>  Resultado de los productos importados </h2>
@@ -68,7 +68,14 @@
   </table>
  <a class="btn btn-primary"  href="{% url 'viewproduct' id idas idfa %}">Atras</a> 
                 
- <a class="btn btn-primary"  href="">Sincronizar</a>      
-   </form>
 
+  <button  id="sincronizar" class="btn" type="submit" >Sincronizar</button>     
+   </form>
+<script>
+
+function activar(){
+  document.getElementById("sincronizar").disabled = true
+}
+
+</script>
 {% endblock body %}

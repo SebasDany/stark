@@ -245,6 +245,14 @@ class Detalle_afianzado(models.Model):
     
     iva=models.DecimalField(max_digits=9, decimal_places=4, default=0)
     total=models.DecimalField(max_digits=9, decimal_places=4, default=0)
+
+class Historial(models.Model):
+    importacion=models.OneToOneField(Importacion, on_delete=models.CASCADE, null=True,blank=True, default=None)
+    
+    #importacion=models.IntegerField(default=0)
+    das=models.IntegerField(default=0)
+    afianzado=models.IntegerField(default=0)
+    estado=models.IntegerField(default=0)
     
     
 

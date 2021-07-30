@@ -7,6 +7,8 @@ from django.contrib import admin
 from django.contrib.auth.decorators import login_required
 
 urlpatterns = [
+
+    
     path('administrador/', include((
         [
             path('register',gestorImportacion.register,name='register'),
@@ -35,6 +37,8 @@ urlpatterns = [
     path('buscarproducto/<int:id>/<int:idas>/<int:idfa>/',gestorProducto.buscarProductos,name='buscarproducto'),
     path('viewproduct/<int:id>/<int:idas>/<int:idfa>/',gestorProducto.viewProduct,name='viewproduct'),
     path('addproductimport/<int:id>/<int:idas>/<int:idfa>/',gestorProducto.addProductImport,name='addproductimport'),
+    path('viewresults/<int:id>/<int:idas>/<int:idfa>/',gestorProducto.viewResults,name='viewresults'),
+
 
         ]))),
     

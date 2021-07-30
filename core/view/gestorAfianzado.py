@@ -1,5 +1,5 @@
 from core.view.gestorImportacion import importacion
-from ..controlador import saveAfianzado, saveDetalleAfianzado
+from ..controlador import saveAfianzado, saveDetalleAfianzado, updateEstado, updateH
 from django.shortcuts import render, redirect
 from ..models import Detalle_afianzado, Factura_afianzado,Importacion,Afianzado
 import datetime
@@ -12,6 +12,7 @@ def startAfianzado(request,id,idas):
     
     as_af=Factura_afianzado.objects.last()
     idfa=as_af.id
+    
     
     return redirect('datosafianzado',id,idas,idfa)
 
@@ -31,6 +32,8 @@ def datosAfianzado(request,id,idas,idfa):
         numero=request.POST.get('numero')
         subtotal=request.POST.get('subtotal')
         saveAfianzado(idfa,afianzado,id,fecha,numero,subtotal)
+        updateEstado(id,4)
+        updateH(id,idas,idfa,4)
         
         return redirect('creardetalleafianzado',id,idas,idfa)
     afianzado=Afianzado.objects.all()
@@ -74,6 +77,8 @@ def detalleAfianzado(request,id,idas,idfa):
             
             idda.append(idd[i].id)
         saveDetalleAfianzado(id,idda,desc,ape,apr,iv,t)
+        updateEstado(id,5)
+        updateH(id,idas,idfa,5)
         return redirect('detalleimportacion',id,idas,idfa)
         #return render(request,'core/detalle_importacion.html')
         

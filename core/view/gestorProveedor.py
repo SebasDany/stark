@@ -1,5 +1,5 @@
 from core.view.gestorImportacion import importacion
-from ..controlador import saveFacuturaProveedor, saveDas
+from ..controlador import saveFacuturaProveedor, saveDas, updateEstado, updateH
 from django.shortcuts import render, redirect
 from ..models import Das, Importacion,Mercancia,Factura_proveedor,Proveedor
 
@@ -28,6 +28,8 @@ def startFactProve(request,id):
             
         print("el vector resultante es  ",idfp)
         respuesta=saveFacuturaProveedor(idfp,prove,id,ncajas,v_envio,v_factura,comis_envio,comis_tarjeta,isd,t_pago,extra)
+        updateEstado(id,1)
+        updateH(id,0,0,1)
         print("el das esncontrado es ")
         print()
         da=Das.objects.filter(importacion=id).first()

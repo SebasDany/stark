@@ -2,7 +2,7 @@
 from time import perf_counter
 from django.shortcuts import render, redirect
 
-from ..controlador import  saveDetalleImportacion,saveMercacia ,saveProducto, saveDetalleImportacion
+from ..controlador import  crearH, saveDetalleImportacion,saveMercacia ,saveProducto, saveDetalleImportacion
 # from ..ecommerce import Woocommerce
 
 from django.shortcuts import render, redirect
@@ -110,11 +110,13 @@ mercan=["TARJETAS ELECTRÓNICAS", "CIRCUITOS INTEGRADOS", "CIRCUITOS INTEGRADOS"
 def startImport(request):
     imp=Importacion(fecha=str(datetime.datetime.today()).split()[0],descripcion="",tipo="",origen="",estado=0)
     imp.save()
+    
     print("estoy creando la importacion")
     id_impor=Importacion.objects.last()
     id=id_impor.id
     print("estoy creando la importacion1")
     print("valor de l id ", id)
+    crearH(id,0,0,0)
     
     
     return redirect('importacion',id)
@@ -175,16 +177,8 @@ def conexionApiWoo():
 
     return productos
 
-def inicio(request):
-    return render(request,'core/inicio.html')
-def home(request):
-   
 
-    return render(request,'core/home.html')
 
-def login(request):
-    return render(request,'core/login.html')
- 
 
 def detalleImportacion(request,id,idas,idfa):
     datos={ "id":id,

@@ -1,5 +1,5 @@
 from core.view.gestorImportacion import importacion
-from ..controlador import saveFacuturaProveedor, saveDas,saveDetalleDas
+from ..controlador import saveFacuturaProveedor, saveDas,saveDetalleDas, updateEstado, updateH
 from django.shortcuts import render, redirect
 from ..models import Detalle_das, Factura_afianzado, Importacion,Mercancia,Afianzado,Das, Producto,Proveedor_producto
 import datetime
@@ -25,6 +25,7 @@ def startDas(request,id):
     
     datos={"idas":verifi.id,'fecha':fecha,"id":id
     }
+    
     return redirect('datosdas',id,d.id)
 
 def datosDas(request,id,idas):
@@ -62,6 +63,8 @@ def datosDas(request,id,idas):
         identificacion_carga,monto_flete,total_items,peso_neto,total_bultos,
         unidades_comerciales,total_tributos,valor_seguros,cif,peso_bruto,
         unidades_fisicas,valor_fob)
+        updateEstado(id,2)
+        updateH(id,idas,0,2)
         objDas=Das.objects.last()
         m=Mercancia.objects.last()
         dd=Detalle_das.objects.filter(das=idas)
@@ -145,6 +148,8 @@ def detalleDas(request,id,idas):
             id_dd.append(id_d[i].id)
 
         saveDetalleDas(id_dd,idas,mercancia,advalorem,fodinfa,iva,sub_total)
+        updateEstado(id,3)
+        updateH(id,idas,0,3)
 
         fa=Factura_afianzado.objects.filter(importacion=id).first()
         if(fa!=None):

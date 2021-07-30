@@ -1,7 +1,7 @@
 
 
 
-from .models import Mercancia,Producto,Detalle_afianzado,Detalle_das, Detalle_importacion,Das,Factura_afianzado,Factura_proveedor,Importacion,Afianzado,Proveedor,Proveedor_producto
+from .models import Historial, Mercancia,Producto,Detalle_afianzado,Detalle_das, Detalle_importacion,Das,Factura_afianzado,Factura_proveedor,Importacion,Afianzado,Proveedor,Proveedor_producto
 
 import numpy as np  
 
@@ -504,3 +504,20 @@ def incrementos(id_imp):
         "inc_dolares": inc_dolares
         }
     return  datos
+
+def updateEstado(id, estado):
+    Importacion.objects.filter(id=id).update(estado=estado)
+    return 1
+def crearH(id,idas,idaf,estado):
+    h=Historial()
+    #h.impor=Importacion.objects.get(id=id)
+    h.importacion=Importacion.objects.get(id=id)
+    h.das=idas
+    h.afianzado=idaf
+    h.estado=estado
+    h.save()
+def updateH(id,idas,idaf,estado):
+    h=Historial.objects.get(importacion=id)
+
+    Historial.objects.filter(id=h.id).update(das=idas,afianzado=idaf,estado=estado)
+

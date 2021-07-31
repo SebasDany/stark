@@ -1,15 +1,10 @@
 
+from core.ecommerce import Woocommerce
 from django.db import models
 
 from woocommerce import API
 
-wcapi = API(
-         url="http://18.217.125.242/", # Your store URL
-        consumer_key="ck_d27e19bf8855d4c1e8a0e7dc3d652fa8cdb27643", # Your consumer key
-        consumer_secret="cs_8e1544fe175c35d1af7b9f30fe5a03f185be5497", # Your consumer secret
-        wp_api=True, # Enable the WP REST API integration
-        version="wc/v3" # WooCommerce WP REST API version
-        )
+
 
 # Create your models here.
 class Mercancia(models.Model):
@@ -35,66 +30,66 @@ class Producto(models.Model):
     categorias = models.CharField(max_length=512, blank=True)
     observaciones = models.CharField(max_length=255, blank=True)
 
-    # def save(self, *args, **kwargs):
+    def save(self, *args, **kwargs):
+        woo = Woocommerce()
        
-    #     if(self.variacion==True):
-    #         data = {
-    #             "name": str(self.nombre),
-    #             "type": "variable",
-    #             "sku":str(self.sku),
-    #             "description": " ",
-    #             "short_description": " ",
-    #             "categories": [
-    #                 { "id": 9 },
-    #                 { "id": 14 } ],
-    #                 "images": [
-    #                 {
-    #                     "src": str(self.imagen)
-    #                 },  ],
-    #                 "attributes": [
-    #                 {
-    #                     "id": 6,
-    #                     "position": 0,
-    #                     "visible": False,
-    #                     "variation": True,
-    #                     "options": []
-    #                 },
-    #                 {
-    #                     "name": "Size",
-    #                     "position": 0,
-    #                     "visible": True,
-    #                     "variation": True,
-    #                     "options": [
-    #                         "S",
-    #                         "M"
-    #                     ]
-    #                 }
-    #             ],
-    #             "default_attributes": []
-    #         }
-
-    #         print(wcapi.post("products", data).json())
-    #     else:
-    #         data = {
-    #                 "name": str(self.nombre),
-    #                 "type": "simple",
-    #                 "sku":str(self.sku),
-    #                 "regular_price": str(self.precio_compra),
-    #                 "description": " ",
-    #                 "short_description": "",
-    #                 "categories": [
+        if(self.variacion==True):
+            data = {
+                "name": str(self.nombre),
+                "type": "variable",
+                "sku":str(self.sku),
+                "description": " ",
+                "short_description": " ",
+                "categories": [
+                    { "id": 9 },
+                    { "id": 14 } ],
+                    "images": [
+                    {
+                        "src": str(self.imagen)
+                    },  ],
+                    "attributes": [
+                    {
+                        "id": 6,
+                        "position": 0,
+                        "visible": False,
+                        "variation": True,
+                        "options": []
+                    },
+                    {
+                        "name": "Size",
+                        "position": 0,
+                        "visible": True,
+                        "variation": True,
+                        "options": [
+                            "S",
+                            "M"
+                        ]
+                    }
+                ],
+                "default_attributes": []
+            }
+            woo.create_product_variacion(data)
+        else:
+            data = {
+                    "name": str(self.nombre),
+                    "type": "simple",
+                    "sku":str(self.sku),
+                    "regular_price": str(self.precio_compra),
+                    "description": " ",
+                    "short_description": "",
+                    "categories": [
                       
-    #                 ],
-    #                 "images": [
-    #                     {
-    #                         "src": str(self.imagen)
-    #                     },
+                    ],
+                    "images": [
+                        {
+                            "src": str(self.imagen)
+                        },
                         
-    #                 ]
-    #             }
-    #         print(wcapi.post("products", data).json())
+                    ]
+                }
+            woo.create_producto_simple(data)
         
-    #     super(Producto, self).save(*args, **kwargs) # Call the "real" save() method.
+        super(Producto, self).save(*args, **kwargs) # Call the "real" save() method.
         
     def __str__(self):
         return self.nombre

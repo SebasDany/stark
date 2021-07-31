@@ -1,13 +1,10 @@
-from core.view.gestorImportacion import importacion
-from ..controlador import saveFacuturaProveedor, saveDas, updateEstado, updateH
+
+from ..controlador import  updateEstado, updateH
 from django.shortcuts import render, redirect
 from ..models import Das, Importacion,Mercancia,Factura_proveedor,Proveedor
 
 def startFactProve(request,id):
-
     if request.method=='POST':
-        print("estoy dentro del metodo post")
-
         idf=Factura_proveedor.objects.filter(importacion=id)
         #fc=Importacion.objects.get(id = 365)
         prove= request.POST.getlist('proveedor')
@@ -20,27 +17,18 @@ def startFactProve(request,id):
         isd=request.POST.getlist('isd')
         t_pago=request.POST.getlist('t_pago')
         extra=request.POST.getlist('extra')
-
         idfp=[]
-        for i in range(len(idf)):
-            
+        for i in range(len(idf)):            
             idfp.append(idf[i].id)
-            
-        print("el vector resultante es  ",idfp)
         respuesta=saveFacuturaProveedor(idfp,prove,id,ncajas,v_envio,v_factura,comis_envio,comis_tarjeta,isd,t_pago,extra)
         updateEstado(id,1)
         updateH(id,0,0,1)
-        print("el das esncontrado es ")
-        print()
         da=Das.objects.filter(importacion=id).first()
-       
-        
         if da!=None:
             idas=da.id
             return redirect ('datosdas',id,idas)
         else:
-            return redirect ('startdas',id)
-                
+            return redirect ('startdas',id)               
     else:
         fp=Factura_proveedor.objects.filter(importacion=id)
         proveedores=Proveedor.objects.select_related().all()
@@ -50,58 +38,27 @@ def startFactProve(request,id):
             cant=cant+str(fp[i].id)+";"
 
         datos={"id":id,
-            "proveedores":proveedores,
-            "cantidad":fp,
-            "cant":len(fp),
-            "cant":cant}
+                "proveedores":proveedores,
+                "cantidad":fp,
+                "cant":len(fp),
+                "cant":cant}
     return render(request,'core/proveedor.html',datos)
 
+def saveFacuturaProveedor(idfp,prove,id,ncajas,v_envio,v_factura,comis_envio,comis_tarjeta,isd,t_pago,extra):
+    for j in range (len(prove)):
+        fp = Factura_proveedor()
+        fp.id=idfp[j]
+        fp.proveedor=Proveedor.objects.get(id = prove[j])
+        fp.importacion=Importacion.objects.get(id=id)
+        fp.num_cajas=ncajas[j]
+        fp.valor_factura=v_factura[j]
+        fp.valor_envio=v_envio[j]
+        fp.comision_envio=comis_envio[j]
+        fp.comision_tarjeta=comis_tarjeta[j]
+        fp.isd=isd[j]
+        fp.total_pago=t_pago[j]
+        fp.extra=extra[j]
+        
+        fp.save() 
+    return {'error':False}
 
-def facturaProveedor(request):
-    
-    # fechaImport=request.POST.get('idfechaImport')
-    # #fc=Importacion.objects.get(id = 365)
-    # prove= request.POST.getlist('proveedor')
-    # print("valor de proveedor",prove)
-    # ncajas=request.POST.getlist('ncajas')
-    # v_envio=request.POST.getlist('v_envio')
-    # v_factura=request.POST.getlist('v_factura')
-    # comis_envio=request.POST.getlist('comis_envio')
-    # comis_tarjeta=request.POST.getlist('comis_tarjeta')
-    # isd=request.POST.getlist('isd')
-    # t_pago=request.POST.getlist('t_pago')
-    # extra=request.POST.getlist('extra')
-    # print(type(ncajas))
-    # respuesta=saveFacuturaProveedor(prove,fechaImport,ncajas,v_envio,v_factura,comis_envio,comis_tarjeta,isd,t_pago,extra)
-    # if respuesta['error'] is True:
-    #     print("·········##############")
-
-    #     return redirect(request,'importacion')
-    
-    
-    fecha=Importacion.objects.last()
-    
-    #print(context)
-    return render(request,'core/das.html',{'fecha':fecha})
-
-
-
-# def facturaProveedor(request):
-#     form=FormFacturaProveedor()
-#     context={
-#                 'form':form
-#             }
-#     return render(request,'core/proveedor.html',context)
-
-# def saveFacturaProveedor(request):
-#     if request.method=='POST':
-#         form=FormFacturaProveedor(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             messages.success(request, 'Se ha registrado correctamente!')
-#             return render(request,'core/das.html')
-#         else: 
-#             messages.success(request, 'No se ha registrado correctamente!')
-#             return redirect(request,'facturaProveedor')
-#     return redirect(request,'facturaProveedor')
-    

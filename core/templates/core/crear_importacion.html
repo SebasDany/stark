@@ -5,8 +5,9 @@
     {% block body  %} 
     <body onload="nobackbutton();"></body>
       <form role="form" method="POST" action="{% url 'productosimportados' id idas idfa %}">
-                            {% csrf_token %}                        
+                            {% csrf_token %}    
 
+                         
                         Producto importados     
                <table class="table">               
                <tr>

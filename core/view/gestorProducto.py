@@ -1,7 +1,9 @@
+from numpy.lib.arraysetops import unique
 from core.models import Detalle_importacion, Factura_proveedor, Mercancia, Proveedor
 from ..controlador import  aranceles, buscarSKU, costo_unitario, costos, guardarProductoImport, incrementos, porcentuales,saveDetalleImportacion, subtotal1, subtotal2
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
+from django.contrib import messages
 import numpy
 
 def iniciarProduct(request):
@@ -101,9 +103,10 @@ def productosImportados(request,id,idas,idfa):
         incremento=incrementos(id)
         saveDetalleImportacion(id,id_df,peso,precio,cantidad,product_id,mercancia,proveedor,subtotal["Subtotales2"], arancel["advalorem"],arancel["fodinfa"],arancel["iva"],porcent["ps"],porcent["pr"],porcent["prT"], costo["costo1"],costo["costo2"],costo["costo3"],costo_unit, incremento["inc_porcentual"],incremento["inc_dolares"] )
         pr=Detalle_importacion.objects.filter(importacion=id)
-        
+        subtotal_das=subtotal1(id)
         proveedores=Factura_proveedor.objects.filter(importacion=id)
         mercancias=Mercancia.objects.select_related().all()
+             
         datos={
                 "id":id,
                 "idas":idas,
@@ -113,9 +116,25 @@ def productosImportados(request,id,idas,idfa):
         
             "proveedores":proveedores,
             "mercancias":mercancias
-        }
-
-        return render(request, 'core/resultados.html',datos  )
+            }
+        if(subtotal["SumaSub2"]!=subtotal_das["suma_subt"]):
+            messages.error(request, "Validación INCORRECTA de suma de subtotales. Revisar los datos")
+            return redirect('viewproduct',id,idas,idfa)
+        elif(arancel["suma_ad"]!=subtotal_das["suma_ad_das"]):
+                messages.error(request, "Validación INCORRECTA de suma de Advalorem. Revisar los datos")
+                return redirect('viewproduct',id,idas,idfa)
+                
+        elif(arancel["suma_fod"]!=subtotal_das["suma_fod_das"]):
+                messages.error(request, "Validación INCORRECTA de suma de Fodinfa. Revisar los datos")
+                return redirect('viewproduct',id,idas,idfa)
+        elif(arancel["suma_iva"]!=subtotal_das["suma_iva_das"]):
+                messages.error(request, "Validación INCORRECTA de suma de Iva. Revisar los datos")
+                return redirect('viewproduct',id,idas,idfa)
+        else:
+            messages.success(request, "Validación correcta ")
+            return render(request, 'core/resultados.html',datos )
+       
+        # return render(request, 'core/resultados.html',datos  )
 
        
     return HttpResponse("<h1>"+"</h>")

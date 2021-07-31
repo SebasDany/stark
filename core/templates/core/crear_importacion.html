@@ -4,6 +4,7 @@
 {% block title %}<title>Creacion de Importacion</title> {% endblock title %}
     {% block body  %} 
     <body onload="nobackbutton();"></body>
+      {%include 'core/messages.html'%}
       <form role="form" method="POST" action="{% url 'productosimportados' id idas idfa %}">
                             {% csrf_token %}                        
 

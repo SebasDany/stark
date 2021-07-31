@@ -354,8 +354,9 @@ def subtotal2(id_imp):
     
 
     # saveDetalleImportacion
+    #print("suma subt2", sub2_pro)
     suma_subt2=sum(sub2_pro)
-    print("suma", suma_subt2)
+    #print("suma subt2", suma_subt2)
     datos={"producto_id": producto_id,
     "Subtotales2": sub2_pro,
     "SumaSub2": suma_subt2
@@ -364,18 +365,36 @@ def subtotal2(id_imp):
     return datos
 
 def subtotal1(id_imp):
-    ##Suma de subtotal1
+    ##Suma de subtotal2 y suma aranceles
     # print("importacion",id_imp)
     imp = Importacion.objects.get(id=id_imp)
     # print("impresp",imp.id)
     das_imp=Das.objects.get(importacion=imp)
-    # print("DAS",das_imp.id)
+    advalorem_das=[]
+    fodinfa_das=[]
+    iva_das=[]
     sub1_merc=[]
     for valores in Detalle_das.objects.filter(das=das_imp):
         sub1_merc.append(valores.subtotal1)
-    suma_subt1=sum(sub1_merc)
+        advalorem_das.append(valores.advalorem1)
+        fodinfa_das.append(valores.fodinfa1)
+        iva_das.append(valores.iva1)
+            
+    # saveDetalleImportacion
+    #print("suma subt1", sub1_merc)
+    suma_subt=sum(sub1_merc)
+    suma_ad_das=sum(advalorem_das)
+    suma_fod_das=sum(fodinfa_das)
+    suma_iva_das=sum(iva_das)
+    print("suma ad", suma_ad_das)
     # print("factura id",extra_tienda)
-    return  suma_subt1
+    datos={
+        "suma_subt":suma_subt,
+        "suma_ad_das":suma_ad_das,
+        "suma_fod_das":suma_fod_das,
+        "suma_iva_das":suma_iva_das,
+        }
+    return datos
 
 def validacion(subt1,subt2):
     #Si es igual me devuelve 1 sino me devuelve un cero
@@ -395,21 +414,27 @@ def aranceles(id_imp):
     advalorem=[]
     fodinfa=[]
     iva=[]
-    producto_id=[]
 
+    producto_id=[]
+    
     for valores in Detalle_importacion.objects.filter(importacion=imp.id):
         producto_id.append(valores.id)
         for valor in Detalle_das.objects.filter(das=das_imp):
+            
+            
             #print(valores.mercancia," ", valor.mercancia," " )
             #print(valores.producto," ", valores.subtotal2," ",valor.subtotal1," ", valor.advalorem1 ," ")
-            if valores.mercancia==valor.mercancia:  
+            if valores.mercancia==valor.mercancia:
                 advalorem.append(valores.subtotal2/(valor.subtotal1*valor.advalorem1))
                 fodinfa.append(valores.subtotal2/(valor.subtotal1*valor.fodinfa1))
                 iva.append(valores.subtotal2/(valor.subtotal1*valor.iva1))
                 #print(valores.producto," ", valores.subtotal2," ",valor.subtotal1," ", valor.advalorem1 ," ") 
+    print("*********",advalorem)
+
     suma_ad=sum(advalorem)
     suma_fod=sum(fodinfa)
     suma_iva=sum(iva)
+    print("*********",suma_ad)
     datos={"producto_id": producto_id,
         "advalorem": advalorem,
         "fodinfa": fodinfa,
@@ -496,7 +521,7 @@ def incrementos(id_imp):
         producto_id.append(valores.id)
         inc_porcentual.append((valores.costo_unitario-valores.valor_unitario)/valores.valor_unitario)
         inc_dolares.append(valores.costo_unitario-valores.valor_unitario)
-    print(inc_porcentual,inc_dolares)
+    #print(inc_porcentual,inc_dolares)
     datos={"producto_id": producto_id,
         "inc_porcentual": inc_porcentual,
         "inc_dolares": inc_dolares

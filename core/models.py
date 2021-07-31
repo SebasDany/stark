@@ -1,5 +1,5 @@
 
-from core.ecommerce import Woocommerce
+from core.woo_commerce import Woocommerce
 from django.db import models
 
 from woocommerce import API

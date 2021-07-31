@@ -1,5 +1,5 @@
 
-from ..controlador import  updateEstado, updateH
+from ..controlador import  subtotal1, updateEstado, updateH
 from django.shortcuts import render, redirect
 from ..models import Detalle_das, Factura_afianzado, Importacion,Mercancia,Afianzado,Das, Producto,Proveedor_producto
 import datetime
@@ -148,3 +148,10 @@ def saveDetalleDas(id_dd,idas,mercancia=[],advalorem=[],fodinfa=[],iva=[],sub_to
         dD.save()
  
     return {'error':False}
+
+def updateSubtotal1(id_dd,sub1):
+    for i in range(len(id_dd)):
+        Detalle_das.objects.filter(id=id_dd[i]).update(subtotal1=sub1[i])
+
+    return 1
+

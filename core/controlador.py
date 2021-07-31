@@ -51,18 +51,31 @@ def subtotal2(id_imp):
     return datos
 
 def subtotal1(id_imp):
+    print(" Actualizando el subtotal 1")
     ##Suma de subtotal1
     # print("importacion",id_imp)
     imp = Importacion.objects.get(id=id_imp)
     # print("impresp",imp.id)
     das_imp=Das.objects.get(importacion=imp)
     # print("DAS",das_imp.id)
+    sub1_merc_t=[]
     sub1_merc=[]
+    id_dd=[]
     for valores in Detalle_das.objects.filter(das=das_imp):
-        sub1_merc.append(valores.subtotal1)
-    suma_subt1=sum(sub1_merc)
+        acum=0 
+        for valor in Detalle_importacion.objects.filter(importacion=id_imp):
+            if valores.mercancia==valor.mercancia:  
+                #sub1_merc.append(valores.subtotal1)
+                acum+=valor.subtotal2
+        #suma_subt1=sum(sub1_merc)
+        
+        sub1_merc_t.append(acum)
+        id_dd.append(valores.id)
+    datos={ "sub1_merc_t":sub1_merc_t,
+                "id_dd":id_dd
+        }
     # print("factura id",extra_tienda)
-    return  suma_subt1
+    return  datos
 
 def validacion(subt1,subt2):
     #Si es igual me devuelve 1 sino me devuelve un cero

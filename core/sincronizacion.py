@@ -1,6 +1,6 @@
 
 
-from core.ecommerce import Woocommerce
+
 from .models import Detalle_importacion
 
 from django.conf import settings
@@ -8,6 +8,7 @@ from django.db import DatabaseError
 
 import logging
 from woocommerce import API
+from core.woo_commerce import Woocommerce
 
 
 

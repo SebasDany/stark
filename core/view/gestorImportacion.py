@@ -1,6 +1,7 @@
 
 
 
+from core.view.gestorDas import updateSubtotal1
 from core.sincronizacion import Productos2Woocommerce
 from core.models import Das, Detalle_das, Detalle_importacion, Factura_proveedor, Importacion, Mercancia, Producto, Proveedor
 from ..controlador import  aranceles, costo_unitario, costos, incrementos, porcentuales, subtotal1, subtotal2, updateEstado, updateH
@@ -63,6 +64,8 @@ def productosImportados(request,id,idas,idfa):
         saveDetalleImportacion(id,id_df,peso,precio,cantidad,product_id,mercancia,proveedor,vector,vector,vector,vector,vector,vector,vector,vector,vector,vector,vector,vector,vector)
         subtotal=subtotal2(id)
         saveDetalleImportacion(id,id_df,peso,precio,cantidad,product_id,mercancia,proveedor,subtotal["Subtotales2"],vector,vector,vector,vector,vector,vector,vector,vector,vector,vector,vector,vector)
+        subt1=subtotal1(id)
+        updateSubtotal1(subt1["id_dd"],subt1["sub1_merc_t"])
         arancel=aranceles(id)
         print(arancel["advalorem"])
         saveDetalleImportacion(id,id_df,peso,precio,cantidad,product_id,mercancia,proveedor,subtotal["Subtotales2"], arancel["advalorem"],arancel["fodinfa"],arancel["iva"],vector,vector,vector,vector,vector,vector,vector,vector,vector)
@@ -111,12 +114,17 @@ def buscarProductos(request,id,idas,idfa):#Recoge los sku ingresados en el formu
     if request.method == 'POST':
         list_sku = request.POST.get('skus')
         productos=buscarSKU(list_sku,id,idas)#llamada al metodo de busqueda
+        desha=""
         if(productos['error']==True):
             messages.success(request, 'No se ha encontado '+ str(productos['mensage']))
+            if(len(productos['productos'])==0):
+                
+                desha="disabled"   
         datos={
                 "id":id,
                 "idas":idas,
-                "idfa":idfa
+                "idfa":idfa,
+                "desha":desha
         }
         productos.update(datos)
     return render(request, 'core/preview_productos.html',productos ) 

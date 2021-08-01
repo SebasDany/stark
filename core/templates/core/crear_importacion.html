@@ -4,6 +4,7 @@
 {% block title %}<title>Creacion de Importacion</title> {% endblock title %}
     {% block body  %} 
     <body onload="nobackbutton();"></body>
+      {%include 'core/messages.html'%}
       <form role="form" method="POST" action="{% url 'productosimportados' id idas idfa %}">
                             {% csrf_token %}    
 
@@ -24,12 +25,12 @@
                   
                </tr>   
 
-                   {% for lista in productos %}
+                   {% for lista in productos_detalle_importacion %}
                      <tr>
 
                      <input type="number"  style="display:none;" name="id_df" value={{ lista.id }} >
                      <input type="text" name="id_producto" style="display:none;" value={{ lista.producto.id}} >
-                     <td><input type="text"  value={{ lista.producto.sku}}  class="field left" readonly> </td>
+                     <td><input type="text"  value={{ lista.producto.sku}}-{{ lista.id }}  class="field left" readonly> </td>
                         <td><select name="proveedor">
                         <option value={{ lista.proveedor.id }} >{{ lista.proveedor }}</option>
                               {% for prv in proveedores %}
@@ -38,10 +39,10 @@
                                     </select></td>
                         {% comment %} <td><label>{{ lista.producto.nombre}} </label> </td> {% endcomment %}
                         <td><input type="text"  value={{lista.producto.nombre}}   readonly> </td>
-                        <td><input type="number"  step="0.01" name="precio" value={{ lista.valor_unitario }}></td>
+                        <td><input type="number"  step="0.0001" name="precio" value={{ lista.valor_unitario }}></td>
                      
                     
-                     <td><input type="number" name="peso" value={{ lista.peso }}></td>
+                     <td><input type="number" step="0.0001" name="peso" value={{ lista.peso }}></td>
                     
                               
                      <td><select name="mercancia">
@@ -53,7 +54,7 @@
                               
                               {% endfor %}
                               </select></td>
-                            <td><input type="number" name="cantidad" value={{lista.cantidad}}></td>
+                            <td><input type="number"step="0.0001" name="cantidad" value={{lista.cantidad}}></td>
                      <td><input type="text" name="sk_prove" ></td>
                      <td><input type="text" name="nombreProve" ></td>
                               </tr>

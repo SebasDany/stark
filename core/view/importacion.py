@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 from ..controlador import  crearH
 # from ..ecommerce import Woocommerce
 
-from ..models import Factura_proveedor,Importacion,Proveedor
+from ..models import Factura_proveedor,Importacion, Mercancia, Producto,Proveedor
 
 from woocommerce import API
 from ..forms import UserRegisterForm, ProductRegister, FormImportacion, FormDas,FormFacturaProveedor,FormFacturaAfianzado,FormDetalleAfianzado
@@ -85,6 +85,10 @@ def startImport(request):
     id_impor=Importacion.objects.last()
     id=id_impor.id
     crearH(id,0,0,0)
+    for i in Mercancia.objects.all():
+        print(i.id, i.nombre)
+    for i in Producto.objects.all():
+        print(i.id, i.nombre)
     return redirect('importacion',id)
 
 

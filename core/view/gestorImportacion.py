@@ -35,14 +35,14 @@ def viewProduct(request,id,idas,idfa):#vista de los producto importadosde de la 
     pr=Detalle_importacion.objects.filter(importacion=id)
  
     proveedores=Factura_proveedor.objects.filter(importacion=id).distinct()
-    print(proveedores)
+    print (proveedores)
     mercancias=Detalle_das.objects.filter(das=idas)
     datos={
                 "id":id,
                 "idas":idas,
                 "idfa":idfa,
                 'error':False,
-                "productos":pr,
+                "productos_detalle_importacion":pr,
                 "proveedores":proveedores,
                 "mercancias":mercancias
             }
@@ -61,26 +61,55 @@ def productosImportados(request,id,idas,idfa):
         
         mercancia=request.POST.getlist('mercancia')
         peso=request.POST.getlist('peso')
-        vector=np.zeros(len(product_id))
-        saveDetalleImportacion(id,id_df,peso,precio,cantidad,product_id,mercancia,proveedor,vector,vector,vector,vector,vector,vector,vector,vector,vector,vector,vector,vector,vector)
+        saveDetalleImportacion(id,id_df,peso,precio,cantidad,product_id,mercancia,proveedor)
         subtotal=subtotal2(id)
-        saveDetalleImportacion(id,id_df,peso,precio,cantidad,product_id,mercancia,proveedor,subtotal["Subtotales2"],vector,vector,vector,vector,vector,vector,vector,vector,vector,vector,vector,vector)
+        print("id_df id \t \t",id_df)
+        
+        updateSubtotal2(subtotal["producto_id"],subtotal["Subtotales2"])
+        print("subtotal2 id \t \t",subtotal["producto_id"])
         subt1=subtotal1(id)
         updateSubtotal1(subt1["id_dd"],subt1["sub1_merc_t"])
         arancel=aranceles(id)
-        print(arancel["advalorem"])
-        saveDetalleImportacion(id,id_df,peso,precio,cantidad,product_id,mercancia,proveedor,subtotal["Subtotales2"], arancel["advalorem"],arancel["fodinfa"],arancel["iva"],vector,vector,vector,vector,vector,vector,vector,vector,vector)
+        updateAranceles(arancel["producto_id"], arancel["advalorem"],arancel["fodinfa"],arancel["iva"])
+        print("arancel id \t \t",arancel["producto_id"])
         porcent=porcentuales(id)
-        saveDetalleImportacion(id,id_df,peso,precio,cantidad,product_id,mercancia,proveedor,subtotal["Subtotales2"], arancel["advalorem"],arancel["fodinfa"],arancel["iva"],porcent["ps"],porcent["pr"],porcent["prT"], vector,vector,vector,vector, vector,vector)
+        updatePorcentuales(porcent["producto_id"],porcent["ps"],porcent["pr"],porcent["prT"])
+        print("porcent total id \t",porcent["producto_id"])
         costo=costos(id)
-        saveDetalleImportacion(id,id_df,peso,precio,cantidad,product_id,mercancia,proveedor,subtotal["Subtotales2"], arancel["advalorem"],arancel["fodinfa"],arancel["iva"],porcent["ps"],porcent["pr"],porcent["prT"], costo["costo1"],costo["costo2"],costo["costo3"],vector,vector,vector)
+        updateCostos(costo["producto_id"],costo["costo1"],costo["costo2"],costo["costo3"])
+        print("costo id \t \t",costo["producto_id"])
         costo_unit=costo_unitario(id)
-        saveDetalleImportacion(id,id_df,peso,precio,cantidad,product_id,mercancia,proveedor,subtotal["Subtotales2"], arancel["advalorem"],arancel["fodinfa"],arancel["iva"],porcent["ps"],porcent["pr"],porcent["prT"], costo["costo1"],costo["costo2"],costo["costo3"],costo_unit,vector,vector)
+        updateCostoUnitario(costo_unit["producto_id"],costo_unit["costo1_unitario"])
+        print("costo_unit id \t \t",costo_unit["producto_id"])
         incremento=incrementos(id)
-        saveDetalleImportacion(id,id_df,peso,precio,cantidad,product_id,mercancia,proveedor,subtotal["Subtotales2"], arancel["advalorem"],arancel["fodinfa"],arancel["iva"],porcent["ps"],porcent["pr"],porcent["prT"], costo["costo1"],costo["costo2"],costo["costo3"],costo_unit, incremento["inc_porcentual"],incremento["inc_dolares"] )
-        updateEstado(id,7)
-        updateH(id,idas,idfa,7)
-        return redirect( 'viewresults',id,idas,idfa )
+        updateIncrementos(incremento["producto_id"], incremento["inc_porcentual"],incremento["inc_dolares"])
+        print("incremento id \t \t",incremento["producto_id"])
+        print("Subtotal",subtotal["SumaSub2"], subt1["suma_sub1"])
+        print("Subtotal",subtotal["SumaSub2"], subt1["suma_sub1"])
+        print("Subtotal",subtotal["SumaSub2"], subt1["suma_sub1"])
+        
+
+        
+        if(subtotal["SumaSub2"]!=subt1["suma_sub1"]):
+            messages.error(request, "Validación INCORRECTA de suma de subtotales. Revisar los datos")
+            return redirect('viewproduct',id,idas,idfa)
+        elif(arancel["suma_ad"]!=subt1["ad_das"]):
+                messages.error(request, "Validación INCORRECTA de suma de Advalorem. Revisar los datos")
+                return redirect('viewproduct',id,idas,idfa)
+                
+        elif(arancel["suma_fod"]!=subt1["fod_das"]):
+                messages.error(request, "Validación INCORRECTA de suma de Fodinfa. Revisar los datos")
+                return redirect('viewproduct',id,idas,idfa)
+        elif(arancel["suma_iva"]!=subt1["iva_das"]):
+                messages.error(request, "Validación INCORRECTA de suma de Iva. Revisar los datos")
+                return redirect('viewproduct',id,idas,idfa)
+        else:
+            messages.success(request, "Validación correcta ")
+            updateEstado(id,7)
+            updateH(id,idas,idfa,7)
+            return redirect( 'viewresults',id,idas,idfa )
+       
+       
 
     return 1
 
@@ -191,12 +220,13 @@ def guardarProductoImport(sku,ide):
                 
     return 1    
     
-def saveDetalleImportacion(ide,id_df,peso=[],precio=[],cantidad=[],id_prod=[],mercancia=[],proveedor=[],subtotal=[],advalorem=[],fodinfa=[],iva=[],ps=[],pr=[],prT=[],costo1=[],costo2=[],costo3=[], costo_unitario=[], inc_porcentual=[], inc_dolares=[]):
+def saveDetalleImportacion(ide,id_df,peso=[],precio=[],cantidad=[],id_prod=[],mercancia=[],proveedor=[]):
     das=Das.objects.get(importacion=ide)
     imp=Importacion.objects.get(id=ide)
     fp=Factura_proveedor.objects.last()
+    dtImport=Detalle_importacion()
     for i in range(len(id_prod)):
-        dtImport=Detalle_importacion()
+        
         dtImport.id=id_df[i]
         dtImport.producto=Producto.objects.get(id=id_prod[i])
         dtImport.das=das
@@ -206,18 +236,28 @@ def saveDetalleImportacion(ide,id_df,peso=[],precio=[],cantidad=[],id_prod=[],me
         dtImport.valor_unitario=precio[i]
         dtImport.cantidad=cantidad[i]
         dtImport.peso=peso[i]
-        dtImport.subtotal2=subtotal[i]
-        dtImport.advalorem2=advalorem[i]
-        dtImport.fodinfa2=fodinfa[i]
-        dtImport.iva2=iva[i]
-        dtImport.ps=ps[i]
-        dtImport.pr=pr[i]
-        dtImport.prt=prT[i]
-        dtImport.costo1=costo1[i]
-        dtImport.costo2=costo2[i]
-        dtImport.costo3=costo3[i]
-        dtImport.costo_unitario=costo_unitario[i]
-        dtImport.inc_porcentual=inc_porcentual[i]
-        dtImport.inc_dolares=inc_dolares[i]
         dtImport.save()
     return {'error':False}    
+def updateSubtotal2(id_dI, subt2):
+    for i in range(len(id_dI)):
+        Detalle_importacion.objects.filter(id=id_dI[i]).update(subtotal2=subt2[i])
+def updateAranceles(id_dI,advalorem, fodinfa, iva):
+    for i in range(len(id_dI)):
+        Detalle_importacion.objects.filter(id=id_dI[i]).update(advalorem2=advalorem[i],fodinfa2=fodinfa[i],iva2=iva[i])
+
+def updatePorcentuales(id_dI,ps, pr, prT):
+    for i in range(len(id_dI)):
+        Detalle_importacion.objects.filter(id=id_dI[i]).update(ps=ps[i],pr=pr[i],prt=prT[i])
+
+def updateCostos(id_dI,cost1,cost2, cost3):
+    for i in range(len(id_dI)):
+        Detalle_importacion.objects.filter(id=id_dI[i]).update(costo1=cost1[i],costo2=cost2[i],costo3=cost3[i])
+
+def updateCostoUnitario(id_dI,cost_u):
+    for i in range(len(id_dI)):
+        Detalle_importacion.objects.filter(id=id_dI[i]).update(costo_unitario=cost_u[i])
+
+def updateIncrementos(id_dI,inc_porcen,inc_dol):
+    for i in range(len(id_dI)):
+        Detalle_importacion.objects.filter(id=id_dI[i]).update(inc_porcentual=inc_porcen[i],inc_dolares=inc_dol[i])
+

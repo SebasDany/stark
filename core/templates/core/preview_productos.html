@@ -4,9 +4,20 @@
 {% block title %}<title>Creacion de Importacion</title> {% endblock title %}
     {% block body %}
       <form role="form" method="POST" action="{% url 'addproductimport' id idas idfa %}">
-                            {% csrf_token %}                        
+                            {% csrf_token %}  
+                            <div class="alert alert-info"><h2> Alerta estos productos ya no podran ser modificados una vez presionado continuar </h2> 
+                              </div>                      
 
-                        <h1> Alerta estos productos ya no podran ser modificados una vez prsionado continuar </h1> 
+                        
+                           {% for message in messages %}
+           
+
+                        <div class="alert alert-warning alert-dismissable">
+                        
+                        <strong>¡Cuidado!</strong> {{ message }}
+                        </div>
+                        {% endfor %}                    
+
                <table class="table">               
                <tr>
                   <td>SKU</td>
@@ -36,7 +47,7 @@
 
                </table>  
 <a class="btn btn-primary"  href="{% url 'detalleimportacion' id idas idfa %}">Atras</a> 
-              <button type="submit" class="btn btn-primary btn-user btn-block">Continuar</button>   
+              <button type="submit" class="btn btn-primary btn-user btn-block" {{desha}}>Continuar</button>   
               
                 
    </form>

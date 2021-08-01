@@ -1,4 +1,10 @@
+
+from core.woo_commerce import Woocommerce
 from django.db import models
+
+from woocommerce import API
+
+
 
 # Create your models here.
 class Mercancia(models.Model):
@@ -23,6 +29,68 @@ class Producto(models.Model):
     imagen = models.URLField(default='', blank=True)
     categorias = models.CharField(max_length=512, blank=True)
     observaciones = models.CharField(max_length=255, blank=True)
+
+    # def save(self, *args, **kwargs):
+    #     woo = Woocommerce()
+       
+    #     if(self.variacion==True):
+    #         data = {
+    #             "name": str(self.nombre),
+    #             "type": "variable",
+    #             "sku":str(self.sku),
+    #             "description": " ",
+    #             "short_description": " ",
+    #             "categories": [
+    #                 { "id": 9 },
+    #                 { "id": 14 } ],
+    #                 "images": [
+    #                 {
+    #                     "src": str(self.imagen)
+    #                 },  ],
+    #                 "attributes": [
+    #                 {
+    #                     "id": 6,
+    #                     "position": 0,
+    #                     "visible": False,
+    #                     "variation": True,
+    #                     "options": []
+    #                 },
+    #                 {
+    #                     "name": "Size",
+    #                     "position": 0,
+    #                     "visible": True,
+    #                     "variation": True,
+    #                     "options": [
+    #                         "S",
+    #                         "M"
+    #                     ]
+    #                 }
+    #             ],
+    #             "default_attributes": []
+    #         }
+    #         woo.create_product_variacion(data)
+    #     else:
+    #         data = {
+    #                 "name": str(self.nombre),
+    #                 "type": "simple",
+    #                 "sku":str(self.sku),
+    #                 "regular_price": str(self.precio_compra),
+    #                 "description": " ",
+    #                 "short_description": "",
+    #                 "categories": [
+                      
+    #                 ],
+    #                 "images": [
+    #                     {
+    #                         "src": str(self.imagen)
+    #                     },
+                        
+    #                 ]
+    #             }
+    #         woo.create_producto_simple(data)
+        
+    #     super(Producto, self).save(*args, **kwargs) # Call the "real" save() method.
+        
     def __str__(self):
         return self.nombre
     
@@ -52,7 +120,6 @@ class Importacion(models.Model):
     origen=models.CharField(max_length=64, blank=True)
     estado=models.IntegerField(default=1)
     def __str__(self):
-        print("////////////////")
         
         return str(self.fecha)
 
@@ -173,6 +240,14 @@ class Detalle_afianzado(models.Model):
     
     iva=models.DecimalField(max_digits=9, decimal_places=4, default=0)
     total=models.DecimalField(max_digits=9, decimal_places=4, default=0)
+
+class Historial(models.Model):
+    importacion=models.OneToOneField(Importacion, on_delete=models.CASCADE, null=True,blank=True, default=None)
+    
+    #importacion=models.IntegerField(default=0)
+    das=models.IntegerField(default=0)
+    afianzado=models.IntegerField(default=0)
+    estado=models.IntegerField(default=0)
     
     
 

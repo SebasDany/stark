@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Mercancia,Producto,Detalle_afianzado,Detalle_das, Detalle_importacion,Das,Factura_afianzado,Factura_proveedor,Importacion,Afianzado,Proveedor,Proveedor_producto
+from .models import Historial, Mercancia,Producto,Detalle_afianzado,Detalle_das, Detalle_importacion,Das,Factura_afianzado,Factura_proveedor,Importacion,Afianzado,Proveedor,Proveedor_producto
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 
@@ -25,3 +25,4 @@ admin.site.register(Detalle_das)
 admin.site.register(Detalle_importacion)
 admin.site.register(Factura_afianzado)
 admin.site.register(Detalle_afianzado)
+admin.site.register(Historial)

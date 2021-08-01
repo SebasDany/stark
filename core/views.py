@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.utils.html import escape
-from .models import Mercancia,Producto,Detalle_afianzado,Detalle_das, Detalle_importacion,Das,Factura_afianzado,Factura_proveedor,Importacion,Afianzado,Proveedor,Proveedor_producto
+from .models import Historial, Mercancia,Producto,Detalle_afianzado,Detalle_das, Detalle_importacion,Das,Factura_afianzado,Factura_proveedor,Importacion,Afianzado,Proveedor,Proveedor_producto
 from django.http import HttpResponse
 from woocommerce import API
 from .forms import UserRegisterForm, ProductRegister, FormImportacion, FormDas,FormFacturaProveedor,FormFacturaAfianzado,FormDetalleAfianzado
@@ -67,9 +67,24 @@ def conexionApiWoo():
 def inicio(request):
     return render(request,'core/inicio.html')
 def home(request):
-   
+    #i=Importacion.objects.all()
+    historial=Historial.objects.order_by('-id')[:4]
+    allimport=Historial.objects.all()
+  
+    
+    
+    
 
-    return render(request,'core/home.html')
+    datos={
+        "importaciones":historial,
+        "allimport":allimport
+         }
+    if(historial==None):
+        datos={
+        "importaciones":0 }
+        datos.update(datos) 
+
+    return render(request,'core/home.html',datos)
 
 def login(request):
     return render(request,'core/login.html')

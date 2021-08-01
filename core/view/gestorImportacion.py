@@ -35,6 +35,7 @@ def viewProduct(request,id,idas,idfa):#vista de los producto importadosde de la 
     pr=Detalle_importacion.objects.filter(importacion=id)
  
     proveedores=Factura_proveedor.objects.filter(importacion=id).distinct()
+    print(proveedores)
     mercancias=Detalle_das.objects.filter(das=idas)
     datos={
                 "id":id,

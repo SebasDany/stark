@@ -43,19 +43,22 @@ class Woocommerce:
         else:
             return request.reason
 
-    def create_producto_simple(self,data):
-        request= self.wcapi.post("products", data).json()
+    def create_producto(self,data):
+        request= self.wcapi.post("products", data)
         if request.status_code != 200:
             return request.text
         else:
             return request.reason
 
-    def create_producto_variacion(self,data):
-        request= self.wcapi.post("products", data).json()
+    
+
+    def create_producto_variacion(self,parent_id,data):
+        request= self.wcapi.post(f"products/{parent_id}/variations", data)
         if request.status_code != 200:
             return request.text
         else:
             return request.reason
+
 
 
 

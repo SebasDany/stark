@@ -1,7 +1,7 @@
 
 from core.woo_commerce import Woocommerce
 from django.db import models
-
+from django.core.exceptions import ValidationError
 from woocommerce import API
 
 
@@ -19,7 +19,7 @@ class Producto(models.Model):
     mercancia=models.ForeignKey(Mercancia, on_delete=models.CASCADE, null=True,blank=True, default=None)
    
     id_woocommerce=models.IntegerField(blank=True)
-    sku=models.CharField(max_length=16)
+    sku=models.CharField(max_length=16,unique=True)
     nombre=models.CharField(max_length=80)
     precio_compra=models.DecimalField(max_digits=9, decimal_places=4, default=0)
     precio_neto = models.DecimalField(max_digits=9, decimal_places=2, default=0)
@@ -30,66 +30,57 @@ class Producto(models.Model):
     categorias = models.CharField(max_length=512, blank=True)
     observaciones = models.CharField(max_length=255, blank=True)
 
-    # def save(self, *args, **kwargs):
-    #     woo = Woocommerce()
+    def clean(self):
+        s=len(self.sku.split("-"))
+        if self.variacion == True and s==1:
+            raise  ValidationError ("El sku de una variacion sigue esta estructura SKU-123")
+        if self.variacion == False and s > 1:
+            raise  ValidationError ("El sku de una de un producto simple sigue esta estructura SKU123")
+
+
+
+    def save(self, *args, **kwargs):
+        woo = Woocommerce()
        
-    #     if(self.variacion==True):
-    #         data = {
-    #             "name": str(self.nombre),
-    #             "type": "variable",
-    #             "sku":str(self.sku),
-    #             "description": " ",
-    #             "short_description": " ",
-    #             "categories": [
-    #                 { "id": 9 },
-    #                 { "id": 14 } ],
-    #                 "images": [
-    #                 {
-    #                     "src": str(self.imagen)
-    #                 },  ],
-    #                 "attributes": [
-    #                 {
-    #                     "id": 6,
-    #                     "position": 0,
-    #                     "visible": False,
-    #                     "variation": True,
-    #                     "options": []
-    #                 },
-    #                 {
-    #                     "name": "Size",
-    #                     "position": 0,
-    #                     "visible": True,
-    #                     "variation": True,
-    #                     "options": [
-    #                         "S",
-    #                         "M"
-    #                     ]
-    #                 }
-    #             ],
-    #             "default_attributes": []
-    #         }
-    #         woo.create_product_variacion(data)
-    #     else:
-    #         data = {
-    #                 "name": str(self.nombre),
-    #                 "type": "simple",
-    #                 "sku":str(self.sku),
-    #                 "regular_price": str(self.precio_compra),
-    #                 "description": " ",
-    #                 "short_description": "",
-    #                 "categories": [
+        if(self.variacion==True and self.parent_id!=0):
+            data1 = {
+                    "regular_price": str(self.precio_neto),
+                    "purchase_price": str(self.precio_compra),
+                    "sku":str(self.sku),
+                    "image": {
+                        "id": 423
+                    },
+                    "attributes": [
+                        {
+                            "id": 9,
+                            "option": "Black"
+                        }
+                    ]
+                }
+            #woo.create_producto_variacion(self.parent_id, data1)
+            
+        else:
+            data = {
+                    "name": str(self.nombre),
+                    "type": "simple",
+                    "sku":str(self.sku),
+                    "regular_price": str(self.precio_neto),
+                    "purchase_price": str(self.precio_compra),
+                    "description": " ",
+                    "short_description": "",
+                    "categories": [
                       
-    #                 ],
-    #                 "images": [
-    #                     {
-    #                         "src": str(self.imagen)
-    #                     },
-                        
-    #                 ]
-    #             }
-    #         woo.create_producto_simple(data)
+                    ],
+                    "images": [
+                        {
+                            "src": str(self.imagen)
+                        },   
+                    ]
+                }
+            #woo.create_producto(data)
         
-    #     super(Producto, self).save(*args, **kwargs) # Call the "real" save() method.
+        super(Producto, self).save(*args, **kwargs) # Call the "real" save() method.
+        
         
     def __str__(self):
         return self.nombre
@@ -217,6 +208,8 @@ class Detalle_importacion(models.Model):
     costo_unitario=models.DecimalField(max_digits=9, decimal_places=4, default=0)
     inc_porcentual=models.DecimalField(max_digits=9, decimal_places=4, default=0)
     inc_dolares=models.DecimalField(max_digits=9, decimal_places=4, default=0)
+    nuevo_costo=models.DecimalField(max_digits=9,decimal_places=4, default=0 )
+    total_inventario=models.IntegerField(default=0 )
 
 
 

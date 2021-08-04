@@ -1,6 +1,7 @@
 
 
 
+from core.controlador import updateCost_Invent, updateIdWooProduct
 from .models import Detalle_importacion
 
 from django.conf import settings
@@ -11,103 +12,133 @@ from woocommerce import API
 from core.woo_commerce import Woocommerce
 
 
-
-
-
 class Productos2Woocommerce:
     def __init__(self):
         self.wc = Woocommerce()
         self.logger = logging.getLogger(__name__)
 
-    def procesar_producto_dt_i(self,id):
-        id_producto_base=[]
-        sku_base=[]
+    def extraerDatosBase(self,id):
+        id_dI=[]
         cantidad_base=[]
-        costo_producto_un=[]
-        id_producto_tienda=[]
-        purchase_price=[]
-        cantida_tienda=[]
-        tipo_producto=[]
-        nuevo_costo=[]
-      
-        for valores in Detalle_importacion.objects.filter(importacion=id):
-            id_producto_base.append(valores.producto.id)
-            sku_base.append(valores.producto.sku)
+        costoUnitario=[]
+        
+        for valores in Detalle_importacion.objects.filter(importacion=id).order_by('id'):
+            print(valores.id)
+            id_dI.append(valores.id)
             cantidad_base.append(valores.cantidad)
-            costo_producto_un.append(valores.costo_unitario)
+            costoUnitario.append(valores.costo_unitario)
         
-        sku=sku_base
-        
-        for i in range(len(sku)):
-            producto =self.wc.get_producto_by_sku(sku[i])
-            #get("products",params={'sku':sku[i]}).json()
-            #print(wcapi.get("products",params={'sku':sku[i]}).json())
-            print(producto)
-            if(len(producto)!=0):
-                if (len(producto)!=0 and producto[0].get('type')=='simple'):           
-                    id_producto_tienda.append(producto[0].get('id'))
-                    purchase_price.append(producto[0].get('purchase_price'))
-                    cantida_tienda.append(producto[0].get('stock_quantity'))
-                    tipo_producto.append(0)
-                
-                if(len(producto)!=0 and producto[0].get('type')=='variation'):
-                    id_producto_tienda.append(producto[0].get('id'))
-                    purchase_price.append(producto[0].get('purchase_price'))
-                    cantida_tienda.append(producto[0].get('stock_quantity'))
-                    tipo_producto.append(1)
-            else:
-                print("no se ha encontardo el producto con este sku",sku[i], " iteracion ",i )   
-
-        for i in range(len(tipo_producto)):
-            t1= costo_producto_un[i]*cantidad_base[i]
-            t2= purchase_price[i]*cantida_tienda[i]
-            t_cant=cantidad_base[i]+cantida_tienda[i]
-            t_cost=float(t1)+float(t2)
-
-            nv=t_cost/t_cant
-            nuevo_costo.append(nv)
-
         datos={
-                "id_producto_base":id_producto_base,
-                "sku_base":sku_base,
+                "id_dI":id_dI,
                 "cantidad_base":cantidad_base,
-                "costo_producto_un":costo_producto_un,
-                "id_producto_tienda":id_producto_tienda,
-                "purchase_price":purchase_price,
-                "cantida_tienda":cantida_tienda,
-                "tipo_producto":tipo_producto,
-                "nuevo_costo":nuevo_costo
+                "costoUnitario":costoUnitario,
                 }
                     
         return datos
-    
+
+    def extraerDatosTienda(self, id):
+        purchase_price=[]
+        cantida_tienda=[]
+        tipo_producto=[]
+        error=False
+
+        no_encontrado=[]
+        for dt in  Detalle_importacion.objects.filter(importacion=id).order_by('id'):
+            product =self.wc.get_producto_by_sku(dt.producto.sku)
+            #get("products",params={'sku':sku[i]}).json()
+            #print(wcapi.get("products",params={'sku':sku[i]}).json())
+            
+            if(len(product)!=0):
+                if (len(product)!=0 and product[0].get('type')=='simple'):           
+                    purchase_price.append(product[0].get('purchase_price'))
+                    cantida_tienda.append(product[0].get('stock_quantity'))
+                    tipo_producto.append(0)
+                    updateIdWooProduct(dt.producto.id,product[0].get('id'),0)
+                
+                if(len(product)!=0 and product[0].get('type')=='variation'):
+                    padre=self.wc.get_producto_by_sku(dt.producto.sku.split("-")[0])
+                    purchase_price.append(product[0].get('purchase_price'))
+                    cantida_tienda.append(product[0].get('stock_quantity'))
+                    tipo_producto.append(1)
+                    updateIdWooProduct(dt.producto.id,padre[0].get('id'), product[0].get('id'))
+            else:
+                print("no se ha encontardo el producto con este sku",dt.producto.sku, " iteracion " )  
+                no_encontrado.append(dt.producto.sku) 
+                error=True 
+          
+        datos={ "error":error,
+                "purchase_price":purchase_price,
+                "cantida_tienda":cantida_tienda,
+                "tipo_producto":tipo_producto,
+                "no_encontrado":no_encontrado
+                }
+                    
+        return datos
+
+    def calcular(self,id):
+        nuevo_cost=[]
+        nueva_cantidad=[]
+        datoBase=self.extraerDatosBase(id)
+        datosTienda=self.extraerDatosTienda(id)
+        error=False
+        if datosTienda["error"]==False:
+            print(len(datosTienda["tipo_producto"]))
+            for i in range(len(datosTienda["tipo_producto"])):
+                t1= datoBase["costoUnitario"][i]*datoBase["cantidad_base"][i]
+                t2= datosTienda["purchase_price"][i]*datosTienda["cantida_tienda"][i]
+                t_cant=datoBase["cantidad_base"][i]+datosTienda["cantida_tienda"][i]
+                t_cost=float(t1)+float(t2)
+                nueva_cantidad.append(t_cant)
+                nv=t_cost/t_cant
+                nuevo_cost.append(nv)
+                updateCost_Invent(datoBase["id_dI"][i],nv, t_cant)
+        else :
+            error:True 
+        datos={ "error":error,
+                "id_dI":datoBase["id_dI"],
+                "tipo_producto":datosTienda["tipo_producto"],
+                "nueva_cantidad":nueva_cantidad,
+                "nuevo_costo":nuevo_cost
+                }
+        return datos
+                    
+
     def sincronizar(self,id):
+
+        no_actualizado=[]
     
-        datos=self.procesar_producto_dt_i(id)
-        for i in range(len(datos["nuevo_costo"])):
-            if datos["tipo_producto"][i]==1:
+        
+        for valor in Detalle_importacion.objects.filter(importacion=id).order_by('id'):
+            if valor.producto.variacion==True:
+            #if datos["tipo_producto"][i]==1:
                 print("soy una variacion ")
-                nuevo=self.wc.get_producto_by_sku(datos["sku_base"][i].split("-")[0])
+    
                 #wcapi.get("products",params={'sku':datos["sku_base"][i].split("-")[0]}).json()
                 data = {
-            "purchase_price": datos["nuevo_costo"][i]
-            }
+                        "purchase_price": str(valor.nuevo_costo),
+                        "stock_quantity": valor.total_inventario
+                        
+                        }
                 print(data)
-                print(str(nuevo[0].get('id')), str(datos["id_producto_tienda"][i]))
-                self.wc.set_producto_variacion(str(nuevo[0].get('id')),str(datos["id_producto_tienda"][i]),data)
+    
+                self.wc.set_producto_variacion(valor.producto.id_woocommerce,valor.producto.parent_id,data)
 
                 #wcapi.put("products/"+str(nuevo[0].get('id'))+"/variations/"+str(datos["id_producto_tienda"][i])+"", data)#actualiza purchase price de mi tienda de pruebas
             else:
                 print(" no soy una variacion ")
                 data = {
-                "purchase_price": datos["nuevo_costo"][i]
-                    }
-                print(data, str(datos["id_producto_tienda"][i]))
-                self.wc.set_producto_simple(str(datos["id_producto_tienda"][i]),data)
+                        "purchase_price": str(valor.nuevo_costo),
+                        "stock_quantity": valor.total_inventario
+                            }
+              
+                self.wc.set_producto_simple(valor.producto.id_woocommerce,data)
+               
 
-                #wcapi.put("products/"+str(datos["id_producto_tienda"][i]), data)#actualiza purchase price de mi tienda de pruebas
-        return {"error":False,
+                datos={"error":False,
                 "mensaje":"Productos actualizados correctamemte"}
+        return datos
+
+                
 
 
     # def procesar(self):

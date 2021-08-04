@@ -271,3 +271,11 @@ def updateH(id,idas,idaf,estado):
 
     Historial.objects.filter(id=h.id).update(das=idas,afianzado=idaf,estado=estado)
 
+def updateIdWooProduct( idProd, idwoo,parenId):
+    Producto.objects.filter(id=idProd).update(id_woocommerce=idwoo,parent_id=parenId)
+
+def updateCost_Invent(id_dt, new_cost, t_invet ):
+    print("actuaizando ", id_dt, new_cost,t_invet)
+    print(Detalle_importacion.objects.filter(id=id_dt))
+    Detalle_importacion.objects.filter(id=id_dt).update(nuevo_costo=new_cost, total_inventario=t_invet)
+

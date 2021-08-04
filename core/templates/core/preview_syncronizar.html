@@ -1,0 +1,62 @@
+{% extends 'core/base.html'%}
+
+
+{% block title %}<title>Creacion de Importacion</title> {% endblock title %}
+    {% block body %}
+    {% comment %} {% url 'updateProductoTienda' id idas idfa %} {% endcomment %}
+      <form role="form" method="POST" action="{% url 'updatetienda' id %}">
+                            {% csrf_token %}  
+                            <div class="alert alert-info"><h2> Alerta estos productos seran actualizados en la tienda </h2> 
+                              </div>                      
+
+                        
+                           {% for message in messages %}
+           
+
+                        <div class="alert alert-warning alert-dismissable">
+                        
+                        <strong>¡Alerta!</strong> {{ message }}
+                        </div>
+                        {% endfor %}                    
+
+               <table class="table">               
+               <tr>
+                  <td>SKU</td>
+                 
+                  <td>Nombre</td>
+                  <td>Nuevo costo</td>
+                  <td>Total Inventario</td>
+
+                 
+               
+                  
+                  
+               </tr>   
+
+                   {% for lista in productos %}
+                     <tr>
+
+                     
+                     <td><input type="checkbox" name="id_producto" value={{lista.producto.id}} checked> {{ lista.producto.sku}}</td>
+                        </td>
+                              
+                        <td><label>{{ lista.producto.nombre}} </label> </td>
+                         <td><label>{{ lista.nuevo_costo}} </label> </td>
+                          <td><label>{{ lista.total_inventario}} </label> </td>
+                        
+                        
+                    
+                     
+                              </tr>
+                     {% endfor %}
+
+                     
+
+               </table>  
+<a class="btn btn-primary"  href="{% url 'viewresults' id idas idfa %}">Atras</a> 
+              <button type="submit" class="btn btn-primary btn-user btn-block" {{desha}}>Actualizar en al tienda</button>   
+              
+                
+   </form>
+
+{% endblock body %}

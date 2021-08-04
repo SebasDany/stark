@@ -1,0 +1,21 @@
+{% extends 'core/base.html'%}
+
+
+{% block title %}<title>Creacion de Importacion</title> {% endblock title %}
+    {% block body %}
+                    {% for message in messages %}
+           
+
+                        <div class="alert alert-info">
+                       
+                        
+                        
+                        <strong>¡Exitoso!</strong> {{ message }}
+                        </div>
+                    {% endfor %}  
+
+                <a class="btn btn-primary"  href="" >Exportar csv</a> 
+              <a class="btn btn-primary"  href="{% url 'home' %}">Finalizar  </a> 
+              
+
+    {% endblock body %}

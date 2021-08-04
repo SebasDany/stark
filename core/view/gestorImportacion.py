@@ -116,11 +116,21 @@ def productosImportados(request,id,idas,idfa):
 def viewResults(request,id,idas,idfa):
     if request.method=='POST':
         PW=Productos2Woocommerce()
-        res= PW.sincronizar(id)#comentar para probar
+        PW.extraerDatosBase(id)
+        d_tienda=PW.extraerDatosTienda(id)
+        if d_tienda["error"]==False:
+            PW.calcular(id)
+            messages.error(request, "Se han encontrado todos los SKU ")
+        else:
+            messages.error(request, "No se encontraron SKU "+ str(d_tienda["no_encontrado"]+"  en la tienda "))
+            
+
         updateEstado(id,8)
-        updateH(id,idas,idfa,8)
-        if res["error"]==False:
-            messages.success(request,  str(res['mensaje']))
+        
+        # if res["error"]==False:
+        #     messages.success(request,  str(res['mensaje']))
+
+        return redirect('previewsyncronizar',id,idas,idfa )
 
     pr=Detalle_importacion.objects.filter(importacion=id)
         
@@ -136,10 +146,36 @@ def viewResults(request,id,idas,idfa):
     
         "proveedores":proveedores,
         "mercancias":mercancias
-    }
+    } 
+
 
     return render(request, 'core/resultados.html',datos  )
 
+def previewSyncronizar(request,id,idas,idfa):#permite previzulizar los datos a sincronyzar
+
+    
+    pr=Detalle_importacion.objects.filter(importacion=id)
+
+    datos={ "id":id,
+            "idfa":idfa,
+            "idas":idas ,
+            "productos":pr}
+
+    updateH(id,idas,idfa,8)
+
+    return render(request, 'core/preview_syncronizar.html',datos ) 
+def updateTienda(request,id):
+
+    if request.method=='POST':
+        if "id_producto" in request.POST:
+            ids=request.POST.getlist('id_producto')
+            PW=Productos2Woocommerce()
+            resp=PW.sincronizar(id)
+            if resp["error"]==False:
+                messages.error(request,resp["mensaje"] )
+                return render (request, 'core/resultado_syncronizacion.html') 
+
+    
 def buscarProductos(request,id,idas,idfa):#Recoge los sku ingresados en el formulario
     if request.method == 'POST':
         list_sku = request.POST.get('skus')
@@ -202,7 +238,7 @@ def guardarProductoImport(sku,ide):
             pim.append(di[i].producto.sku)
         indices = sku
         ind1 = pim
-        ind2 = [x for x in indices if x not in ind1]
+        ind2 = [x for x in indices if x not in ind1]#permite verificar si no existe esse sku creado si existe alguno creo lo que los que no existen
         print("s ku encontado", ind2)
         if(len(ind2)!=0):
             print(ind2)

@@ -38,6 +38,8 @@ urlpatterns = [
     path('viewresults/<int:id>/<int:idas>/<int:idfa>/',gestorImportacion.viewResults,name='viewresults'),
     path('detalleimportacion/<int:id>/<int:idas>/<int:idfa>/',gestorImportacion.detalleImportacion,name='detalleimportacion'),
     path('productosimportados/<int:id>/<int:idas>/<int:idfa>/',gestorImportacion.productosImportados,name='productosimportados'),
+    path('previewsyncronizar/<int:id>/<int:idas>/<int:idfa>/',gestorImportacion.previewSyncronizar,name='previewsyncronizar'),
+    path('updatetienda/<int:id>/',gestorImportacion.updateTienda,name='updatetienda'),
     
     
 

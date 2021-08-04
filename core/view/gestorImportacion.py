@@ -223,7 +223,7 @@ def guardarProductoImport(sku,ide):
 def saveDetalleImportacion(ide,id_df,peso=[],precio=[],cantidad=[],id_prod=[],mercancia=[],proveedor=[]):
     das=Das.objects.get(importacion=ide)
     imp=Importacion.objects.get(id=ide)
-    fp=Factura_proveedor.objects.last()
+    fp=Factura_proveedor.objects3.last()
     dtImport=Detalle_importacion()
     for i in range(len(id_prod)):
         
@@ -241,10 +241,13 @@ def saveDetalleImportacion(ide,id_df,peso=[],precio=[],cantidad=[],id_prod=[],me
 def updateSubtotal2(id_dI, subt2):
     for i in range(len(id_dI)):
         Detalle_importacion.objects.filter(id=id_dI[i]).update(subtotal2=subt2[i])
+
+
 def updateAranceles(id_dI,advalorem, fodinfa, iva):
+    
     for i in range(len(id_dI)):
         Detalle_importacion.objects.filter(id=id_dI[i]).update(advalorem2=advalorem[i],fodinfa2=fodinfa[i],iva2=iva[i])
-
+    
 def updatePorcentuales(id_dI,ps, pr, prT):
     for i in range(len(id_dI)):
         Detalle_importacion.objects.filter(id=id_dI[i]).update(ps=ps[i],pr=pr[i],prt=prT[i])

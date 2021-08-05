@@ -40,6 +40,7 @@ urlpatterns = [
     path('productosimportados/<int:id>/<int:idas>/<int:idfa>/',gestorImportacion.productosImportados,name='productosimportados'),
     path('previewsyncronizar/<int:id>/<int:idas>/<int:idfa>/',gestorImportacion.previewSyncronizar,name='previewsyncronizar'),
     path('updatetienda/<int:id>/',gestorImportacion.updateTienda,name='updatetienda'),
+    path('listresults/<int:id>/',gestorImportacion.listresults,name='listresults'),
     
     
 

@@ -7,8 +7,8 @@
       
 <form action="" method="POST">
                   {% csrf_token %}  
-                  <table>
-                 {{form.as_table}}
+                  <table class="table" >
+                 {{form}}
                   <td><b>Numero de proveedores </b></td>
                  <td><input type="number" name="cantidad" value=2 requiered > </td>
                  

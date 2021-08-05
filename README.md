@@ -3,16 +3,17 @@
 pip intsall django-import-export
 
 pip install numpy
+pip install django_excel 
 
 estados de la importacion
 
-0 creacion de la importacion
-1 Registro detalle Factura
-2 Registro Das
-3 Regstro detall das
-4 Registro factura afianzado
-5 Regsitro de talle afianzado
-6 Productos creados en detalle impportacion
+0 Importacion Iniciada                                
+1 Factura detalle registrada
+2 Das registrado
+3 Detalle Das registrada
+4 Factura afianzado registrado
+5 Detalle afianzado registrado
+6 Productos agregados en la importacion
 7 Datos calculados
-8 datos sincronizados
+8 Productos actualizados
 

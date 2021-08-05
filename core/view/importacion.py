@@ -93,60 +93,6 @@ def startImport(request):
 
 
 # Create your views here.
-def conexionApiWoo():
-    
-    wcapi = API(
-        url="http://18.217.125.242/", # Your store URL
-        consumer_key="ck_683236fc573061c7e21af53d9c73a53a8f205229", # Your consumer key
-        consumer_secret="cs_767e7406490a81353255b4937c055ca1036c5dbf", # Your consumer secret
-        wp_api=True, # Enable the WP REST API integration
-        version="wc/v3" # WooCommerce WP REST API version
-    )
-    products = wcapi.get("products")
-    productos=products.json()
-
-    print(products.status_code)
-    #print(productos[2])
-    print('----------------------')
-    
-#     id=productos[0].get('id')
-#     sku=productos[0].get('sku')
-#     name=productos[0].get('name')
-#     type=productos[0].get('type')
-#     description=productos[0].get('description')
-#     price=productos[0].get('price')
-#     regular_price=productos[0].get('regular_price')
-#     sale_price=productos[0].get('sale_price')
-#     categories=productos[0].get('categories')#.name
-#     image=productos[0].get('images')#.src
-#     print("puchase_price: ",productos[0].get('purchase_price'))
-#     print("id : ",id)
-#     print("sku : ",sku)
-#     print("name : ",name)
-#     print("type : ",type)
-#     print("description : ",description)
-#     print("price : ",price)
-#     print("regular peice : ",regular_price)
-#     print("sale price : ",sale_price)
-#     print("categories : ",categories)
-#     print("images : ",image)
-
-
-#     print(productos[0].get('id'))
-
-# #1602
-
-#     id=productos[0].get('id')
-#     data = {
-#         "regular_price": "88888"
-#     }
-
-
-#     #wcapi.put("products/"+str(id),data)
-#     print(productos[0].get('id'))
-
-    return productos
-
 def password(request):
     return render(request,'core/password.html')
 

@@ -23,26 +23,7 @@ from core import views
 
 urlpatterns = [
     #path('',views.inicio,name='inicio'),
-    path('',login_required(views.home),name='home'),
-    # #path('login',views.login,name='login'),
-    # path('register',views.register,name='register'),
-    # path('password',views.password,name='password'),
-    # path('calcular',views.calcular,name='calcular'),
-    # path('product',views.saveProduct,name='product'),
-    # path('importacion',views.saveImport,name='importacion'),
-    # path('facturaproveedor',views.facturaProveedor,name='facturaproveedor'),
-    
-    
-
-    # path('editar/<int:id>/',views.editar,name='editar'),
-    # #path('actualizar/<int:id>/',views.actualizar,name='actualizar'),
-
-    # path('das',views.das,name='das'),
-    # path('detalledas',views.detalleDas,name='detalledas'),
-    # path('facturaafianzado',views.facturaAfianzado,name='facturaafianzado'),
-    # path('detalleafianzado',views.detalleAfianzado,name='detalleafianzado'),
-    # path('detalleimportacion',views.detalleImportacion,name='detalleimportacion'),
-    
+    path('',login_required(views.home),name='home'),    
     path('admin/', admin.site.urls),
     path('accounts/login/',LoginView.as_view(template_name='core/login.html'),name='login'),
     path('logout/',LogoutView.as_view(template_name='core/inicio.html'),name='logout'),

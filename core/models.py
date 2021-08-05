@@ -2,7 +2,6 @@
 from core.woo_commerce import Woocommerce
 from django.db import models
 from django.core.exceptions import ValidationError
-from woocommerce import API
 
 
 
@@ -183,6 +182,11 @@ class Detalle_das(models.Model):
 
 
 class Detalle_importacion(models.Model):
+    SI=1
+    NO=0
+    estado_actualizaciOn = [
+                        (SI, 'SI'),
+                        (NO, 'NO') ]
     producto=models.ForeignKey(Producto, on_delete=models.CASCADE, null=True,blank=True, default=None)
     # detalle_das=models.ForeignKey(Detalle_das, on_delete=models.CASCADE, null=True,blank=True, default=None)
     # factura_proveedor=models.ForeignKey(Factura_proveedor, on_delete=models.CASCADE, null=True,blank=True, default=None)
@@ -210,6 +214,11 @@ class Detalle_importacion(models.Model):
     inc_dolares=models.DecimalField(max_digits=9, decimal_places=4, default=0)
     nuevo_costo=models.DecimalField(max_digits=9,decimal_places=4, default=0 )
     total_inventario=models.IntegerField(default=0 )
+    actualizado= models.CharField(
+        max_length=2,
+        choices=estado_actualizaciOn,
+        default=NO,
+    )
 
 
 

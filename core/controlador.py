@@ -1,6 +1,7 @@
 
 from .models import Historial, Mercancia,Producto,Detalle_afianzado,Detalle_das, Detalle_importacion,Das,Factura_afianzado,Factura_proveedor,Importacion,Afianzado,Proveedor,Proveedor_producto
 
+
 def tablaAfianzado(id_imp):
     ##importacion_afianzado
     # print("importacion",id_imp)
@@ -274,8 +275,11 @@ def updateH(id,idas,idaf,estado):
 def updateIdWooProduct( idProd, idwoo,parenId):
     Producto.objects.filter(id=idProd).update(id_woocommerce=idwoo,parent_id=parenId)
 
-def updateCost_Invent(id_dt, new_cost, t_invet ):
-    print("actuaizando ", id_dt, new_cost,t_invet)
-    print(Detalle_importacion.objects.filter(id=id_dt))
+def updateCost_Invent(id_dt, new_cost, t_invet ):   
     Detalle_importacion.objects.filter(id=id_dt).update(nuevo_costo=new_cost, total_inventario=t_invet)
+
+def updateActualizacionTienda(id_dt, estado):
+    Detalle_importacion.objects.filter(id=id_dt).update(actualizado=estado)
+
+    
 

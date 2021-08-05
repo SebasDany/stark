@@ -7,14 +7,47 @@
            
 
                         <div class="alert alert-info">
-                       
-                        
-                        
+                                               
                         <strong>¡Exitoso!</strong> {{ message }}
                         </div>
                     {% endfor %}  
 
-                <a class="btn btn-primary"  href="" >Exportar csv</a> 
+                    <table class="table">
+  <thead>
+      <tr>
+          <th scope="col">SKU</th>
+          
+          <th scope="col">Nombre</th>
+          <th scope="col">Id producto tienda</th>
+          <th scope="col">Variacion </th>
+          <th scope="col">Nuevo costo</th>
+          <th scope="col">Total inventario</th>
+          
+          <th scope="col">Fecha</th>
+          <th scope="col">Actualizado</th>
+      </tr>
+    </thead>
+    <tbody>
+                   {% for lista in productos %}
+        <tr>
+            <th scope="row">{{ lista.producto.sku}}</th>
+            <td>{{ lista.producto}}</td>
+            <td>{{ lista.producto.id_woocommerce }}</td>
+            <td>{{ lista.producto.variacion }}</td>
+            <td>{{ lista.nuevo_costo }}</td>
+            <td>{{ lista.total_inventario }}</td>
+            <td>{{ lista.importacion.fecha }}</td>
+             <td>{{ lista.actualizado }}</td>
+           
+
+        </tr>
+                     {% endfor %}                    
+
+      </tbody>
+  </table>
+
+                <a class="btn btn-primary"  href="{%  url 'listresults' id %}" >Exportar csv</a> 
+                
               <a class="btn btn-primary"  href="{% url 'home' %}">Finalizar  </a> 
               
 

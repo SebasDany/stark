@@ -110,27 +110,31 @@ def aranceles(id_imp):
                     advalorem.append(0)
                     fodinfa.append((valores.subtotal2/valor.subtotal1)*valor.fodinfa1)
                     iva.append((valores.subtotal2/valor.subtotal1)*valor.iva1)
+                    print(valores.producto," ", valores.subtotal2," ",valor.subtotal1," ", valor.fodinfa1 ," ",(valores.subtotal2/valor.subtotal1)*valor.fodinfa1) 
                     
                 if valor.fodinfa1==0:
                     fodinfa.append(0)
                     advalorem.append((valores.subtotal2/valor.subtotal1)*valor.advalorem1)
                     iva.append((valores.subtotal2/valor.subtotal1)*valor.iva1)
+                    print(valores.producto," ", valores.subtotal2," ",valor.subtotal1," ", valor.fodinfa1 ," ", (valores.subtotal2/valor.subtotal1)*valor.fodinfa1) 
                     
                 if valor.iva1==0: 
                     advalorem.append((valores.subtotal2/valor.subtotal1)*valor.advalorem1)
                     fodinfa.append((valores.subtotal2/valor.subtotal1)*valor.fodinfa1)            
                     iva.append(0)
+                    print(valores.producto," ", valores.subtotal2," ",valor.subtotal1," ", valor.fodinfa1 ," ", (valores.subtotal2/valor.subtotal1)*valor.fodinfa1) 
         
                 if tam==1: 
                     advalorem.append(valor.advalorem1)
                     fodinfa.append(valor.fodinfa1)
                     iva.append(valor.iva1)
+                    print(valores.producto," ", valores.subtotal2," ",valor.subtotal1," ", valor.fodinfa1 ," ", (valores.subtotal2/valor.subtotal1)*valor.fodinfa1) 
 
                 if  valor.advalorem1!=0 and valor.fodinfa1!=0 and valor.iva1!=0 and tam>1:
                     advalorem.append((valores.subtotal2/valor.subtotal1)*valor.advalorem1)
                     fodinfa.append((valores.subtotal2/valor.subtotal1)*valor.fodinfa1)
                     iva.append((valores.subtotal2/valor.subtotal1)*valor.iva1)
-
+                    print(valores.producto," ", valores.subtotal2," ",valor.subtotal1," ", valor.fodinfa1 ," ", (valores.subtotal2/valor.subtotal1)*valor.fodinfa1) 
                     #print("productos", cont, "mercancia", valor.mercancia )
         
                     #print(valores.producto," ", valores.subtotal2," ",valor.subtotal1," ", valor.fodinfa1 ," ") 
@@ -176,6 +180,7 @@ def porcentuales(id_imp):
                 #print("**************",valor.proveedor, " ",valor.valor_factura," ", valores.proveedor, " ",valores.subtotal2)
                 prT.append(valores.subtotal2/valor.valor_factura)
                 producto_id.append(valores.id)
+                
     #print("PRT",prT)
     # print("**************",suma_subtotal2["SumaSub2"], " ", valores.subtotal2)
     datos={"producto_id": producto_id,

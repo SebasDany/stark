@@ -27,7 +27,7 @@ class Productos2Woocommerce:
             id_dI.append(valores.id)
             cantidad_base.append(valores.cantidad)
             costoUnitario.append(valores.costo_unitario)
-        
+        print("Base", cantidad_base,costoUnitario)
         datos={
                 "id_dI":id_dI,
                 "cantidad_base":cantidad_base,
@@ -63,9 +63,12 @@ class Productos2Woocommerce:
                     updateIdWooProduct(dt.producto.id,padre[0].get('id'), product[0].get('id'))
             else:
                 print("no se ha encontardo el producto con este sku",dt.producto.sku, " iteracion " )  
-                no_encontrado.append(dt.producto.sku) 
-                error=True 
-          
+                no_encontrado.append(dt.producto.sku)
+                purchase_price.append(0)
+                cantida_tienda.append(0)
+                tipo_producto.append(0) 
+                error=False 
+        print("tienda", purchase_price,cantida_tienda, tipo_producto )
         datos={ "error":error,
                 "purchase_price":purchase_price,
                 "cantida_tienda":cantida_tienda,
@@ -88,6 +91,8 @@ class Productos2Woocommerce:
                 t2= datosTienda["purchase_price"][i]*datosTienda["cantida_tienda"][i]
                 t_cant=datoBase["cantidad_base"][i]+datosTienda["cantida_tienda"][i]
                 t_cost=float(t1)+float(t2)
+                print("calculo", datoBase["costoUnitario"][i],datoBase["cantidad_base"][i] )
+                print("suma",datoBase["cantidad_base"][i], datosTienda["cantida_tienda"][i])
                 nueva_cantidad.append(t_cant)
                 nv=t_cost/t_cant
                 nuevo_cost.append(nv)
@@ -100,6 +105,7 @@ class Productos2Woocommerce:
                 "nueva_cantidad":nueva_cantidad,
                 "nuevo_costo":nuevo_cost
                 }
+
         return datos
                     
 

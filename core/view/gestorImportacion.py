@@ -62,12 +62,12 @@ def productosImportados(request,id,idas,idfa):
         mercancia=request.POST.getlist('mercancia')
         peso=request.POST.getlist('peso')
         saveDetalleImportacion(id,id_df,peso,precio,cantidad,product_id,mercancia,proveedor,sk_prove,nombreProve)
-        subtotal=subtotal2(id)
+        sub2=subtotal2(id)
         print("id_df id \t \t",id_df)
-        
-        updateSubtotal2(subtotal["producto_id"],subtotal["Subtotales2"])
-        print("subtotal2 id \t \t",subtotal["producto_id"])
+        updateSubtotal2(sub2["producto_id"],sub2["Subtotales2"])
+        print("subtotal2 id \t \t",sub2["Subtotales2"])
         subt1=subtotal1(id)
+        print("subtotal2 id \t \t",subt1["sub1_merc_t"])
         updateSubtotal1(subt1["id_dd"],subt1["sub1_merc_t"])
         arancel=aranceles(id)
         updateAranceles(arancel["producto_id"], arancel["advalorem"],arancel["fodinfa"],arancel["iva"])
@@ -84,24 +84,27 @@ def productosImportados(request,id,idas,idfa):
         incremento=incrementos(id)
         updateIncrementos(incremento["producto_id"], incremento["inc_porcentual"],incremento["inc_dolares"])
         print("incremento id \t \t",incremento["producto_id"])
-        print("Subtotal",subtotal["SumaSub2"], subt1["suma_sub1"])
-        print("Subtotal",subtotal["SumaSub2"], subt1["suma_sub1"])
-        print("Subtotal",subtotal["SumaSub2"], subt1["suma_sub1"])
-        
-        if(subtotal["SumaSub2"]!=subt1["suma_sub1"]):
+        print("Subtotal",sub2["SumaSub2"], subt1["suma_sub1"])
+        print("AranceL AD",arancel["suma_ad"], subt1["ad_das"], arancel["advalorem"])
+        print("Fodinfa",arancel["suma_fod"], subt1["fod_das"], arancel["fodinfa"])
+        if(sub2["SumaSub2"]!=subt1["suma_sub1"]):
+            
             messages.error(request, "Validación INCORRECTA de suma de subtotales. Revisar los datos")
             return redirect('viewproduct',id,idas,idfa)
-        elif(arancel["suma_ad"]!=subt1["ad_das"]):
+        if(arancel["suma_ad"]!=subt1["ad_das"]):
+                
                 messages.error(request, "Validación INCORRECTA de suma de Advalorem. Revisar los datos")
                 return redirect('viewproduct',id,idas,idfa)
                 
-        elif(arancel["suma_fod"]!=subt1["fod_das"]):
+        if(arancel["suma_fod"]!=subt1["fod_das"]):
+                print("ArancelFod",arancel["suma_fod"], subt1["fod_das"])
                 messages.error(request, "Validación INCORRECTA de suma de Fodinfa. Revisar los datos")
                 return redirect('viewproduct',id,idas,idfa)
-        elif(arancel["suma_iva"]!=subt1["iva_das"]):
+        if(arancel["suma_iva"]!=subt1["iva_das"]):
                 messages.error(request, "Validación INCORRECTA de suma de Iva. Revisar los datos")
                 return redirect('viewproduct',id,idas,idfa)
-        else:
+
+        if(sub2["SumaSub2"]==subt1["suma_sub1"] and arancel["suma_ad"]==subt1["ad_das"] and arancel["suma_fod"]==subt1["fod_das"] and arancel["suma_iva"]==subt1["iva_das"] ):
             messages.success(request, "Validación correcta ")
             updateEstado(id,7)
             updateH(id,idas,idfa,7)
@@ -111,16 +114,19 @@ def productosImportados(request,id,idas,idfa):
 
     return 1
 
+
+
 def viewResults(request,id,idas,idfa):# get per mite viszualizar los calculos realizados de la importacion y cuando es un post extrae los datos de catidad y costo_unitario de la base y de la tienda
     if request.method=='POST':
         PW=Productos2Woocommerce()
         PW.extraerDatosBase(id)
         d_tienda=PW.extraerDatosTienda(id)
         if d_tienda["error"]==False:
+            if len(d_tienda["no_encontrado"])!=0:
+                messages.error(request, "No se encontraron SKU "+ str(d_tienda["no_encontrado"])+"  en la tienda ")
+            else:
+                messages.error(request, "Se han encontrado todos los SKU ")
             PW.calcular(id)
-            messages.error(request, "Se han encontrado todos los SKU ")
-        else:
-            messages.error(request, "No se encontraron SKU "+ str(d_tienda["no_encontrado"]+"  en la tienda "))
         updateEstado(id,8)
         return redirect('previewsyncronizar',id,idas,idfa )
     pr=Detalle_importacion.objects.filter(importacion=id)    
@@ -260,10 +266,10 @@ def guardarProductoImport(sku,ide):
 def saveDetalleImportacion(ide,id_df,peso=[],precio=[],cantidad=[],id_prod=[],mercancia=[],proveedor=[],skut=[],nombreT=[] ):
     das=Das.objects.get(importacion=ide)
     imp=Importacion.objects.get(id=ide)
-    fp=Factura_proveedor.objects3.last()
-    dtImport=Detalle_importacion()
+    fp=Factura_proveedor.objects.last()
+    #dtImport=Detalle_importacion()
     for i in range(len(id_prod)):
-        
+        dtImport=Detalle_importacion()
         dtImport.id=id_df[i]
         dtImport.producto=Producto.objects.get(id=id_prod[i])
         dtImport.das=das
@@ -274,7 +280,7 @@ def saveDetalleImportacion(ide,id_df,peso=[],precio=[],cantidad=[],id_prod=[],me
         dtImport.cantidad=cantidad[i]
         dtImport.peso=peso[i]
         dtImport.save()
-        updateProveedorProducto(id_prod[i],dtImport.proveedor,skut[i],nombreT[i],precio[i],peso[i],cantidad[i])
+        #updateProveedorProducto(id_prod[i],dtImport.proveedor,skut[i],nombreT[i],precio[i],peso[i],cantidad[i])
     return {'error':False} 
 
 def updateProveedorProducto(idPro,prov,skut,nombreT,pre,pes,can):

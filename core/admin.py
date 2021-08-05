@@ -12,6 +12,7 @@ class CategoriaAdmin(ImportExportModelAdmin,admin.ModelAdmin):
     resource_class= CategoriaResource
 
 
+
 # Register your models here.
 admin.site.register(Mercancia)
 admin.site.register(Producto, CategoriaAdmin)

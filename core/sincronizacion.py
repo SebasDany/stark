@@ -1,7 +1,7 @@
 
 
 
-from core.controlador import updateCost_Invent, updateIdWooProduct
+from core.controlador import updateActualizacionTienda, updateCost_Invent, updateIdWooProduct
 from .models import Detalle_importacion
 
 from django.conf import settings
@@ -55,7 +55,7 @@ class Productos2Woocommerce:
                     tipo_producto.append(0)
                     updateIdWooProduct(dt.producto.id,product[0].get('id'),0)
                 
-                if(len(product)!=0 and product[0].get('type')=='variation'):
+                if(len(product)!=0 and product[0].get('type')=='variation' ):
                     padre=self.wc.get_producto_by_sku(dt.producto.sku.split("-")[0])
                     purchase_price.append(product[0].get('purchase_price'))
                     cantida_tienda.append(product[0].get('stock_quantity'))
@@ -120,8 +120,10 @@ class Productos2Woocommerce:
                         
                         }
                 print(data)
-    
-                self.wc.set_producto_variacion(valor.producto.id_woocommerce,valor.producto.parent_id,data)
+                resp=self.wc.set_producto_variacion(valor.producto.id_woocommerce,valor.producto.parent_id,data)
+                if resp=='OK':
+                    print("Actualizacion prducto : ",resp )
+                    updateActualizacionTienda(valor.id,'SI')
 
                 #wcapi.put("products/"+str(nuevo[0].get('id'))+"/variations/"+str(datos["id_producto_tienda"][i])+"", data)#actualiza purchase price de mi tienda de pruebas
             else:
@@ -131,8 +133,12 @@ class Productos2Woocommerce:
                         "stock_quantity": valor.total_inventario
                             }
               
-                self.wc.set_producto_simple(valor.producto.id_woocommerce,data)
-               
+                resp=self.wc.set_producto_simple(valor.producto.id_woocommerce,data)
+                if resp=='OK':
+                    print("Actualizacion prducto : ",resp )
+                    updateActualizacionTienda(valor.id,'SI')
+
+                   
 
                 datos={"error":False,
                 "mensaje":"Productos actualizados correctamemte"}

@@ -3,7 +3,11 @@
 
 {% block title %}<title>Dashboard</title> {% endblock title %}
 {% block body %} {% csrf_token %} 
+<ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item active">Dashboard</li>
+                        </ol>
     <div class="row">
+    
         {% for impor in importaciones %}
             {% if impor.estado == 0  %}
                 {% comment %} 0 creacion de la importacion {% endcomment %}
@@ -11,7 +15,7 @@
                     <div class="col-xl-3 col-md-6">
                         <div class="card bg-warning text-white mb-4">
 
-                        <div class="card-body">Importacion Registrada</div>
+                        <div class="card-body">Importacion Iniciada</div>
                         Estado : {{impor.importacion.estado}}<br>
                         Fcha :{{impor.importacion.fecha}} <br>
                         Tipo : {{impor.importacion.descripcion}}<br>
@@ -28,7 +32,7 @@
                         {% comment %} 1 Registro detalle Factura       {% endcomment %}
                     <div class="col-xl-3 col-md-6">
                          <div class="card bg-warning text-white mb-4">
-                        <div class="card-body">Registro detalle factura </div>
+                        <div class="card-body">Factura detalle registrada </div>
                         Estado : {{impor.importacion.estado}}<br>
                         Fcha :{{impor.importacion.fecha}} <br>
                         Tipo : {{impor.importacion.descripcion}}<br>
@@ -46,7 +50,7 @@
                     {% comment %} 2 Registro Das {% endcomment %}
                      <div class="col-xl-3 col-md-6">
                                  <div class="card bg-warning text-white mb-4">
-                                <div class="card-body">Registro Das </div>
+                                <div class="card-body">Das registrado </div>
                                 Estado : {{impor.importacion.estado}}<br>
                                 Fcha :{{impor.importacion.fecha}} <br>
                                 Tipo : {{impor.importacion.descripcion}}<br>
@@ -66,7 +70,7 @@
                 {% comment %} 3 Regstro detall das {% endcomment %}
                   <div class="col-xl-3 col-md-6">
                                 <div class="card bg-primary text-white mb-4">
-                                <div class="card-body">Registro detalle  Das </div>
+                                <div class="card-body">Detalle Das registrada </div>
                                 Estado : {{impor.importacion.estado}}<br>
                                 Fcha :{{impor.importacion.fecha}} <br>
                                 Tipo : {{impor.importacion.descripcion}}<br>
@@ -85,7 +89,7 @@
                 {% comment %} 4 Registro factura afianzado {% endcomment %}
                   <div class="col-xl-3 col-md-6">
                                 <div class="card bg-primary text-white mb-4">
-                                <div class="card-body">Registro Factura afianzado </div>
+                                <div class="card-body">Factura afianzado registrado </div>
                                 Estado : {{impor.importacion.estado}}<br>
                                 Fcha :{{impor.importacion.fecha}} <br>
                                 Tipo : {{impor.importacion.descripcion}}<br>
@@ -103,7 +107,7 @@
 
                   <div class="col-xl-3 col-md-6">
                                 <div class="card bg-primary text-white mb-4">
-                                <div class="card-body">Registro detalle factura afianzado</div>
+                                <div class="card-body">Detalle afianzado registrado</div>
                                 Estado : {{impor.importacion.estado}}<br>
                                 Fcha :{{impor.importacion.fecha}} <br>
                                 Tipo : {{impor.importacion.descripcion}}<br>
@@ -120,7 +124,7 @@
                 {% comment %} 6 Productos creados en detalle impportacion {% endcomment %}
                   <div class="col-xl-3 col-md-6">
                                 <div class="card bg-primary text-white mb-4">
-                                <div class="card-body">Producto Importados guadados</div>
+                                <div class="card-body">Productos agregados en la importacions</div>
                                 Estado : {{impor.importacion.estado}}<br>
                                 Fcha :{{impor.importacion.fecha}} <br>
                                 Tipo : {{impor.importacion.descripcion}}<br>
@@ -137,7 +141,7 @@
                 {% comment %} 7 Datos calculados {% endcomment %}
                   <div class="col-xl-3 col-md-6">
                                 <div class="card bg-primary text-white mb-4">
-                                <div class="card-body">Resultado  de la importacion</div>
+                                <div class="card-body">Datos calculados</div>
                                 Estado : {{impor.importacion.estado}}<br>
                                 Fcha :{{impor.importacion.fecha}} <br>
                                 Tipo : {{impor.importacion.descripcion}}<br>
@@ -154,14 +158,15 @@
                 {% comment %} 8 datos sincronizados {% endcomment %}
                   <div class="col-xl-3 col-md-6">
                                 <div class="card bg-success text-white mb-4">
-                                 <div class="card-body">Importacion Sincronizada</div>
+                                 <div class="card-body">Productos actualizados</div>
                                 Estado : {{impor.importacion.estado}}<br>
                                 Fcha :{{impor.importacion.fecha}} <br>
                                 Tipo : {{impor.importacion.descripcion}}<br>
                                 No Importacion : {{impor.importacion.id}}<br>
-                                Origen : {{impor.importacion.origen}}<br>
+                                Origen : {{impor.importacion.origen}}<br> 
+                                {% comment %} previewsyncronizar {% endcomment %}
                                 <div class="card-footer d-flex align-items-center justify-content-between">
-                                <a class="small text-white stretched-link" href="{% url 'previewsyncronizar' impor.importacion.id impor.das impor.afianzado %}">Importacion Sincronizada</a>
+                                <a class="small text-white stretched-link" href="{% url 'updatetienda' impor.importacion.id %}">Importacion Sincronizada</a>
                                 <div class="small text-white"><i class="fas fa-angle-right"></i></div>
                                 </div>
                                 </div>
@@ -206,6 +211,7 @@ s
                                 <table id="datatablesSimple">
                                     <thead>
                                         <tr>
+                                        <th>Estado</th>
                                             <th>Estado Importacion</th>
                                             <th>Fecha</th>
                                             <th>Descripcion </th>
@@ -217,6 +223,7 @@ s
                                     </thead>
                                     <tfoot>
                                         <tr>
+                                            <th>Estado</th>
                                             <th>Estado Importacion</th>
                                             <th>Fecha</th>
                                             <th>Descripcion </th>
@@ -227,8 +234,41 @@ s
                                     </tfoot>
                                     <tbody>
                                     {% for dI in allimport %}
+                                    <div class="divLeftcol">
+
                                         <tr>
-                                            <td>{{dI.importacion.estado}}</td>
+                                        <td>{{dI.importacion.estado}}</td>
+                                       <td> 
+                                         {% if dI.importacion.estado == 0  %}
+                                           Importacion Iniciada
+                                          {% endif %} 
+                                          {% if dI.importacion.estado == 1  %}
+                                           Factura detalle registrada
+                                          {% endif %} 
+                                          {% if dI.importacion.estado == 2  %}
+                                           Das registrado
+                                          {% endif %} 
+                                          {% if dI.importacion.estado == 3  %}
+                                           Detalle Das registrada
+                                          {% endif %} 
+                                          {% if dI.importacion.estado == 4  %}
+                                           Factura afianzado registrado
+                                          {% endif %}
+                                          {% if dI.importacion.estado == 5  %}
+                                          Detalle afianzado registrado
+                                          {% endif %} 
+                                          {% if dI.importacion.estado == 6 %}
+                                           Productos agregados el la importacion
+                                          {% endif %} 
+                                          {% if dI.importacion.estado == 7  %}
+                                           Datos calculados
+                                          {% endif %} 
+                                           {% if dI.importacion.estado == 8  %}
+                                           Productos actualizados
+                                          {% endif %}</td>
+                                          
+                                          
+                                            
                                             <td>{{dI.importacion.fecha}}</td>
                                             <td>{{dI.importacion.descripcion}}</td>
                                             <td>{{dI.importacion.origen}}</td>
@@ -237,6 +277,7 @@ s
                                             
 
                                         </tr>
+                                        </div>
                                        {% endfor %}
                                     </tbody>
                                 </table>

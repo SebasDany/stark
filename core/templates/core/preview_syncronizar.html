@@ -4,7 +4,7 @@
 {% block title %}<title>Creacion de Importacion</title> {% endblock title %}
     {% block body %}
     {% comment %} {% url 'updateProductoTienda' id idas idfa %} {% endcomment %}
-      <form role="form" method="POST" action="{% url 'updatetienda' id %}">
+      <form role="form" method="POST" action="">
                             {% csrf_token %}  
                             <div class="alert alert-info"><h2> Alerta estos productos seran actualizados en la tienda </h2> 
                               </div>                      

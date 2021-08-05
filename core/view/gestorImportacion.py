@@ -1,14 +1,12 @@
-
-
-
 from core.view.gestorDas import updateSubtotal1
 from core.sincronizacion import Productos2Woocommerce
-from core.models import Das, Detalle_das, Detalle_importacion, Factura_proveedor, Importacion, Mercancia, Producto, Proveedor
+from core.models import Das, Detalle_das, Detalle_importacion, Factura_proveedor, Importacion, Mercancia, Producto, Proveedor, Proveedor_producto
 from ..controlador import  aranceles, costo_unitario, costos, incrementos, porcentuales, subtotal1, subtotal2, updateEstado, updateH
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
 import numpy as np 
 from django.contrib import messages 
+import datetime
+import django_excel as excel
 
 def iniciarProduct(request):
     dtp=Detalle_importacion()
@@ -58,10 +56,12 @@ def productosImportados(request,id,idas,idfa):
         precio=request.POST.getlist('precio')
         proveedor=request.POST.getlist('proveedor')
         cantidad=request.POST.getlist('cantidad')
+        sk_prove=request.POST.getlist('sk_prove')
+        nombreProve=request.POST.getlist('nombreProve')
         
         mercancia=request.POST.getlist('mercancia')
         peso=request.POST.getlist('peso')
-        saveDetalleImportacion(id,id_df,peso,precio,cantidad,product_id,mercancia,proveedor)
+        saveDetalleImportacion(id,id_df,peso,precio,cantidad,product_id,mercancia,proveedor,sk_prove,nombreProve)
         subtotal=subtotal2(id)
         print("id_df id \t \t",id_df)
         
@@ -88,8 +88,6 @@ def productosImportados(request,id,idas,idfa):
         print("Subtotal",subtotal["SumaSub2"], subt1["suma_sub1"])
         print("Subtotal",subtotal["SumaSub2"], subt1["suma_sub1"])
         
-
-        
         if(subtotal["SumaSub2"]!=subt1["suma_sub1"]):
             messages.error(request, "Validación INCORRECTA de suma de subtotales. Revisar los datos")
             return redirect('viewproduct',id,idas,idfa)
@@ -113,7 +111,7 @@ def productosImportados(request,id,idas,idfa):
 
     return 1
 
-def viewResults(request,id,idas,idfa):
+def viewResults(request,id,idas,idfa):# get per mite viszualizar los calculos realizados de la importacion y cuando es un post extrae los datos de catidad y costo_unitario de la base y de la tienda
     if request.method=='POST':
         PW=Productos2Woocommerce()
         PW.extraerDatosBase(id)
@@ -123,18 +121,9 @@ def viewResults(request,id,idas,idfa):
             messages.error(request, "Se han encontrado todos los SKU ")
         else:
             messages.error(request, "No se encontraron SKU "+ str(d_tienda["no_encontrado"]+"  en la tienda "))
-            
-
         updateEstado(id,8)
-        
-        # if res["error"]==False:
-        #     messages.success(request,  str(res['mensaje']))
-
         return redirect('previewsyncronizar',id,idas,idfa )
-
-    pr=Detalle_importacion.objects.filter(importacion=id)
-        
-        
+    pr=Detalle_importacion.objects.filter(importacion=id)    
     proveedores=Factura_proveedor.objects.filter(importacion=id)
     mercancias=Mercancia.objects.select_related().all()
     datos={
@@ -143,17 +132,21 @@ def viewResults(request,id,idas,idfa):
             "idfa":idfa,
             'error':False,
         "productos":pr,
-    
         "proveedores":proveedores,
         "mercancias":mercancias
     } 
-
-
     return render(request, 'core/resultados.html',datos  )
 
 def previewSyncronizar(request,id,idas,idfa):#permite previzulizar los datos a sincronyzar
 
-    
+    if request.method=='POST': #Realiza la sincronizacion con la tienda
+        if "id_producto" in request.POST:
+            ids=request.POST.getlist('id_producto')
+            PW=Productos2Woocommerce()
+            resp=PW.sincronizar(id)#sincroniza y actualiza los producto de la tienda
+            if resp["error"]==False:
+                messages.error(request,resp["mensaje"] )
+                return redirect('updatetienda',id) 
     pr=Detalle_importacion.objects.filter(importacion=id)
 
     datos={ "id":id,
@@ -162,18 +155,23 @@ def previewSyncronizar(request,id,idas,idfa):#permite previzulizar los datos a s
             "productos":pr}
 
     updateH(id,idas,idfa,8)
-
     return render(request, 'core/preview_syncronizar.html',datos ) 
-def updateTienda(request,id):
 
-    if request.method=='POST':
-        if "id_producto" in request.POST:
-            ids=request.POST.getlist('id_producto')
-            PW=Productos2Woocommerce()
-            resp=PW.sincronizar(id)
-            if resp["error"]==False:
-                messages.error(request,resp["mensaje"] )
-                return render (request, 'core/resultado_syncronizacion.html') 
+def updateTienda(request,id):
+    if request.method == 'POST':
+        print("estoy dentro del update ", id)
+        listresults(id)
+        return redirect('home')
+
+    pr=Detalle_importacion.objects.filter(importacion=id)
+    datos={"id":id,
+    "productos":pr
+    }
+    
+    
+    return render (request, 'core/resultado_syncronizacion.html', datos) 
+   
+
 
     
 def buscarProductos(request,id,idas,idfa):#Recoge los sku ingresados en el formulario
@@ -253,10 +251,13 @@ def guardarProductoImport(sku,ide):
             mercan=Mercancia.objects.get(id=p.mercancia.id)            
             dtp=Detalle_importacion(producto=p,das=das,importacion=imp, mercancia=mercan,proveedor=prove,valor_unitario=p.precio_compra)
             dtp.save()
+
+            provproduct=Proveedor_producto(producto=p,proveedor=prove,nombre="---")
+            provproduct.save()
                 
     return 1    
     
-def saveDetalleImportacion(ide,id_df,peso=[],precio=[],cantidad=[],id_prod=[],mercancia=[],proveedor=[]):
+def saveDetalleImportacion(ide,id_df,peso=[],precio=[],cantidad=[],id_prod=[],mercancia=[],proveedor=[],skut=[],nombreT=[] ):
     das=Das.objects.get(importacion=ide)
     imp=Importacion.objects.get(id=ide)
     fp=Factura_proveedor.objects3.last()
@@ -273,7 +274,17 @@ def saveDetalleImportacion(ide,id_df,peso=[],precio=[],cantidad=[],id_prod=[],me
         dtImport.cantidad=cantidad[i]
         dtImport.peso=peso[i]
         dtImport.save()
-    return {'error':False}    
+        updateProveedorProducto(id_prod[i],dtImport.proveedor,skut[i],nombreT[i],precio[i],peso[i],cantidad[i])
+    return {'error':False} 
+
+def updateProveedorProducto(idPro,prov,skut,nombreT,pre,pes,can):
+    pP=Proveedor_producto.objects.filter(producto=idPro)
+    print(pP[0].id)
+    Proveedor_producto.objects.filter(id=pP[0].id).update(proveedor=prov, sku=skut,nombre=nombreT,precio=pre,peso=pes,cantidad=can)
+    
+
+
+
 def updateSubtotal2(id_dI, subt2):
     for i in range(len(id_dI)):
         Detalle_importacion.objects.filter(id=id_dI[i]).update(subtotal2=subt2[i])
@@ -300,3 +311,38 @@ def updateIncrementos(id_dI,inc_porcen,inc_dol):
     for i in range(len(id_dI)):
         Detalle_importacion.objects.filter(id=id_dI[i]).update(inc_porcentual=inc_porcen[i],inc_dolares=inc_dol[i])
 
+
+
+def listresults(request,id):
+    export = []
+    # Se agregan los encabezados de las columnas
+    export.append([
+        'SKU','Nombre','Id producto tienda', 'Variacion ','Nuevo costo','Total inventario',"Fecha","Actualizado"
+    ])
+    # Se obtienen los datos de la tabla o model y se agregan al array
+    results = Detalle_importacion.objects.filter(importacion=id)
+    for result in results:
+        # ejemplo para dar formato a fechas, estados (si/no, ok/fail) o
+        # acceder a campos con relaciones y no solo al id
+        export.append([result.producto.sku,
+                        result.producto.nombre,
+                        result.producto.id_woocommerce,
+                        result.producto.variacion,
+                        result.nuevo_costo,
+                        result.total_inventario,
+                        "{0:%Y-%m-%d %H:%M}".format(result.importacion.fecha),
+                        result.actualizado,
+                
+                
+                ])
+
+    # Obtenemos la fecha para agregarla al nombre del archivo
+    today    = datetime.datetime.today()
+    strToday = today.strftime("%Y%m%d")
+
+    # se transforma el array a una hoja de calculo en memoria
+    sheet = excel.pe.Sheet(export)
+
+    # se devuelve como "Response" el archivo para que se pueda "guardar"
+    # en el navegador, es decir como hacer un "Download"
+    return excel.make_response(sheet, "csv", file_name="results-"+strToday+".csv")

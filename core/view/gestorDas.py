@@ -53,6 +53,7 @@ def datosDas(request,id,idas):
         objDas=Das.objects.last()
         m=Mercancia.objects.last()
         dd=Detalle_das.objects.filter(das=idas)
+        print("cantidad",cantidad)
         if(len(dd) < int(cantidad)):
                 for k in  range(int(cantidad)-len(dd)):
                     dt=Detalle_das(mercancia=m,das=objDas,advalorem1=0,fodinfa1=0,iva1=0)

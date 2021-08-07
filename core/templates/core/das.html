@@ -1,8 +1,11 @@
 {% extends 'core/base.html'%}
 
 
+{% load static %}
 {% block title %}<title>Regitro Productos</title> {% endblock title %}
         {% block body %}
+        
+        <link href="{% static 'core/css/proveedor.css' %}" rel="stylesheet" />
         <div class="container">
                 <div class="progress-container">
                     <div class="progress" id="progress"></div>
@@ -12,50 +15,149 @@
                         <div class="circle "><i class="fa-html5">5</i><li>Importación</li></div>
                     </div>
             </div> 
-<form action="" method="POST">
+<form action="" method="POST" class="form-inline">
                   {% csrf_token %}  
+                  <div class="cont"> 
+                    <div class="col-xl-12 col-md-12">
+                    <div class="card"
+                    style="text-align: left;"> 
+                    <div class="container-fluid px-4">
+<div class="row">
 
-                
-                                    <table>
-                 <tbody><tr><th><label for="id_numero_entrega">Numero entrega:</label></th><td><input type="text" name="numero_entrega" value={{das.numero_entrega}} maxlength="128" id="id_numero_entrega"></td></tr>
-                 <tr><th><label for="id_numero_atribuido">Numero atribuido:</label></th><td><input type="text" name="numero_atribuido" value={{das.numero_atribuido}} maxlength="128" id="id_numero_atribuido"></td></tr>
-<tr><th><label for="id_fecha_embarque">Fecha embarque:</label></th><td><input type="date"  name="fecha_embarque"value={{das.fecha_embarque}} required="" id="id_fecha_embarque"></td></tr>
-<tr><th><label for="id_fecha_llegada">Fecha llegada:</label></th><td><input type="date"   name="fecha_llegada" value={{das.fecha_llegada}} required="" id="id_fecha_llegada"></td></tr>
-<tr><th><label for="id_documento_transporte">Documento transporte:</label></th><td><input type="text" name="documento_transporte" value={{das.documento_transporte}} maxlength="64" required="" id="id_documento_transporte"></td></tr>
-<tr><th><label for="id_tipo_carga">Tipo carga:</label></th><td><input type="text" name="tipo_carga" value={{das.tipo_carga}} maxlength="64" id="id_tipo_carga"></td></tr>
-<tr><th><label for="id_pais_procedncia">Pais procedncia:</label></th><td><input type="text" name="pais_procedncia" value={{das.pais_procedncia}} maxlength="255" id="id_pais_procedncia"></td></tr>
-<tr><th><label for="id_via_transporte">Via transporte:</label></th><td><input type="text" name="via_transporte" value={{das.via_transporte}} maxlength="64" id="id_via_transporte"></td></tr>
-<tr><th><label for="id_puerto_enbarque">Puerto enbarque:</label></th><td><input type="text" name="puerto_enbarque" value={{das.puerto_enbarque}} maxlength="128" id="id_puerto_enbarque"></td></tr>
-<tr><th><label for="id_ciudad_importador">Ciudad importador:</label></th><td><input type="text" name="ciudad_importador" value={{das.ciudad_importador}} maxlength="128" id="id_ciudad_importador"></td></tr>
-<tr><th><label for="id_empresa_tranporte">Empresa tranporte:</label></th><td><input type="text" name="empresa_tranporte" value={{das.empresa_tranporte}} maxlength="128" required="" id="id_empresa_tranporte"></td></tr>
-<tr><th><label for="id_identificacion_carga">Identificacion carga:</label></th><td><input type="text" name="identificacion_carga" value={{das.identificacion_carga}} maxlength="128" id="id_identificacion_carga"></td></tr>
-<tr><th><label for="id_monto_flete">Monto flete:</label></th><td><input type="number" name="monto_flete"  value={{das.monto_flete}} step="0.01" id="id_monto_flete"></td></tr>
-<tr><th><label for="id_total_items">Total items:</label></th><td><input type="number" name="total_items" value={{das.total_items}} id="id_total_items"></td></tr>
-<tr><th><label for="id_peso_neto">Peso neto:</label></th><td><input type="number" name="peso_neto" value={{das.peso_neto}} step="0.01" id="id_peso_neto"></td></tr>
-<tr><th><label for="id_total_bultos">Total bultos:</label></th><td><input type="number" name="total_bultos" value={{das.total_bultos}} required="" id="id_total_bultos"></td></tr>
-<tr><th><label for="id_unidades_comerciales">Unidades comerciales:</label></th><td><input type="number" name="unidades_comerciales" value={{das.unidades_comerciales}} required="" id="id_unidades_comerciales"></td></tr>
-<tr><th><label for="id_total_tributos">Total tributos:</label></th><td><input type="number" name="total_tributos" value={{das.total_tributos}} step="0.01" required="" id="id_total_tributos"></td></tr>
-<tr><th><label for="id_valor_seguros">Valor seguros:</label></th><td><input type="number" name="valor_seguros" value={{das.valor_seguros}} step="0.01" required="" id="id_valor_seguros"></td></tr>
-<tr><th><label for="id_cif">Cif:</label></th><td><input type="number" name="cif" value={{das.cif}} step="0.01" required="" id="id_cif"></td></tr>
-<tr><th><label for="id_peso_bruto">Peso bruto:</label></th><td><input type="number" name="peso_bruto" value={{das.peso_bruto}} step="0.01" required="" id="id_peso_bruto"></td></tr>
-<tr><th><label for="id_unidades_fisicas">Unidades fisicas:</label></th><td><input type="number" name="unidades_fisicas" value="0" required="" id="id_unidades_fisicas"></td></tr>
-<tr><th><label for="id_valor_fob">Valor fob:</label></th><td><input type="number" name="valor_fob" value={{das.valor_fob}} step="0.01" required="" id="id_valor_fob"></td></tr>
-                 <tr>
-                 <td><b>Numero de mercancia </b></td>
-                 <td><input type="number" name="cantidad" value=2  requiered > </td>
-                 </tr>
-                 </tbody></table>
+    <div class="col-sm-3">
+        <label for="id_numero_entrega">Numero entrega:</label>
+        <input type="text" class="form-control" name="numero_entrega" value={{das.numero_entrega}} maxlength="128" id="id_numero_entrega">
+    </div>
+    <div class="col-sm-3">
+        <label for="id_numero_atribuido">Numero atribuido:</label>
+        <input type="text" class="form-control" name="numero_atribuido" value={{das.numero_atribuido}} maxlength="128" id="id_numero_atribuido">
+    </div>
+    
+    <div class="col-sm-3">
+        <label for="id_fecha_embarque">Fecha embarque:</label>
+        <input type="date"  class="form-control" name="fecha_embarque"value={{das.fecha_embarque}} required="" id="id_fecha_embarque">
+    </div>
+    <div class="col-sm-3">
+        <label for="id_fecha_llegada">Fecha llegada:</label>
+        <input type="date"   class="form-control" name="fecha_llegada" value={{das.fecha_llegada}} required="" id="id_fecha_llegada">
+    </div>      
+</div>
+<div class="row">
+    <div class="col-sm-3">
+        <label for="id_documento_transporte">Documento transporte:</label>
+        <input type="text" class="form-control" name="documento_transporte" value={{das.documento_transporte}} maxlength="64" required="" id="id_documento_transporte">
+    </div>
+    
+    <div class="col-sm-3">
+        <label for="id_tipo_carga">Tipo carga:</label>
+        <input type="text" class="form-control" name="tipo_carga" value={{das.tipo_carga}} maxlength="64" id="id_tipo_carga">
+    </div>      
+    <div class="col-sm-3">
+        <label for="id_pais_procedncia">País procedencia:</label>
+        <input type="text" class="form-control" name="pais_procedncia" value={{das.pais_procedncia}} maxlength="255" id="id_pais_procedncia">
+    </div>
+    <div class="col-sm-3">
+        <label for="id_via_transporte">Via transporte:</label>
+        <input type="text" class="form-control" name="via_transporte" value={{das.via_transporte}} maxlength="64" id="id_via_transporte">
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-3">
+        <label for="id_puerto_enbarque">Puerto enbarque:</label>
+        <input type="text"class="form-control"  name="puerto_enbarque" value={{das.puerto_enbarque}} maxlength="128" id="id_puerto_enbarque">
+    </div> 
+    <div class="col-sm-3">
+        <label for="id_ciudad_importador">Ciudad importador:</label>
+        <input type="text" class="form-control" name="ciudad_importador" value={{das.ciudad_importador}} maxlength="128" id="id_ciudad_importador">
+    </div>
+    <div class="col-sm-3">
+        <label for="id_empresa_tranporte">Empresa tranporte:</label>
+        <input type="text" class="form-control" name="empresa_tranporte" value={{das.empresa_tranporte}} maxlength="128" required="" id="id_empresa_tranporte">
+    </div>
+    
+    <div class="col-sm-3">
+        <label for="id_identificacion_carga">Identificacion carga:</label>
+        <input type="text" class="form-control" name="identificacion_carga" value={{das.identificacion_carga}} maxlength="128" id="id_identificacion_carga">
+    </div>           
+</div>
+<div class="row">
+
+    <div class="col-sm-3">
+        <label for="id_monto_flete">Monto flete:</label>
+        <input type="number" class="form-control" name="monto_flete"  value={{das.monto_flete}} step="0.01" id="id_monto_flete">
+    </div>
+    <div class="col-sm-3">
+        <label for="id_total_items">Total items:</label>
+        <input type="number" class="form-control" name="total_items" value={{das.total_items}} id="id_total_items">
+    </div>
+    
+    <div class="col-sm-3">
+        <label for="id_peso_neto">Peso neto:</label>
+        <input type="number" class="form-control" name="peso_neto" value={{das.peso_neto}} step="0.01" id="id_peso_neto">
+    </div>    
+    <div class="col-sm-3">
+        <label for="id_total_bultos">Total bultos:</label>
+        <input type="number" class="form-control" name="total_bultos" value={{das.total_bultos}} required="" id="id_total_bultos">
+    </div>   
+</div>
+<div class="row">
+    <div class="col-sm-3">
+        <label for="id_unidades_comerciales">Unidades comerciales:</label>
+        <input type="number" class="form-control" name="unidades_comerciales" value={{das.unidades_comerciales}} required="" id="id_unidades_comerciales">
+    </div>
+    <div class="col-sm-3">
+        <label for="id_total_tributos">Total tributos:</label>
+        <input type="number" class="form-control" name="total_tributos" value={{das.total_tributos}} step="0.01" required="" id="id_total_tributos">
+    </div>
+    
+    <div class="col-sm-3">
+        <label for="id_valor_seguros">Valor seguros:</label>
+        <input type="number" class="form-control" name="valor_seguros" value={{das.valor_seguros}} step="0.01" required="" id="id_valor_seguros">
+    </div> 
+
+    <div class="col-sm-2">
+        <label for="id_cif">Cif:</label>
+        <input type="number" class="form-control" name="cif" value={{das.cif}} step="0.01" required="" id="id_cif">
+    </div>   
+
+</div>
+<div class="row">
+    <div class="col-sm-3">
+        <label for="id_peso_bruto">Peso bruto:</label>
+        <input type="number" class="form-control" name="peso_bruto" value={{das.peso_bruto}} step="0.01" required="" id="id_peso_bruto">
+    </div>
+    <div class="col-sm-3">
+        <label for="id_unidades_fisicas">Unidades fisicas:</label>
+        <input type="number" class="form-control"  name="unidades_fisicas" value="0" required="" id="id_unidades_fisicas">
+    </div>
+    
+    <div class="col-sm-3">
+        <label for="id_valor_fob">Valor fob:</label>
+        <input type="number" class="form-control" name="valor_fob" value={{das.valor_fob}} step="0.01" required="" id="id_valor_fob">
+    </div>    
+    <div class="col-sm-3">
+        <label for="id_mer"><b>Numero de mercancia </b></label>
+        <input type="number" class="form-control" name="cantidad" value=2  requiered > 
+    </div>   
+</div>
+<br/>
 
 
 {% comment %} <a class="btn btn-primary" href="{% url 'proveedor' %}">Atras</a> {% endcomment %}
 <a class="btn btn-primary"  href="{% url 'startFP' id %}">editar</a>
 <button type="submit" class="btn btn-primary">Guardar y continuar</button>
-                                    
+</div>
+</div>
+</div>
 
-       </form>
- <script> 
+</div>
+
+                       
+
+</form>
+<script> 
 function atras(){
-    window.history.go(-1);
+window.history.go(-1);
 }
 </script>
-        {% endblock body %}
+{% endblock body %}              

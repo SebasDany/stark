@@ -1,0 +1,27 @@
+
+.contenedor-tabla{
+	display: table;
+	width: 100%;
+
+}
+.contenedor-fila {
+	display: table-row;
+}
+
+
+.contenedor-columna {
+	border: 1px solid #7b1fa2;
+	display: table-cell;
+	padding: 3px 10px;
+}
+.divTableBody {
+	margin: 10px; 
+    border: 3px solid #7b1fa2;
+    background-color: #E6E6FA;   
+}
+
+
+.card{
+   
+    padding: 30px;
+}

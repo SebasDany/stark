@@ -12,12 +12,15 @@
 
                             {% for message in messages %}
                         <div class="alert alert-success"> {{ message }}</div>
+                       
+
                         {% endfor %}                         
 
                       <h2>  Resultado de los productos importados </h2>
                      
-
-<table class="table">
+<div id="Layer1" style="width:100%; height:100%; overflow: scroll;">
+  <table class="table">
+  
   <thead>
       <tr>
           <th scope="col">SKU</th>
@@ -71,11 +74,14 @@
 
       </tbody>
   </table>
+
+
  <a class="btn btn-primary"  href="{% url 'viewproduct' id idas idfa %}">Atras</a> 
                 
 
   <button  id="sincronizar" class="btn" type="submit" >Calcular</button>     
    </form>
+</div>
 <script>
 
 function activar(){

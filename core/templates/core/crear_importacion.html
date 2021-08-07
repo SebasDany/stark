@@ -1,15 +1,17 @@
 {% extends 'core/base.html'%}
 
 
-{% block title %}<title>Creacion de Importacion</title> {% endblock title %}
+{% block title %}<title>Producto importados </title> {% endblock title %}
     {% block body  %} 
+<h1 class="mt-4">Producto importados  </h1>
+    
     <body onload="nobackbutton();"></body>
       {%include 'core/messages.html'%}
       <form role="form" method="POST" action="{% url 'productosimportados' id idas idfa %}">
                             {% csrf_token %}    
 
                          
-                        Producto importados     
+                            
                <table class="table">               
                <tr>
                   <td>SKU</td>

@@ -15,6 +15,22 @@
                         <div class="circle "><i class="fa-html5">5</i><li>Importación</li></div>
                     </div>
             </div> 
+            <h1 class="mt-4">Ingreso Datos del DAS </h1>
+
+ <div class="bg-light">
+                    <div class="container-fluid px-4">
+                        
+                              <nav aria-label="breadcrumb" class="breadcrumb">
+                            <ol class="breadcrumb mb-4">
+                                <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                                <li class="breadcrumb-item"><a href="{% url 'importacion' id %}">Inicio Importacion</a></li>
+                                <li class="breadcrumb-item"><a href="{% url 'startFP' id %}">Detalle factura</a></li>
+                                
+                                <li class="breadcrumb-item active" aria-current="page">Datos DAS</li>
+                            </ol>
+                            </nav>           
+                        </div>
+            </div>
 <form action="" method="POST" class="form-inline">
                   {% csrf_token %}  
                   <div class="cont"> 
@@ -35,11 +51,11 @@
     
     <div class="col-sm-3">
         <label for="id_fecha_embarque">Fecha embarque:</label>
-        <input type="date"  class="form-control" name="fecha_embarque"value={{das.fecha_embarque}} required="" id="id_fecha_embarque">
+        <input type="date"  class="form-control" name="fecha_embarque"value={{fecha_embarque}} required="" id="id_fecha_embarque">
     </div>
     <div class="col-sm-3">
         <label for="id_fecha_llegada">Fecha llegada:</label>
-        <input type="date"   class="form-control" name="fecha_llegada" value={{das.fecha_llegada}} required="" id="id_fecha_llegada">
+        <input type="date"   class="form-control" name="fecha_llegada" value={{fecha_llegada}} required="" id="id_fecha_llegada">
     </div>      
 </div>
 <div class="row">

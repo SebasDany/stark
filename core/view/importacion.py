@@ -1,18 +1,9 @@
 
-from time import perf_counter
 from django.shortcuts import render, redirect
-
 from ..controlador import  crearH
-# from ..ecommerce import Woocommerce
-
 from ..models import Factura_proveedor,Importacion, Mercancia, Producto,Proveedor
-
-from woocommerce import API
-from ..forms import UserRegisterForm, ProductRegister, FormImportacion, FormDas,FormFacturaProveedor,FormFacturaAfianzado,FormDetalleAfianzado
-
-
+from ..forms import UserRegisterForm, ProductRegister
 from django.contrib import messages
-import json
 import datetime
 
 mercancia=['TARJETAS ELECTRÓNICAS', 'SENSORES', 'SENSORES MEDIDOR D', 'Carcasa De Plastico', 'Sensor De Microfono', 'PARTE DE CAMARA', 'Mini Pantalla Display', 'RELE', 'CABLES', 'REGULADORES DE VOLTAJE', 'RECEPTOR INALAMBRICO', 'KIT DE ROBOTICA', 'CIRCUITOS INTEGRADOS', 'PORTA LED', 'DIODOS', 'SOPORTE PARA TARJETAS', 'INTERRUPTORES', 'RESISTENCIAS',]
@@ -77,8 +68,6 @@ mercan=["TARJETAS ELECTRÓNICAS", "CIRCUITOS INTEGRADOS", "CIRCUITOS INTEGRADOS"
     #print(wcapi1.put("products/"+str(id),data)
 
 
-
-
 def startImport(request):
     imp=Importacion(fecha=str(datetime.datetime.today()).split()[0],descripcion="",tipo="",origen="",estado=0)
     imp.save()
@@ -90,7 +79,6 @@ def startImport(request):
     for i in Producto.objects.all():
         print(i.id, i.nombre)
     return redirect('importacion',id)
-
 
 # Create your views here.
 def password(request):
@@ -145,32 +133,32 @@ def saveProduct(request):
     return render(request,'core/product.html',context)
 
 def importacion(request,id):
-    print("estoy dentro del editar")
-    datos = Importacion.objects.get(id=id)  
-    context={
-                'form':FormImportacion(instance=datos)
-            }
     if request.method=='POST':
-        form=FormImportacion(request.POST,instance=datos)
-        if form.is_valid():
-            fecha=form['fecha'].value()
-            form.save()
+        fecha=request.POST.get('fecha')
+        tipo=request.POST.get('tipo')
+        origen=request.POST.get('origen')
+        descripcion=request.POST.get('descripcion')
+       
+        Importacion.objects.filter(id=id).update(fecha=fecha,descripcion=descripcion,tipo=tipo,origen=origen,)  
             
-            cantidad=request.POST.get('cantidad')
-            cant=[]
-            proveedor=Proveedor.objects.last()
-            importacion=Importacion.objects.get(id=id)
-            fac=Factura_proveedor.objects.filter(importacion=id)
-            if(len(fac) < int(cantidad)):
-                print(len(fac),int(cantidad))
-                print(len(fac)-int(cantidad))
-            
-                for k in  range(int(cantidad)-len(fac)):
-                    pf=Factura_proveedor(proveedor=proveedor,importacion=importacion,num_cajas=0,valor_factura=0,valor_envio=0,comision_envio=0,isd=23333,total_pago=0,extra=0)  
-                    pf.save()
-            messages.success(request, 'Se ha registrado correctamente!')
-            return redirect('startFP',id)
-    return render(request,'core/importacion.html',context)
+        cantidad=request.POST.get('cantidad')
+        cant=[]
+        proveedor=Proveedor.objects.last()
+        importacion=Importacion.objects.get(id=id)
+        fac=Factura_proveedor.objects.filter(importacion=id)
+        if(len(fac) < int(cantidad)):
+            print(len(fac),int(cantidad))
+            print(len(fac)-int(cantidad))
+        
+            for k in  range(int(cantidad)-len(fac)):
+                pf=Factura_proveedor(proveedor=proveedor,importacion=importacion,num_cajas=0,valor_factura=0,valor_envio=0,comision_envio=0,isd=23333,total_pago=0,extra=0)  
+                pf.save()
+        messages.success(request, 'Se ha registrado correctamente!')
+        return redirect('startFP',id)
+    
+    datos = Importacion.objects.get(id=id)  
+    dato={"im":datos,"fecha":str(datos.fecha)}   
+    return render(request,'core/importacion.html',dato)
 
 
 

@@ -3,6 +3,8 @@
 
 {% block title %}<title>Creacion de Importacion</title> {% endblock title %}
     {% block body %}
+
+    <h1 class="mt-4">Creacion de Importacion </h1>
       <form role="form" method="POST" action="{% url 'addproductimport' id idas idfa %}">
                             {% csrf_token %}  
                             <div class="alert alert-info"><h2> Alerta estos productos ya no podran ser modificados una vez presionado continuar </h2> 
@@ -11,7 +13,6 @@
                         
                            {% for message in messages %}
            
-
                         <div class="alert alert-warning alert-dismissable">
                         
                         <strong>¡Cuidado!</strong> {{ message }}
@@ -31,15 +32,10 @@
 
                    {% for lista in productos %}
                      <tr>
-
-                     
                      <td><input type="checkbox" name="id_producto" value={{lista.sku}} checked> {{ lista.sku}}</td>
-                        <td>
                               
                         <td><label>{{ lista.nombre}} </label> </td>
-                        
-                    
-                     
+                          
                               </tr>
                      {% endfor %}
 

@@ -62,7 +62,9 @@ def datosDas(request,id,idas):
     else:
         das=Das.objects.get(id=idas)
         datos={"id":id,
-                "das":das
+                "das":das,
+                "fecha_embarque":str(das.fecha_embarque),
+                "fecha_llegada":str(das.fecha_llegada)
                 }
     return render(request,'core/das.html',datos)
 

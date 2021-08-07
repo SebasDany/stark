@@ -14,10 +14,27 @@
                 <div class="circle "><i class="fa-html5">5</i><li>Importación</li></div>
             </div>
     </div> 
+
+          <h1 class="mt-4">Ingreso Detalle Das </h1>
+
+ <div class="bg-light">
+                    <div class="container-fluid px-4">
+                        
+                              <nav aria-label="breadcrumb" class="breadcrumb">
+                            <ol class="breadcrumb mb-4">
+                                <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                                <li class="breadcrumb-item"><a href="{% url 'importacion' id %}">Inicio Importacion</a></li>
+                                <li class="breadcrumb-item"><a href="{% url 'startFP' id %}">Detalle factura</a></li>
+                                <li class="breadcrumb-item"><a href="{% url 'datosdas' id idas %}">Datos DAS</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Detalle DAS</li>
+                            </ol>
+                            </nav>           
+                        </div>
+            </div>
 <form action="" method="POST">
                   {% csrf_token %} 
                 
-                  Detalle Das
+               
                   <br>
 
 

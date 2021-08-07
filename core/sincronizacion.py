@@ -1,7 +1,7 @@
 
 
 
-from core.controlador import updateActualizacionTienda, updateCost_Invent, updateIdWooProduct
+from core.utilidades import updateActualizacionTienda, updateCost_Invent, updateIdWooProduct
 from .models import Detalle_importacion
 
 from django.conf import settings
@@ -12,7 +12,7 @@ from woocommerce import API
 from core.woo_commerce import Woocommerce
 
 
-class Productos2Woocommerce:
+class Sincronizacion:
     def __init__(self):
         self.wc = Woocommerce()
         self.logger = logging.getLogger(__name__)

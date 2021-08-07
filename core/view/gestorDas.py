@@ -1,7 +1,7 @@
 
-from ..controlador import  subtotal1, updateEstado, updateH
+from ..utilidades import  updateEstado, updateH
 from django.shortcuts import render, redirect
-from ..models import Detalle_das, Factura_afianzado, Importacion,Mercancia,Afianzado,Das, Producto,Proveedor_producto
+from ..models import Detalle_das, Factura_afianzado, Importacion,Mercancia,Das
 import datetime
 
 def startDas(request,id):

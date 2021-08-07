@@ -1,5 +1,5 @@
 
-from ..controlador import  updateEstado, updateH
+from ..utilidades import  updateEstado, updateH
 from django.shortcuts import render, redirect
 from ..models import Detalle_afianzado, Factura_afianzado,Importacion,Afianzado, Mercancia, Producto, Proveedor
 import datetime

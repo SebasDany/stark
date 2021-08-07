@@ -280,7 +280,7 @@ def saveDetalleImportacion(ide,id_df,peso=[],precio=[],cantidad=[],id_prod=[],me
         dtImport.cantidad=cantidad[i]
         dtImport.peso=peso[i]
         dtImport.save()
-        #updateProveedorProducto(id_prod[i],dtImport.proveedor,skut[i],nombreT[i],precio[i],peso[i],cantidad[i])
+        updateProveedorProducto(id_prod[i],dtImport.proveedor,skut[i],nombreT[i],precio[i],peso[i],cantidad[i])
     return {'error':False} 
 
 def updateProveedorProducto(idPro,prov,skut,nombreT,pre,pes,can):

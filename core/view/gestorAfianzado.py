@@ -28,9 +28,10 @@ def datosAfianzado(request,id,idas,idfa):
     faf=Factura_afianzado.objects.get(importacion=id)
     datos={"id":id,
             "faf":faf,
-            "afianzado":afianzado,"id":id,
+            "afianzado":afianzado,
             "idfa":idfa,
-            "idas":idas
+            "idas":idas,
+            "fecha":str(faf.fecha)
             }
     return render(request,'core/factura_afianzado.html',datos)
 

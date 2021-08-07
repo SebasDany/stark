@@ -12,15 +12,41 @@
                         <div class="circle "><i class="fa-html5">5</i><li>Importación</li></div>
                     </div>
             </div> 
+
+            <h1 class="mt-4">Ingreso Datos del DAS </h1>
+
+ <div class="bg-light">
+                    <div class="container-fluid px-4">
+                        
+                              <nav aria-label="breadcrumb" class="breadcrumb">
+                            <ol class="breadcrumb mb-4">
+                                <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                                <li class="breadcrumb-item"><a href="{% url 'importacion' id %}">Inicio Importacion</a></li>
+                                <li class="breadcrumb-item"><a href="{% url 'startFP' id %}">Detalle factura</a></li>
+                                
+                                <li class="breadcrumb-item active" aria-current="page">Datos DAS</li>
+                            </ol>
+                            </nav>           
+                        </div>
+            </div>
+
+     
 <form action="" method="POST">
                   {% csrf_token %}  
+                  
 
                 
-                                    <table>
-                 <tbody><tr><th><label for="id_numero_entrega">Numero entrega:</label></th><td><input type="text" name="numero_entrega" value={{das.numero_entrega}} maxlength="128" id="id_numero_entrega"></td></tr>
+                                    <table class="table">
+                 <tbody>
+                 <tr>
+                 <td><b>Numero de mercancia </b></td>
+                 <td><input type="number" name="cantidad" value=2  requiered > <br>
+                  <span class="helptext">Genera campos necesarios para ingresar datos del detalle das</span></td>
+                 </tr>
+                 <tr><th><label for="id_numero_entrega">Numero entrega:</label></th><td><input type="text" name="numero_entrega" value={{das.numero_entrega}} maxlength="128" id="id_numero_entrega"></td></tr>
                  <tr><th><label for="id_numero_atribuido">Numero atribuido:</label></th><td><input type="text" name="numero_atribuido" value={{das.numero_atribuido}} maxlength="128" id="id_numero_atribuido"></td></tr>
-<tr><th><label for="id_fecha_embarque">Fecha embarque:</label></th><td><input type="date"  name="fecha_embarque"value={{das.fecha_embarque}} required="" id="id_fecha_embarque"></td></tr>
-<tr><th><label for="id_fecha_llegada">Fecha llegada:</label></th><td><input type="date"   name="fecha_llegada" value={{das.fecha_llegada}} required="" id="id_fecha_llegada"></td></tr>
+<tr><th><label for="id_fecha_embarque">Fecha embarque:</label></th><td><input type="date"  name="fecha_embarque"value={{fecha_embarque}} required="" id="id_fecha_embarque"></td></tr>
+<tr><th><label for="id_fecha_llegada">Fecha llegada:</label></th><td><input type="date"   name="fecha_llegada" value={{fecha_llegada}} required="" id="id_fecha_llegada"></td></tr>
 <tr><th><label for="id_documento_transporte">Documento transporte:</label></th><td><input type="text" name="documento_transporte" value={{das.documento_transporte}} maxlength="64" required="" id="id_documento_transporte"></td></tr>
 <tr><th><label for="id_tipo_carga">Tipo carga:</label></th><td><input type="text" name="tipo_carga" value={{das.tipo_carga}} maxlength="64" id="id_tipo_carga"></td></tr>
 <tr><th><label for="id_pais_procedncia">Pais procedncia:</label></th><td><input type="text" name="pais_procedncia" value={{das.pais_procedncia}} maxlength="255" id="id_pais_procedncia"></td></tr>
@@ -40,10 +66,7 @@
 <tr><th><label for="id_peso_bruto">Peso bruto:</label></th><td><input type="number" name="peso_bruto" value={{das.peso_bruto}} step="0.01" required="" id="id_peso_bruto"></td></tr>
 <tr><th><label for="id_unidades_fisicas">Unidades fisicas:</label></th><td><input type="number" name="unidades_fisicas" value="0" required="" id="id_unidades_fisicas"></td></tr>
 <tr><th><label for="id_valor_fob">Valor fob:</label></th><td><input type="number" name="valor_fob" value={{das.valor_fob}} step="0.01" required="" id="id_valor_fob"></td></tr>
-                 <tr>
-                 <td><b>Numero de mercancia </b></td>
-                 <td><input type="number" name="cantidad" value=2  requiered > </td>
-                 </tr>
+                 
                  </tbody></table>
 
 

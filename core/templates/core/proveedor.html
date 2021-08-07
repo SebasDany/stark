@@ -3,142 +3,166 @@
 
 {% block title %}<title>Productos</title> {% endblock title %}
 
-        {% block body %}
-        
-        <div class="container">
-            <div class="progress-container">
-                <div class="progress" id="progress"></div>
-                    <div class="circle active"><i class="fa-html5">1</i><li>Proveedor</li></div>
-                    <div class="circle "><i class="fa-js">2</i><li>DAS</li></div>
-                    <div class="circle "><i class="fa-react">3</i><li>Afianzado</li></div>
-                    <div class="circle "><i class="fa-html5">5</i><li>Importación</li></div>
-                </div>
-        </div> 
-<br/>
-<br/>
+{% block body %}
 
-    <link href="{% static 'core/css/proveedor.css' %}" rel="stylesheet" />
-    <h1 class="mt-4">Detalle factura </h1>
-
- <div class="bg-light">
-                    <div class="container-fluid px-4">
-                        
-                              <nav aria-label="breadcrumb" class="breadcrumb">
-                            <ol class="breadcrumb mb-4">
-                                <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
-                                <li class="breadcrumb-item"><a href="{% url 'importacion' id %}">Inicio Importacion</a></li>
-
-                                <li class="breadcrumb-item active" aria-current="page">Detalle factura</li>
-                            </ol>
-                            </nav>           
-                        </div>
-            </div>
-<form class="form-inline" action="" method="POST"  >
-                  {% csrf_token %} 
-                  
-    <div class="contenedor-tabla"  >
-                  
-        <input type="text" style="display:none;" id="n"  value={{cant}} >
-          
-        {% for lista in cantidad %}
-
-    <div class="divTableBody">
-      
-       <div class="contenedor-fila" >
-
-        <div class="contenedor-columna">Proveedor</div>
-        <div class="contenedor-columna">Num cajas</div>
-        <div class="contenedor-columna">V_envio</div>
-        <div class="contenedor-columna">V_factura</div>
-    
-        <div class="contenedor-columna">Comis_envio</div>
-    
-       </div>
-    
-       <div class="contenedor-fila">
-                        
-        <div class="contenedor-columna">
-  
-                <select name="proveedor">
-                 <option value={{ lista.proveedor.id }} selected >{{ lista.proveedor }}</option>
-                            {% for prv in proveedores %}
-                            
-                        <option value={{ prv.id }} >{{ prv.nombre }}</option>
-                                        {% endfor %}
-                                            </select></div>
-        <div class="contenedor-columna">  <input type="number" id='num_cajas{{lista.id}}' name="ncajas" value={{lista.num_cajas}} onChange="sumar()"></div>
-               
-        <div class="contenedor-columna"> <input type="number" id='v_envio{{lista.id}}' step="0.0001" name="v_envio" value={{lista.valor_envio}} onChange="sumar()" /></div>
-        <div class="contenedor-columna">  <input type="number" id='v_factura{{lista.id}}' step="0.0001" name="v_factura" value={{lista.valor_factura}} onChange="sumar()" /></div>
-        <div class="contenedor-columna">  <input type="number" id='comis_envio{{lista.id}}' step="0.0001" name="comis_envio" value={{lista.comision_envio}} onChange="sumar()" /></div>
-             
-                                       
-                  
-       </div>
-       <div class="contenedor-fila" >
-        <div class="contenedor-columna">ISD</div>
-        <div class="contenedor-columna">T pago</div>
-        <div class="contenedor-columna">Extra</div>
-        <div class="contenedor-columna">comis_tarjeta</div>
-       </div>     
-       <div class="contenedor-fila">
-        <div class="contenedor-columna"><input type="number" id='comis_tarjeta{{lista.id}}' step="0.0001" name="comis_tarjeta" value={{lista.comision_tarjeta}} onChange="sumar()"/></div>
-        <div class="contenedor-columna"> <input type="text" id='isd{{lista.id}}'  name="isd" value={{lista.isd}}  onChange="sumar()" readonly/></div>
-        <div class="contenedor-columna"><input type="text" id='t_pago{{lista.id}}'  name="t_pago" value={{lista.total_pago}}  onChange="sumar()" readonly /></div>
-        <div class="contenedor-columna"> <input type="text" id='extra{{lista.id}}'  name="extra"  value={{lista.extra}} onChange="sumar()"  readonly/></div>
-            
+<div class="container">
+    <div class="progress-container">
+        <div class="progress" id="progress"></div>
+        <div class="circle active"><i class="fa-html5">1</i>
+            <li>Proveedor</li>
+        </div>
+        <div class="circle "><i class="fa-js">2</i>
+            <li>DAS</li>
+        </div>
+        <div class="circle "><i class="fa-react">3</i>
+            <li>Afianzado</li>
+        </div>
+        <div class="circle "><i class="fa-html5">5</i>
+            <li>Importación</li>
         </div>
     </div>
-        {% endfor %}
+</div>
+<br />
+<br />
+
+<link href="{% static 'core/css/proveedor.css' %}" rel="stylesheet" />
+<h1 class="mt-4">Detalle factura </h1>
+
+<div class="bg-light">
+    <div class="container-fluid px-4">
+
+        <nav aria-label="breadcrumb" class="breadcrumb">
+            <ol class="breadcrumb mb-4">
+                <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'importacion' id %}">Inicio Importacion</a></li>
+
+                <li class="breadcrumb-item active" aria-current="page">Detalle factura</li>
+            </ol>
+        </nav>
     </div>
-    
-        
-    </div> 
+</div>
+<form class="form-inline" action="" method="POST">
+    <div class="cont">
+        <div class="col-xl-12 col-md-1">
+            <div class="container-fluid px-4">
+                {% csrf_token %}
+                <input type="text" style="display:none;" id="n" value={{cant}}>
+                {% for lista in cantidad %}
+                <div class="card">
+                    <div class="contenedor">
+
+                        <div class="contenedor-fila">
+
+                            <div class="contenedor-columna">Proveedor</div>
+                            <div class="contenedor-columna">Num cajas</div>
+                            <div class="contenedor-columna">V_envio</div>
+                            <div class="contenedor-columna">V_factura</div>
+
+                            <div class="contenedor-columna">Comis_envio</div>
+
+                        </div>
+
+                        <div class="contenedor-fila">
+
+                            <div class="contenedor-columna">
+
+                                <select name="proveedor" class="form-select">
+                                    <option value={{ lista.proveedor.id }} selected>{{ lista.proveedor }}</option>
+                                    {% for prv in proveedores %}
+
+                                    <option value={{ prv.id }}>{{ prv.nombre }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="contenedor-columna"> 
+                                <input type="number" class="form-control"
+                                    id='num_cajas{{lista.id}}' name="ncajas" value={{lista.num_cajas}}
+                                    onChange="sumar()"></div>
+
+                            <div class="contenedor-columna"> 
+                                <input type="number" class="form-control"
+                                    id='v_envio{{lista.id}}' step="0.0001" name="v_envio" value={{lista.valor_envio}}
+                                    onChange="sumar()" /></div>
+                            <div class="contenedor-columna"> 
+                                <input type="number" class="form-control"
+                                    id='v_factura{{lista.id}}' step="0.0001" name="v_factura"
+                                    value={{lista.valor_factura}} onChange="sumar()" /></div>
+                            <div class="contenedor-columna"> 
+                                <input type="number" class="form-control"
+                                    id='comis_envio{{lista.id}}' step="0.0001" name="comis_envio"
+                                    value={{lista.comision_envio}} onChange="sumar()" /></div>
+
+                        </div>
+                        <div class="contenedor-fila">
+                            <div class="contenedor-columna">ISD</div>
+                            <div class="contenedor-columna">T pago</div>
+                            <div class="contenedor-columna">Extra</div>
+                            <div class="contenedor-columna">comis_tarjeta</div>
+                        </div>
+                        <div class="contenedor-fila">
+                            <div class="contenedor-columna"><input class="form-control" type="number"
+                                    id='comis_tarjeta{{lista.id}}' step="0.0001" name="comis_tarjeta"
+                                    value={{lista.comision_tarjeta}} onChange="sumar()" /></div>
+                            <div class="contenedor-columna"> <input class="form-control" type="text"
+                                    id='isd{{lista.id}}' name="isd" value={{lista.isd}} onChange="sumar()" readonly />
+                            </div>
+                            <div class="contenedor-columna"><input type="text" class="form-control"
+                                    id='t_pago{{lista.id}}' name="t_pago" value={{lista.total_pago}} onChange="sumar()"
+                                    readonly /></div>
+                            <div class="contenedor-columna"> <input type="text" class="form-control"
+                                    id='extra{{lista.id}}' name="extra" value={{lista.extra}} onChange="sumar()"
+                                    readonly /></div>
+
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
 
 
-<div class="d-flex align-items-center justify-content-between mt-4 mb-0">
-      
-
-        {% comment %}     <button class="btn" id="prev" href="{% url 'importacion' fecha.id %}" disabled >Prev</button>
-       {% endcomment %}
-        <a class="btn btn-primary"  href="{% url 'importacion' id %}">editar</a>
-        
-
-        <button class="btn" id="next" type="submit">Next</button>
-        {% comment %} <a class="btn btn-primary" type="submit"  href="{% url 'das' %}">Guardar y continuar</a> {% endcomment %}
-        
-    </div>
-        <script>       
-function sumar(){
-    var s=document.getElementById("n").value;
-    var ss=s.split(';')
-    
-    for (var i = 0; i < ss.length; i++) {
-        
-    var nc=parseFloat(document.getElementById("num_cajas"+ss[i]+"").value);
-    console.log(s.split(';'),ss.length,ss[i],nc)
-    var ve=parseFloat(document.getElementById("v_envio"+ss[i]+"").value);
-    var vf=parseFloat(document.getElementById("v_factura"+ss[i]+"").value);
-    var ce=parseFloat(document.getElementById("comis_envio"+ss[i]+"").value);
-    var ct=parseFloat(document.getElementById("comis_tarjeta"+ss[i]+"").value);
-    
-    console.log("valor factura",vf)
-    var isd=document.getElementById("isd"+ss[i]+"").value=(vf+ve)*0.05;
-     console.log(isd)
-     var t_pago=document.getElementById("t_pago"+ss[i]+"").value=ve+vf+ce+ct+((vf+ve)*0.05);
-    var extra=document.getElementById("extra"+ss[i]+"").value=ve+ce+ct+((vf+ve)*0.05);
-    console.log(extra)
+            {% comment %} <button class="btn" id="prev" href="{% url 'importacion' fecha.id %}" disabled>Prev</button>
+            {% endcomment %}
+            <a class="btn btn-primary" href="{% url 'importacion' id %}">editar</a>
 
 
-}
-    }
+            <button class="btn" id="next" type="submit">Next</button>
+            {% comment %} <a class="btn btn-primary" type="submit" href="{% url 'das' %}">Guardar y continuar</a>
+            {% endcomment %}
 
-function atras(){
-    window.history.go(-1);
-}
-</script>                            
+        </div>
+        <script>
+            function sumar() {
+                var s = document.getElementById("n").value;
+                var ss = s.split(';')
+
+                for (var i = 0; i < ss.length; i++) {
+
+                    var nc = parseFloat(document.getElementById("num_cajas" + ss[i] + "").value);
+                    console.log(s.split(';'), ss.length, ss[i], nc)
+                    var ve = parseFloat(document.getElementById("v_envio" + ss[i] + "").value);
+                    var vf = parseFloat(document.getElementById("v_factura" + ss[i] + "").value);
+                    var ce = parseFloat(document.getElementById("comis_envio" + ss[i] + "").value);
+                    var ct = parseFloat(document.getElementById("comis_tarjeta" + ss[i] + "").value);
+
+                    console.log("valor factura", vf)
+                    var isd = document.getElementById("isd" + ss[i] + "").value = (vf + ve) * 0.05;
+                    console.log(isd)
+                    var t_pago = document.getElementById("t_pago" + ss[i] + "").value = ve + vf + ce + ct + ((vf + ve) * 0.05);
+                    var extra = document.getElementById("extra" + ss[i] + "").value = ve + ce + ct + ((vf + ve) * 0.05);
+                    console.log(extra)
+
+                }
+            }
+
+            function atras() {
+                window.history.go(-1);
+            }
+        </script>
 </form>
-       
-  
 
-        {% endblock body %}
+
+
+{% endblock body %}

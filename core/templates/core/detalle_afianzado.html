@@ -63,11 +63,11 @@
                     <tr>
                 {% comment %} <td>  <input type="text"  name="id_afianzado" value={{afz.afianzado.nombre }}  disabled></td> {% endcomment %}
                         
-                   <td>  <input type="text"  name="descripcion" value={{lista.descripcion}}  required></td>
-                   <td>  <input type="number"  step="0.0001" id='alpe{{lista.id}}' name="alpeso" value={{lista.al_peso}}  onChange="sumar()" /></td>
-                   <td>  <input type="number"  step="0.0001" id='alpr{{lista.id}}' name="alprecio" value={{lista.al_precio}} onChange="sumar()" /></td>
-                   <td>  <input type="text"   id='iv{{lista.id}}' name="iva" value={{lista.iva}} onChange="sumar()" readonly /></td>
-                 <td>  <input type="text"   id='tot{{lista.id}}' name="total" value={{lista.total}}  onChange="sumar()" readonly /></td>
+                   <td>  <input type="text" class="form-control" name="descripcion" value={{lista.descripcion}}  required></td>
+                   <td>  <input type="number"  class="form-control" step="0.0001" id='alpe{{lista.id}}' name="alpeso" value={{lista.al_peso}}  onChange="sumar()" /></td>
+                   <td>  <input type="number" class="form-control" step="0.0001" id='alpr{{lista.id}}' name="alprecio" value={{lista.al_precio}} onChange="sumar()" /></td>
+                   <td>  <input type="text" class="form-control"  id='iv{{lista.id}}' name="iva" value={{lista.iva}} onChange="sumar()" readonly /></td>
+                 <td>  <input type="text" class="form-control"  id='tot{{lista.id}}' name="total" value={{lista.total}}  onChange="sumar()" readonly /></td>
             </tr>
         {% endfor %}
 </table> 

@@ -20,19 +20,28 @@
 } */
 .fa-html5{
     font-size: 1.8rem;
-    color: #ff5773;
+    color: #212121;
 }
 .fa-js{
     font-size: 1.8rem;
-    color: #2d62c4;
+    color: #212121;
 }
 .fa-react{
     font-size: 1.8rem;
-    color: #fffb07;
+    color: #212121;
 }
 .container{
     text-align: center;
+    
 }
+.centro{
+    text-align: center;
+    display:inline-block;
+    align-items: center;
+    justify-content: center;
+    padding-top: 30px;
+}
+
 .progress-container{
     display: flex;
     justify-content: space-between;
@@ -61,7 +70,7 @@
     left: 0;
     transform: translateY(-50%);
     height: 4px;
-    width: 100%;
+    width: 0%;
     z-index: -1;
     transition: 0.4s ease;
 }

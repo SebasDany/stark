@@ -111,7 +111,7 @@ class Importacion(models.Model):
     estado=models.IntegerField(default=1)
     def __str__(self):
         
-        return self.fecha
+        return str(self.fecha)
 
 class Factura_proveedor(models.Model):
     proveedor=models.ForeignKey(Proveedor, on_delete=models.CASCADE, null=True,blank=True, default=None)

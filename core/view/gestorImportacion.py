@@ -49,7 +49,8 @@ def viewProduct(request,id,idas,idfa):#vista de los producto importadosde de la 
 def productosImportados(request,id,idas,idfa):
     if request.method=='POST':
         
-        product_id=request.POST.getlist('id_producto')  
+        product_id=request.POST.getlist('id_producto')
+        print("el valor del id es : ")  
         id_df=request.POST.getlist('id_df') 
         print(product_id)
         print(id_df)
@@ -243,6 +244,7 @@ def guardarProductoImport(sku,ide):
         indices = sku
         ind1 = pim
         ind2 = [x for x in indices if x not in ind1]#permite verificar si no existe esse sku creado si existe alguno creo lo que los que no existen
+        print("holas")
         print("s ku encontado", ind2)
         if(len(ind2)!=0):
             print(ind2)
@@ -552,7 +554,9 @@ def updateAranceles(id_dI,advalorem, fodinfa, iva):
     
 def updatePorcentuales(id_dI,ps, pr, prT):
     for i in range(len(id_dI)):
-        Detalle_importacion.objects.filter(id=id_dI[i]).update(ps=ps[i],pr=pr[i],prt=prT[i])
+        print(ps[i],pr[i],prT[i])
+        #round(1.539, 2)
+        Detalle_importacion.objects.filter(id=id_dI[i]).update(ps=round(ps[i],4),pr=round(pr[i],4),prt=round(prT[i],4))
 
 def updateCostos(id_dI,cost1,cost2, cost3):
     for i in range(len(id_dI)):

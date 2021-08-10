@@ -14,10 +14,11 @@
       <div class="col-xl-12 col-md-1">
          <div class="container-fluid px-4">
             {% csrf_token %}
-               <input type="number" style="display:none;" name="id_df" value={{ lista.id }}>  
-               <input type="text" name="id_producto" style="display:none;" value={{ lista.producto.id}}>
+               
                   
                   {% for lista in productos_detalle_importacion %}
+                  <input type="number" style="display:none;" name="id_df" value={{ lista.id }}>  
+                  <input type="text" name="id_producto" style="display:none;" value={{ lista.producto.id}}>
                   <div class="card">
                      <div class="contenedor">
       

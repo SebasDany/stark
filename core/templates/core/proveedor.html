@@ -46,6 +46,12 @@
             <div class="container-fluid px-4">
                 {% csrf_token %}
                 <input type="text" style="display:none;" id="n" value={{cant}}>
+                {% for message in messages %}
+                        <div class="alert alert-warning alert-dismissable">
+                        
+                        <strong>¡Alerta!</strong> {{ message }}
+                        </div>
+                        {% endfor %}  
                 {% for lista in cantidad %}
                 <div class="card">
                     <div class="contenedor">

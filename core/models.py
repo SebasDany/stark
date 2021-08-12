@@ -17,7 +17,7 @@ class Mercancia(models.Model):
 class Producto(models.Model):
     mercancia=models.ForeignKey(Mercancia, on_delete=models.CASCADE, null=True,blank=True, default=None)
    
-    id_woocommerce=models.IntegerField(blank=True)
+    id_woocommerce=models.IntegerField(default=0,blank=True)
     sku=models.CharField(max_length=16,unique=True)
     nombre=models.CharField(max_length=80)
     precio_compra=models.DecimalField(max_digits=9, decimal_places=4, default=0)
@@ -40,44 +40,46 @@ class Producto(models.Model):
 
     def save(self, *args, **kwargs):
         woo = Woocommerce()
-       
-        if(self.variacion==True and self.parent_id!=0):
-            data1 = {
-                    "regular_price": str(self.precio_neto),
-                    "purchase_price": str(self.precio_compra),
-                    "sku":str(self.sku),
-                    "image": {
-                        "id": 423
-                    },
-                    "attributes": [
-                        {
-                            "id": 9,
-                            "option": "Black"
-                        }
-                    ]
-                }
-            #woo.create_producto_variacion(self.parent_id, data1)
-            
-        else:
-            data = {
-                    "name": str(self.nombre),
-                    "type": "simple",
-                    "sku":str(self.sku),
-                    "regular_price": str(self.precio_neto),
-                    "purchase_price": str(self.precio_compra),
-                    "description": " ",
-                    "short_description": "",
-                    "categories": [
-                      
-                    ],
-                    "images": [
-                        {
-                            "src": str(self.imagen)
-                        },   
-                    ]
-                }
-            #woo.create_producto(data)
-        
+        # if len(woo.get_producto_by_sku(self.sku))==0:
+        #     print("No existe el producto dentro de la tienda")
+        #     if(self.variacion==True and self.parent_id!=0):
+        #         data1 = {
+        #                 "regular_price": str(self.precio_neto),
+        #                 "purchase_price": str(self.precio_compra),
+        #                 "sku":str(self.sku),
+        #                 "image": {
+        #                     "id": 423
+        #                 },
+        #                 "attributes": [
+        #                     {
+        #                         "id": 9,
+        #                         "option": "Black"
+        #                     }
+        #                 ]
+        #             }
+        #         woo.create_producto_variacion(self.parent_id, data1)
+                
+        #     else:
+        #         data = {
+        #                 "name": str(self.nombre),
+        #                 "type": "simple",
+        #                 "sku":str(self.sku),
+        #                 "regular_price": str(self.precio_neto),
+        #                 "purchase_price": str(self.precio_compra),
+        #                 "description": " ",
+        #                 "short_description": "",
+        #                 "categories": [
+                        
+        #                 ],
+        #                 "images": [
+        #                     {
+        #                         "src": str(self.imagen)
+        #                     },   
+        #                 ]
+        #             }
+        #         woo.create_producto(data)
+        # else:
+        #     print("Ya exiet el producto dentro de la tienda")
         super(Producto, self).save(*args, **kwargs) # Call the "real" save() method.
         
         
@@ -104,7 +106,7 @@ class Proveedor(models.Model):
         return self.nombre
         
 class Importacion(models.Model):
-    fecha=models.DateField(null = False, help_text="Ejemplo: 2021-07-07")
+    fecha=models.DateField(null = False)
     descripcion=models.CharField(max_length=64, blank=True)
     tipo=models.CharField(max_length=64, blank=True)
     origen=models.CharField(max_length=64, blank=True)
@@ -146,8 +148,8 @@ class Das(models.Model):
     numero_entrega=models.CharField(max_length=128,null=True,blank=True)
     numero_atribuido= models.CharField(max_length=64)
     
-    fecha_embarque=models.DateField(null = False, help_text="Ejemplo: 2021-07-07")
-    fecha_llegada=models.DateField(null = False, help_text="Ejemplo: 2021-07-07")
+    fecha_embarque=models.DateField(null = False )
+    fecha_llegada=models.DateField(null = False)
     documento_transporte=models.CharField(max_length=64)
     tipo_carga=models.CharField(max_length=64,null=True,blank=True)
     pais_procedncia=models.CharField(max_length=255,null=True,blank=True)
@@ -188,8 +190,6 @@ class Detalle_importacion(models.Model):
                         (SI, 'SI'),
                         (NO, 'NO') ]
     producto=models.ForeignKey(Producto, on_delete=models.CASCADE, null=True,blank=True, default=None)
-    # detalle_das=models.ForeignKey(Detalle_das, on_delete=models.CASCADE, null=True,blank=True, default=None)
-    # factura_proveedor=models.ForeignKey(Factura_proveedor, on_delete=models.CASCADE, null=True,blank=True, default=None)
     das=models.ForeignKey(Das, on_delete=models.CASCADE, null=True,blank=True, default=None)#aumentado
     importacion=models.ForeignKey(Importacion, on_delete=models.CASCADE, null=True,blank=True, default=None)
     mercancia=models.ForeignKey(Mercancia, on_delete=models.CASCADE, null=True,blank=True, default=None)

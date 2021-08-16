@@ -5,23 +5,23 @@
 
 {% block body %}
 <div class="centro">
-<div class="container">
-    <div class="progress-container">
-        <div class="progress" id="progress" ></div>
-        <div class="circle active"><i class="fa-html5">1</i>
-            <li>Proveedor</li>
-        </div>
-        <div class="circle "><i class="fa-js">2</i>
-            <li>DAS</li>
-        </div>
-        <div class="circle "><i class="fa-react">3</i>
-            <li>Afianzado</li>
-        </div>
-        <div class="circle "><i class="fa-html5">5</i>
-            <li>Importación</li>
+    <div class="container">
+        <div class="progress-container">
+            <div class="progress" id="progress"></div>
+            <div class="circle active"><i class="fa-html5">1</i>
+                <li>Proveedor</li>
+            </div>
+            <div class="circle "><i class="fa-js">2</i>
+                <li>DAS</li>
+            </div>
+            <div class="circle "><i class="fa-react">3</i>
+                <li>Afianzado</li>
+            </div>
+            <div class="circle "><i class="fa-html5">5</i>
+                <li>Importación</li>
+            </div>
         </div>
     </div>
-</div>
 </div>
 
 <link href="{% static 'core/css/proveedor.css' %}" rel="stylesheet" />
@@ -40,77 +40,101 @@
         </nav>
     </div>
 </div>
-<form class="form-inline" action="" method="POST">
-    <div class="cont">
-        <div class="col-xl-12 col-md-1">
-            <div class="container-fluid px-4">
-                {% csrf_token %}
-                <input type="text" style="display:none;" id="n" value={{cant}}>
-                {% for message in messages %}
-                        <div class="alert alert-warning alert-dismissable">
-                        
-                        <strong>¡Alerta!</strong> {{ message }}
+<div class="cont">
+    <form class="form-inline" action="" method="POST">
+
+
+        {% csrf_token %}
+        <input type="text" style="display:none;" id="n" value={{cant}}>
+        {% for message in messages %}
+        <div class="alert alert-warning alert-dismissable">
+
+            <strong>¡Alerta!</strong> {{ message }}
+        </div>
+        {% endfor %}
+        {% for lista in cantidad %}
+        <div class="col-xl-12 col-md-12">
+            <div class="card" style="text-align: left;">
+                <div class="container-fluid px-4">
+
+
+                    <div class="row">
+                        <div class="col-sm-3">
+
+                            <label>Proveedor </label>
+                            <select name="proveedor" class="form-select">
+                                <option value={{ lista.proveedor.id }} selected>{{ lista.proveedor }}</option>
+                                {% for prv in proveedores %}
+
+                                <option value={{ prv.id }}>{{ prv.nombre }}</option>
+                                {% endfor %}
+                            </select>
                         </div>
-                        {% endfor %}  
-                {% for lista in cantidad %}
-                <div class="card">
-                    <div class="contenedor">
 
-                            <div class="contenedor-columna">Proveedor  <select name="proveedor" class="form-select">
-                                    <option value={{ lista.proveedor.id }} selected>{{ lista.proveedor }}</option>
-                                    {% for prv in proveedores %}
+                        <div class="col-sm-3">
 
-                                    <option value={{ prv.id }}>{{ prv.nombre }}</option>
-                                    {% endfor %}
-                                </select></div>
-                            <div class="contenedor-columna">Num cajas <input type="number" class="form-control"
-                                    id='num_cajas{{lista.id}}' name="ncajas" value={{lista.num_cajas}}
-                                    onChange="sumar()"></div>
-                            <div class="contenedor-columna">V_envio  <input type="number" class="form-control"
-                                    id='v_envio{{lista.id}}' step="0.0001" name="v_envio" value={{lista.valor_envio}}
-                                    onChange="sumar()" /></div>
-                            <div class="contenedor-columna">V_factura <input type="number" class="form-control"
-                                    id='v_factura{{lista.id}}' step="0.0001" name="v_factura"
-                                    value={{lista.valor_factura}} onChange="sumar()" /></div>
-                            <div class="contenedor-columna">Comis_envio  <input type="number" class="form-control"
-                                    id='comis_envio{{lista.id}}' step="0.0001" name="comis_envio"
-                                    value={{lista.comision_envio}} onChange="sumar()" /></div>
+                            <label>Numero cajas</label> <input type="number" class="form-control"
+                                id='num_cajas{{lista.id}}' name="ncajas" value={{lista.num_cajas}} onChange="sumar()">
+                        </div>
+                        <div class="col-sm-3">
 
-                    
-                        
-                          <div class="contenedor-columna">comis_tarjeta  <input class="form-control" type="number"
-                                    id='comis_tarjeta{{lista.id}}' step="0.0001" name="comis_tarjeta"
-                                    value={{lista.comision_tarjeta}} onChange="sumar()" /></div>
-                            <div class="contenedor-columna">ISD  <input class="form-control" type="text"
-                                    id='isd{{lista.id}}' name="isd" value={{lista.isd}} onChange="sumar()" readonly /></div>
-                            <div class="contenedor-columna">T pago  <input type="text" class="form-control"
-                                    id='t_pago{{lista.id}}' name="t_pago" value={{lista.total_pago}} onChange="sumar()"
-                                    readonly /></div>
-                            <div class="contenedor-columna">Extra  <input type="text" class="form-control"
-                                    id='extra{{lista.id}}' name="extra" value={{lista.extra}} onChange="sumar()"
-                                    readonly /></div>
-                          
-                        
-                        
+                            <label>Valor_envio</label> <input type="number" class="form-control"
+                                id='v_envio{{lista.id}}' step="0.0001" name="v_envio" value={{lista.valor_envio}}
+                                onChange="sumar()" />
+                        </div>
+                        <div class="col-sm-3">
+
+                            <label>Valor_factura</label> <input type="number" class="form-control"
+                                id='v_factura{{lista.id}}' step="0.0001" name="v_factura" value={{lista.valor_factura}}
+                                onChange="sumar()" /></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3">
+
+                            <label>Comision_envio </label> <input type="number" class="form-control"
+                                id='comis_envio{{lista.id}}' step="0.0001" name="comis_envio"
+                                value={{lista.comision_envio}} onChange="sumar()" />
+                        </div>
+
+
+                        <div class="col-sm-3">
+
+                            <label>Comision_tarjeta </label> <input class="form-control" type="number"
+                                id='comis_tarjeta{{lista.id}}' step="0.0001" name="comis_tarjeta"
+                                value={{lista.comision_tarjeta}} onChange="sumar()" />
+                        </div>
+                        <div class="col-sm-3">
+
+                            <label>ISD</label> <input class="form-control" type="text" id='isd{{lista.id}}' name="isd"
+                                value={{lista.isd}} onChange="sumar()" readonly /></div>
+                        <div class="col-sm-3">
+
+                            <label>Total pago</label> <input type="text" class="form-control" id='t_pago{{lista.id}}'
+                                name="t_pago" value={{lista.total_pago}} onChange="sumar()" readonly /></div>
+                        <div class="col-sm-3">
+
+                            <label>Valor Extra </label><input type="text" class="form-control" id='extra{{lista.id}}'
+                                name="extra" value={{lista.extra}} onChange="sumar()" readonly />
+                        </div>
+
+
                     </div>
                 </div>
-                {% endfor %}
+                <br>
             </div>
         </div>
+        <br>
+        {% endfor %}
 
-        <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
-
-
-            {% comment %} <button class="btn" id="prev" href="{% url 'importacion' fecha.id %}" disabled>Prev</button>
-            {% endcomment %}
-            <a class="btn btn-primary" href="{% url 'importacion' id %}">editar</a>
+        
+            <a class="btn btn-primary" href="{% url 'importacion' id %}">Atras</a>
 
 
-            <button class="btn" id="next" type="submit">Next</button>
-            {% comment %} <a class="btn btn-primary" type="submit" href="{% url 'das' %}">Guardar y continuar</a>
-            {% endcomment %}
-
+            <button class="btn" id="next" type="submit">Siguiente</button>
         </div>
+
+
+
         <script>
             function sumar() {
                 var s = document.getElementById("n").value;
@@ -128,7 +152,8 @@
                     console.log("valor factura", vf)
                     var isd = document.getElementById("isd" + ss[i] + "").value = (vf + ve) * 0.05;
                     console.log(isd)
-                    var t_pago = document.getElementById("t_pago" + ss[i] + "").value = ve + vf + ce + ct + ((vf + ve) * 0.05);
+                    var t_pago = document.getElementById("t_pago" + ss[i] + "").value = ve + vf + ce + ct + ((vf + ve) *
+                        0.05);
                     var extra = document.getElementById("extra" + ss[i] + "").value = ve + ce + ct + ((vf + ve) * 0.05);
                     console.log(extra)
 
@@ -139,8 +164,8 @@
                 window.history.go(-1);
             }
         </script>
-</form>
+    </form>
 
-
+</div>
 
 {% endblock body %}

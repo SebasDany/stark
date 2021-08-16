@@ -20,92 +20,103 @@
     </div>
 </div>
 
-<div class="row">
+
+<form action="" method="POST">
+    {% csrf_token %}
+
+    {% for message in messages %}
+    <div style="text-align: center;" class="alert {{ message.tags }} alert-dismissible" role="alert">
+        {{ message }}
+    </div>
+    {% endfor %}
     <div class="col-xl-12 col-md-12">
         <div class="card">
+            <div class="container-fluid px-4">
+                <div class="row" align="center">
 
-            <form action="" method="POST">
-                {% csrf_token %}
 
-                {% for message in messages %}
-                <div style="text-align: center;" class="alert {{ message.tags }} alert-dismissible" role="alert">
-                    {{ message }}
-                </div>
-                {% endfor %}
-
-                {% comment %} {{form}} {% endcomment %}
-                <div class="card-body" style="text-align: left;">
-                    <div class="form-group">
-                        <label>Fecha </label>
-                        <input type="date" class="form-control" name="fecha" value={{fecha}} required id="id_fecha">
-                        <div class="form-group">
+                    {% comment %} {{form}} {% endcomment %}
+                    <div class="card-body">
+                        <div class="col-sm-3">
+                            <label>Fecha </label>
+                            <input type="date" class="form-control" name="fecha" value={{fecha}} required id="id_fecha">
+                        </div>
+                        <div class="col-sm-3">
 
                             <label> Descripcion </label>
                             <input type="text" name="descripcion" class="form-control" maxlength="64"
                                 id="id_descripcion" required value={{im.descripcion}}>
                         </div>
-                        <div class="form-group">
+                        <div class="col-sm-3">
                             <label>Tipo </label>
                             <input type="text" name="tipo" class="form-control" maxlength="64" id="id_tipo" required
                                 value={{im.tipo}}>
                         </div>
-                        <div class="form-group">
+                        <div class="col-sm-3">
                             <label>Origen </label>
                             <input type="text" name="origen" class="form-control" maxlength="64" id="id_origen" required
                                 value={{im.origen}}>
                         </div>
-                        <div class="form-group">
+                        <div class="col-sm-3">
                             <label>Numero de proveedores </label>
                             <input type="number" name="cantidad" class="form-control" value="2" required>
                         </div>
-                        <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
-                            <button type="submit" class="btn btn-primary btn-user btn-block">Comenzar</button>
-                        </div>
+                        <br>
+                         <div class="col-sm-3">
+
+                        <button type="submit" class="btn btn-primary btn-user btn-block">Comenzar</button>
 
                     </div>
+                    </div>
+                   
+
+
 
                 </div>
+
+            </div>
+
+            {% comment %} <table class="table">
+                <tbody>
+                    <tr>
+                        <td>Fecha : </td>
+                        <td><input type="date" class="form-control" name="fecha" value={{fecha}} required
+                                id="id_fecha"><br>
+                            <span class="helptext">Ejemplo: 2021-07-07</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td> Descripcion :</td>
+                        <td><input type="text" name="descripcion" maxlength="64" id="id_descripcion"
+                                value={{im.descripcion}}>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Tipo : </td>
+                        <td><input type="text" name="tipo" maxlength="64" id="id_tipo" value={{im.tipo}}></td>
+                    </tr>
+                    <tr>
+                        <td>Origen :</td>
+                        <td><input type="text" name="origen" maxlength="64" id="id_origen" value={{im.origen}}>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Numero de proveedores :</td>
+                        <td><input type="number" name="cantidad" value="2" requiered><br>
+                            <span class="helptext">Ingrese el numero de proveedores que se va ha ingresar</span>
+                        </td>
+
+
+                    </tr>
+                </tbody>
+            </table> {% endcomment %}
+
         </div>
-    </div>
-
-    {% comment %} <table class="table">
-        <tbody>
-            <tr>
-                <td>Fecha : </td>
-                <td><input type="date" class="form-control" name="fecha" value={{fecha}} required id="id_fecha"><br>
-                    <span class="helptext">Ejemplo: 2021-07-07</span>
-                </td>
-            </tr>
-            <tr>
-                <td> Descripcion :</td>
-                <td><input type="text" name="descripcion" maxlength="64" id="id_descripcion" value={{im.descripcion}}>
-                </td>
-            </tr>
-            <tr>
-                <td>Tipo : </td>
-                <td><input type="text" name="tipo" maxlength="64" id="id_tipo" value={{im.tipo}}></td>
-            </tr>
-            <tr>
-                <td>Origen :</td>
-                <td><input type="text" name="origen" maxlength="64" id="id_origen" value={{im.origen}}></td>
-            </tr>
-            <tr>
-                <td>Numero de proveedores :</td>
-                <td><input type="number" name="cantidad" value="2" requiered><br>
-                    <span class="helptext">Ingrese el numero de proveedores que se va ha ingresar</span>
-                </td>
-
-
-            </tr>
-        </tbody>
-    </table> {% endcomment %}
 
 
 
 
+</form>
 
 
-    </form>
-
-
-    {% endblock body %}
+{% endblock body %}

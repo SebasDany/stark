@@ -2,33 +2,33 @@
 
 
 {% block title %}<title>Creacion de Importacion</title> {% endblock title %}
-    {% block body %}
-                    {% for message in messages %}
-           
+{% block body %}
+{% for message in messages %}
 
-                        <div class="alert alert-info">
-                                               
-                        <strong>¡Exitoso!</strong> {{ message }}
-                        </div>
-                    {% endfor %}  
 
-                    <table class="table">
-  <thead>
-      <tr>
-          <th scope="col">SKU</th>
-          
-          <th scope="col">Nombre</th>
-          <th scope="col">Id producto tienda</th>
-          <th scope="col">Variacion </th>
-          <th scope="col">Nuevo costo</th>
-          <th scope="col">Total inventario</th>
-          
-          <th scope="col">Fecha</th>
-          <th scope="col">Actualizado</th>
-      </tr>
+<div class="alert alert-info">
+
+    <strong>¡Exitoso!</strong> {{ message }}
+</div>
+{% endfor %}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">SKU</th>
+
+            <th scope="col">Nombre</th>
+            <th scope="col">Id producto tienda</th>
+            <th scope="col">Variacion </th>
+            <th scope="col">Nuevo costo</th>
+            <th scope="col">Total inventario</th>
+
+            <th scope="col">Fecha</th>
+            <th scope="col">Actualizado</th>
+        </tr>
     </thead>
     <tbody>
-                   {% for lista in productos %}
+        {% for lista in productos %}
         <tr>
             <th scope="row">{{ lista.producto.sku}}</th>
             <td>{{ lista.producto}}</td>
@@ -37,18 +37,18 @@
             <td>{{ lista.nuevo_costo }}</td>
             <td>{{ lista.total_inventario }}</td>
             <td>{{ lista.importacion.fecha }}</td>
-             <td>{{ lista.actualizado }}</td>
-           
+            <td>{{ lista.actualizado }}</td>
+
 
         </tr>
-                     {% endfor %}                    
+        {% endfor %}
 
-      </tbody>
-  </table>
+    </tbody>
+</table>
 
-                <a class="btn btn-primary"  href="{%  url 'listresults' id %}" >Exportar csv</a> 
-                
-              <a class="btn btn-primary"  href="{% url 'home' %}">Finalizar  </a> 
-              
+<a class="btn btn-primary" href="{%  url 'listresults' id %}">Exportar csv</a>
 
-    {% endblock body %}
+<a class="btn btn-primary" href="{% url 'home' %}">Finalizar </a>
+
+
+{% endblock body %}

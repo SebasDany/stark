@@ -2,12 +2,29 @@
 from ..utilidades import  updateEstado, updateH
 from django.shortcuts import render, redirect
 from ..models import Das, Importacion,Mercancia,Factura_proveedor,Proveedor
+import numpy as np 
+from django.contrib import messages 
 
 def startFactProve(request,id):
     if request.method=='POST':
         idf=Factura_proveedor.objects.filter(importacion=id)
         #fc=Importacion.objects.get(id = 365)
         prove= request.POST.getlist('proveedor')
+        if len(prove)!=1:
+            result=np.unique(prove) 
+            if len(result)==1:
+                messages.success(request, "El proveedor debe ser distinto")
+                fp=Factura_proveedor.objects.filter(importacion=id)
+                proveedores=Proveedor.objects.select_related().all()
+                cant=""
+                for i in range(len(fp)):
+                    cant=cant+str(fp[i].id)+";"
+                datos={"id":id,
+                        "proveedores":proveedores,
+                        "cantidad":fp,
+                        "cant":len(fp),
+                        "cant":cant}
+                return render(request,'core/proveedor.html',datos)
         print("valor de proveedor",prove)
         ncajas=request.POST.getlist('ncajas')
         v_envio=request.POST.getlist('v_envio')

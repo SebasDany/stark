@@ -1,9 +1,11 @@
 # stark
 
-pip intsall django-import-export
+pip install django-import-export
 
 pip install numpy
 pip install django_excel 
+pip install psycopg2-binary
+pip install woocommerce
 
 estados de la importacion
 

@@ -26,8 +26,8 @@ class Producto(models.Model):
     variacion = models.BooleanField(default=False)
     parent_id = models.IntegerField(default=0, blank=True)
     imagen = models.URLField(default='', blank=True)
-    categorias = models.CharField(max_length=512, blank=True)
-    observaciones = models.CharField(max_length=255, blank=True)
+    categorias = models.CharField(max_length=512, blank=True, null=True)
+    observaciones = models.CharField(max_length=255, blank=True, null=True)
 
     def clean(self):
         s=len(self.sku.split("-"))
@@ -111,7 +111,7 @@ class Importacion(models.Model):
     estado=models.IntegerField(default=1)
     def __str__(self):
         
-        return self.fecha
+        return str(self.fecha)
 
 class Factura_proveedor(models.Model):
     proveedor=models.ForeignKey(Proveedor, on_delete=models.CASCADE, null=True,blank=True, default=None)

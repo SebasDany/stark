@@ -50,70 +50,42 @@
                 <div class="card">
                     <div class="contenedor">
 
-                        <div class="contenedor-fila">
-
-                            <div class="contenedor-columna">Proveedor</div>
-                            <div class="contenedor-columna">Num cajas</div>
-                            <div class="contenedor-columna">V_envio</div>
-                            <div class="contenedor-columna">V_factura</div>
-
-                            <div class="contenedor-columna">Comis_envio</div>
-
-                        </div>
-
-                        <div class="contenedor-fila">
-
-                            <div class="contenedor-columna">
-
-                                <select name="proveedor" class="form-select">
+                            <div class="contenedor-columna">Proveedor  <select name="proveedor" class="form-select">
                                     <option value={{ lista.proveedor.id }} selected>{{ lista.proveedor }}</option>
                                     {% for prv in proveedores %}
 
                                     <option value={{ prv.id }}>{{ prv.nombre }}</option>
                                     {% endfor %}
-                                </select>
-                            </div>
-                            <div class="contenedor-columna"> 
-                                <input type="number" class="form-control"
+                                </select></div>
+                            <div class="contenedor-columna">Num cajas <input type="number" class="form-control"
                                     id='num_cajas{{lista.id}}' name="ncajas" value={{lista.num_cajas}}
                                     onChange="sumar()"></div>
-
-                            <div class="contenedor-columna"> 
-                                <input type="number" class="form-control"
+                            <div class="contenedor-columna">V_envio  <input type="number" class="form-control"
                                     id='v_envio{{lista.id}}' step="0.0001" name="v_envio" value={{lista.valor_envio}}
                                     onChange="sumar()" /></div>
-                            <div class="contenedor-columna"> 
-                                <input type="number" class="form-control"
+                            <div class="contenedor-columna">V_factura <input type="number" class="form-control"
                                     id='v_factura{{lista.id}}' step="0.0001" name="v_factura"
                                     value={{lista.valor_factura}} onChange="sumar()" /></div>
-                            <div class="contenedor-columna"> 
-                                <input type="number" class="form-control"
+                            <div class="contenedor-columna">Comis_envio  <input type="number" class="form-control"
                                     id='comis_envio{{lista.id}}' step="0.0001" name="comis_envio"
                                     value={{lista.comision_envio}} onChange="sumar()" /></div>
 
-                        </div>
-                        <div class="contenedor-fila">
-                            <div class="contenedor-columna">comis_tarjeta</div>
-                            <div class="contenedor-columna">ISD</div>
-                            <div class="contenedor-columna">T pago</div>
-                            <div class="contenedor-columna">Extra</div>
-                           
-                        </div>
-                        <div class="contenedor-fila">
-                            <div class="contenedor-columna"><input class="form-control" type="number"
+                    
+                        
+                          <div class="contenedor-columna">comis_tarjeta  <input class="form-control" type="number"
                                     id='comis_tarjeta{{lista.id}}' step="0.0001" name="comis_tarjeta"
                                     value={{lista.comision_tarjeta}} onChange="sumar()" /></div>
-                            <div class="contenedor-columna"> <input class="form-control" type="text"
-                                    id='isd{{lista.id}}' name="isd" value={{lista.isd}} onChange="sumar()" readonly />
-                            </div>
-                            <div class="contenedor-columna"><input type="text" class="form-control"
+                            <div class="contenedor-columna">ISD  <input class="form-control" type="text"
+                                    id='isd{{lista.id}}' name="isd" value={{lista.isd}} onChange="sumar()" readonly /></div>
+                            <div class="contenedor-columna">T pago  <input type="text" class="form-control"
                                     id='t_pago{{lista.id}}' name="t_pago" value={{lista.total_pago}} onChange="sumar()"
                                     readonly /></div>
-                            <div class="contenedor-columna"> <input type="text" class="form-control"
+                            <div class="contenedor-columna">Extra  <input type="text" class="form-control"
                                     id='extra{{lista.id}}' name="extra" value={{lista.extra}} onChange="sumar()"
                                     readonly /></div>
-
-                        </div>
+                          
+                        
+                        
                     </div>
                 </div>
                 {% endfor %}

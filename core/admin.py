@@ -11,8 +11,6 @@ class CategoriaAdmin(ImportExportModelAdmin,admin.ModelAdmin):
     list_display=('id', 'mercancia', 'id_woocommerce', 'sku', 'nombre', 'precio_compra', 'precio_neto', 'iva', 'variacion', 'parent_id', 'imagen', 'categorias', 'observaciones')
     resource_class= CategoriaResource
 
-
-
 # Register your models here.
 admin.site.register(Mercancia)
 admin.site.register(Producto, CategoriaAdmin)

@@ -106,7 +106,7 @@
                         <div class="col-sm-3">
 
                             <label>ISD</label> <input class="form-control" type="text" id='isd{{lista.id}}' name="isd"
-                                value={{lista.isd}} onChange="sumar()" readonly /></div>
+                                value={{lista.isd}} onChange="sumar()"  /></div>
                         <div class="col-sm-3">
 
                             <label>Total pago</label> <input type="text" class="form-control" id='t_pago{{lista.id}}'
@@ -148,13 +148,13 @@
                     var vf = parseFloat(document.getElementById("v_factura" + ss[i] + "").value);
                     var ce = parseFloat(document.getElementById("comis_envio" + ss[i] + "").value);
                     var ct = parseFloat(document.getElementById("comis_tarjeta" + ss[i] + "").value);
-
+                    var isd = parseFloat(document.getElementById("isd" + ss[i] + "").value);
                     console.log("valor factura", vf)
-                    var isd = document.getElementById("isd" + ss[i] + "").value = (vf + ve) * 0.05;
+                    //var isd = document.getElementById("isd" + ss[i] + "").value = (vf + ve) * 0.05;
+                   
                     console.log(isd)
-                    var t_pago = document.getElementById("t_pago" + ss[i] + "").value = ve + vf + ce + ct + ((vf + ve) *
-                        0.05);
-                    var extra = document.getElementById("extra" + ss[i] + "").value = ve + ce + ct + ((vf + ve) * 0.05);
+                    var t_pago = document.getElementById("t_pago" + ss[i] + "").value = ve + vf + ce + ct +isd;
+                    var extra = document.getElementById("extra" + ss[i] + "").value = ve + ce + ct +isd;
                     console.log(extra)
 
                 }

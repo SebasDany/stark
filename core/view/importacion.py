@@ -111,9 +111,13 @@ def importacion(request,id):
                 pf.save()
         messages.success(request, 'Se ha registrado correctamente!')
         return redirect('startFP',id)
+    num_proveedores=len(Proveedor.objects.all())
     
     datos = Importacion.objects.get(id=id)  
-    dato={"im":datos,"fecha":str(datos.fecha)}   
+    dato={"im":datos,
+            "fecha":str(datos.fecha),
+            "num_proveedores":num_proveedores
+            }   
     return render(request,'core/importacion.html',dato)
 
 

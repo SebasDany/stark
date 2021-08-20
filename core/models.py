@@ -2,7 +2,7 @@
 from core.woo_commerce import Woocommerce
 from django.db import models
 from django.core.exceptions import ValidationError
-
+from django.contrib import messages
 
 
 # Create your models here.
@@ -35,51 +35,66 @@ class Producto(models.Model):
             raise  ValidationError ("El sku de una variacion sigue esta estructura SKU-123")
         if self.variacion == False and s > 1:
             raise  ValidationError ("El sku de una de un producto simple sigue esta estructura SKU123")
+        woo = Woocommerce()
+        producto=woo.get_producto_by_sku(self.sku)
+        if len(producto)!=0:#verifica si esxite o no el producto dentro de la tienda
+             raise  ValidationError ("El prodcuto "+ "SKU: " + str(producto[0].get('sku')) + ", \nNombre : " + str(producto[0].get('name'))+" YA EXISTE")
+        if ( self.variacion == True and s!=1):
+            padre=producto=woo.get_producto_by_sku(str(self.sku).split('-')[0])
+            if(len(padre)==0):
+                raise  ValidationError ("El producto  padre no existe debe crearse en la tienda de forma manual se debe traer el id del padre")
+            if(padre[0].get('id')!=self.parent_id):
+                raise  ValidationError ("El id padre  o el parent_id no se encuentra en la tienda")
+
 
 
 
     def save(self, *args, **kwargs):
-        woo = Woocommerce()
-        # if len(woo.get_producto_by_sku(self.sku))==0:
-        #     print("No existe el producto dentro de la tienda")
-        #     if(self.variacion==True and self.parent_id!=0):
-        #         data1 = {
-        #                 "regular_price": str(self.precio_neto),
-        #                 "purchase_price": str(self.precio_compra),
-        #                 "sku":str(self.sku),
-        #                 "image": {
-        #                     "id": 423
-        #                 },
-        #                 "attributes": [
-        #                     {
-        #                         "id": 9,
-        #                         "option": "Black"
-        #                     }
-        #                 ]
-        #             }
-        #         woo.create_producto_variacion(self.parent_id, data1)
-                
-        #     else:
-        #         data = {
-        #                 "name": str(self.nombre),
-        #                 "type": "simple",
-        #                 "sku":str(self.sku),
-        #                 "regular_price": str(self.precio_neto),
-        #                 "purchase_price": str(self.precio_compra),
-        #                 "description": " ",
-        #                 "short_description": "",
-        #                 "categories": [
-                        
-        #                 ],
-        #                 "images": [
-        #                     {
-        #                         "src": str(self.imagen)
-        #                     },   
-        #                 ]
-        #             }
-        #         woo.create_producto(data)
-        # else:
-        #     print("Ya exiet el producto dentro de la tienda")
+        woo = Woocommerce()        
+        if(self.variacion==True and self.parent_id!=0):
+            data1 = {
+                    "regular_price": str(self.precio_neto),
+                    "purchase_price": str(self.precio_compra),
+                    "sku":str(self.sku),
+                    "image": {
+                        "id": 423
+                    },
+                    "attributes": [
+                        {
+                            "id": 9,
+                            "option": "Black"
+                        }
+                    ]
+                }
+            woo.create_producto_variacion(self.parent_id, data1)
+            print(woo.create_producto_variacion(self.parent_id, data1))
+            
+        else:
+            if(len(self.imagen)==0):
+                src="http://3.17.224.172/wp-content/uploads/2021/08/cropped-logo_gsuite-1.png"
+            else:
+                src=str(self.imagen)
+            data = {
+                    "name": str(self.nombre),
+                    "type": "simple",
+                    "sku":str(self.sku),
+                    "regular_price": str(self.precio_neto),
+                    "purchase_price": str(self.precio_compra),
+                    "description": " ",
+                    "short_description": "",
+                    "categories": [
+                    
+                    ],
+                    "images": [
+                        {
+                            "src": src
+                        },   
+                    ]
+                }
+            #woo.create_producto(data)
+            print(woo.create_producto(data))
+        self.iva=float(self.precio_compra)*0.12
+        self.precio_neto = float(self.iva)+float(self.precio_compra)
         super(Producto, self).save(*args, **kwargs) # Call the "real" save() method.
         
         
@@ -199,7 +214,7 @@ class Detalle_importacion(models.Model):
     novedades=models.CharField(max_length=255, blank=True)
     valor_unitario=models.DecimalField(max_digits=9, decimal_places=4, default=0)
     subtotal2=models.DecimalField(max_digits=9, decimal_places=4, default=0)
-    peso=models.DecimalField("Peso unitario (g)",max_digits=9, decimal_places=4, default=0)
+    peso=models.IntegerField(default=0)
     advalorem2=models.DecimalField(max_digits=9, decimal_places=4, default=0)
     fodinfa2=models.DecimalField(max_digits=9, decimal_places=4, default=0)
     iva2=models.DecimalField(max_digits=9, decimal_places=4, default=0)
@@ -220,16 +235,13 @@ class Detalle_importacion(models.Model):
         default=NO,
     )
 
-
-
-
 class Factura_afianzado(models.Model):
     afianzado=models.ForeignKey(Afianzado, on_delete=models.CASCADE, null=True,blank=True, default=None)
     importacion=models.OneToOneField(Importacion, on_delete=models.CASCADE, null=True,blank=True, default=None)
     
     fecha=models.DateField()
     numero=models.CharField(max_length=64, blank=True)
-    subtotal=models.DecimalField(max_digits=9, decimal_places=4)
+    subtotal=models.DecimalField(max_digits=9, decimal_places=2)
     def __str__(self):
         return str(self.fecha)
 

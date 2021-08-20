@@ -3,7 +3,7 @@ from ..utilidades import  updateEstado, updateH
 from django.shortcuts import render, redirect
 from ..models import Detalle_afianzado, Factura_afianzado,Importacion,Afianzado, Mercancia, Producto, Proveedor
 import datetime
-
+from django.contrib import messages 
 def startAfianzado(request,id,idas):
     fecha=str(datetime.datetime.today()).split()[0]
     imprt=Importacion.objects.get(id=id)
@@ -53,8 +53,34 @@ def detalleAfianzado(request,id,idas,idfa):
         iv=request.POST.getlist('iva')
         t=request.POST.getlist('total')
         idda=[]
+        alpeso=0
+        alprecio=0
+        iva=0
         for i in range(len(idd)): 
             idda.append(idd[i].id)
+            alpeso+=float(ape[i])
+            alprecio+=float(apr[i])
+            iva+=float(iv[i])
+        resul=round(alprecio+alpeso+iva,2)
+        fak=Factura_afianzado.objects.get(importacion=id)        
+        if(float(fak.subtotal) !=resul):
+            messages.error(request, "Las asignaciones estan  INCORRECTA alpeso+alprecio+iva deben ser igual a: "+str(fak.subtotal))
+            dat_d=Detalle_afianzado.objects.filter(factura_afianzado=idfa)
+            afz=Factura_afianzado.objects.get(importacion=id)
+            factAf=Detalle_afianzado.objects.filter(factura_afianzado=idfa)
+            cant=""
+            for i in range(len(factAf)):
+                print("el tamaño de ñ cantidad es ",factAf[i].id)
+                cant=cant+str(factAf[i].id)+";"
+            dato={ "dat_d":dat_d,
+                "afz":afz,
+                "id":id,
+                "idfa":idfa,
+                "idas":idas,
+                "cant":cant
+                }  
+            return render(request,'core/detalle_afianzado.html',dato) 
+
         saveDetalleAfianzado(id,idda,desc,ape,apr,iv,t)
         updateEstado(id,5)
         updateH(id,idas,idfa,5)
@@ -74,7 +100,7 @@ def detalleAfianzado(request,id,idas,idfa):
             "idas":idas,
             "cant":cant
             }  
-    return render(request,'core/detalle_afianzado.html',dato)  
+    return render(request,'core/detalle_afianzado.html',dato)
 
 def saveAfianzado(idaf,afianzado,idfechaImport,fecha,numero,subtotal):
     af=Factura_afianzado()

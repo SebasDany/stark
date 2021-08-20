@@ -25,3 +25,4 @@ admin.site.register(Detalle_importacion)
 admin.site.register(Factura_afianzado)
 admin.site.register(Detalle_afianzado)
 admin.site.register(Historial)
+

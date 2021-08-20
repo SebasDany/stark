@@ -39,7 +39,7 @@
                     <div class="card-body">
                         <div class="col-sm-3">
                             <label>Fecha </label>
-                            <input type="date" class="form-control" name="fecha" value={{fecha}} required id="id_fecha">
+                            <input type="date" class="form-control" name="fecha" value={{fecha}} required id="id_fecha" >
                         </div>
                         <div class="col-sm-3">
 
@@ -58,8 +58,8 @@
                                 value={{im.origen}}>
                         </div>
                         <div class="col-sm-3">
-                            <label>Numero de proveedores </label>
-                            <input type="number" name="cantidad" class="form-control" value="2" required>
+                            <label><b>Numero de proveedores</b> </label>
+                            <input type="number" name="cantidad" class="form-control" value={{num_proveedores}}  min="1" max={{num_proveedores}} required>
                         </div>
                         <br>
                          <div class="col-sm-3">

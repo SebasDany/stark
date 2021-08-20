@@ -30,7 +30,7 @@ def addProductImport(request,id,idas,idfa):#guarda los productos importados en l
     return redirect('viewproduct',id,idas,idfa)
 
 def viewProduct(request,id,idas,idfa):#vista de los producto importadosde de la base
-    pr=Detalle_importacion.objects.filter(importacion=id)
+    pr=Detalle_importacion.objects.filter(importacion=id).order_by('id')
  
     proveedores=Factura_proveedor.objects.filter(importacion=id).distinct()
     print (proveedores)
@@ -187,7 +187,7 @@ def buscarProductos(request,id,idas,idfa):#Recoge los sku ingresados en el formu
         productos=buscarSKU(list_sku,id,idas)#llamada al metodo de busqueda
         desha=""
         if(productos['error']==True):
-            messages.success(request, 'No se ha encontado '+ str(productos['mensage']))
+            messages.error(request, 'No se ha encontado '+str(productos['mensage']))
             if(len(productos['productos'])==0):
                 
                 desha="disabled"   
@@ -195,7 +195,8 @@ def buscarProductos(request,id,idas,idfa):#Recoge los sku ingresados en el formu
                 "id":id,
                 "idas":idas,
                 "idfa":idfa,
-                "desha":desha
+                "desha":desha,
+                
         }
         productos.update(datos)
     return render(request, 'core/preview_productos.html',productos ) 
@@ -206,13 +207,14 @@ def buscarSKU(skus,id,idas):#Cucion que realiza busqueda de los productos por sk
     provedor_prod=[]
     skuNoexist=[]
     result=np.unique(sku) 
+    estado=False
     print(result) 
     for i in  range(len(result)): 
 
         if Producto.objects.filter(sku=result[i]).exists():  
             p = Producto.objects.get(sku=result[i])
             pr.append(p)
-            estado=False
+            
         else:
             print("No existe el sku ", result[i])
             skuNoexist.append(result[i])
@@ -502,6 +504,7 @@ def calcularIncrementos(id_imp):
     producto_id=[]
     for valores in Detalle_importacion.objects.filter(importacion=imp.id):
         producto_id.append(valores.id)
+        print(valores.costo_unitario,"-",valores.valor_unitario,"/",valores.valor_unitario)
         inc_porcentual.append((valores.costo_unitario-valores.valor_unitario)/valores.valor_unitario)
         inc_dolares.append(valores.costo_unitario-valores.valor_unitario)
   
@@ -533,7 +536,8 @@ def updateAranceles(id_dI,advalorem, fodinfa, iva):
     
 def updatePorcentuales(id_dI,ps, pr, prT):
     for i in range(len(id_dI)):
-        Detalle_importacion.objects.filter(id=id_dI[i]).update(ps=ps[i],pr=pr[i],prt=prT[i])
+        print(ps[i],round(pr[i],4),prT[i])
+        Detalle_importacion.objects.filter(id=id_dI[i]).update(ps=round(ps[i],4),pr=round(pr[i],4),prt=round(prT[i],4))
 
 def updateCostos(id_dI,cost1,cost2, cost3):
     print("el tamao es ",len(id_dI),len(cost1),len(cost2),len(cost3))

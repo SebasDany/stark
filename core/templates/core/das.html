@@ -160,7 +160,7 @@
                                 step="0.01" required="" id="id_valor_seguros">
                         </div>
 
-                        <div class="col-sm-2">
+                        <div class="col-sm-3">
                             <label for="id_cif">Cif:</label>
                             <input type="number" class="form-control" name="cif" value={{das.cif}} step="0.01"
                                 required="" id="id_cif">
@@ -188,17 +188,19 @@
                             <label for="id_mer"><b>Numero de mercancia </b></label>
                             <input type="number" class="form-control" name="cantidad" value=2 requiered>
                         </div>
+                        
                     </div>
                     <br />
-
-
-                    {% comment %} <a class="btn btn-primary" href="{% url 'proveedor' %}">Atras</a> {% endcomment %}
-                    <a class="btn btn-primary" href="{% url 'startFP' id %}">editar</a>
-                    <button type="submit" class="btn btn-primary">Guardar y continuar</button>
-                </div>
+                    </div>
             </div>
         </div>
 
+
+<br />
+                    {% comment %} <a class="btn btn-primary" href="{% url 'proveedor' %}">Atras</a> {% endcomment %}
+                    <a class="btn btn-primary" href="{% url 'startFP' id %}">Atras</a>
+                    <button type="submit" class="btn btn-primary">Continuar</button>
+                
     </div>
 
 

@@ -3,6 +3,8 @@ from ..utilidades import  updateEstado, updateH
 from django.shortcuts import render, redirect
 from ..models import Detalle_das, Factura_afianzado, Importacion,Mercancia,Das
 import datetime
+import numpy as np
+from django.contrib import messages
 
 def startDas(request,id):
     d2=Das.objects.all()
@@ -64,18 +66,37 @@ def datosDas(request,id,idas):
         datos={"id":id,
                 "das":das,
                 "fecha_embarque":str(das.fecha_embarque),
-                "fecha_llegada":str(das.fecha_llegada)
+                "fecha_llegada":str(das.fecha_llegada),
                 }
     return render(request,'core/das.html',datos)
 
 def detalleDas(request,id,idas):
     if request.method=='POST':
+        cant_mercancia=request.POST.get('cant_mercancia')#obtiene la cantidad de mecancia par avalidar si la mercacia se repite o no
         id_d=Detalle_das.objects.filter(das=idas)
         mercancia=request.POST.getlist('mercancia')
         advalorem=request.POST.getlist('advalorem')
         fodinfa=request.POST.getlist('fodinfa')
         iva=request.POST.getlist('iva')
         sub_total=request.POST.getlist('sub_total')
+        if len(mercancia)!=1:
+            result=np.unique(mercancia) 
+            if len(result)< int(cant_mercancia):
+                messages.success(request, "La mercancias deben ser distintos")
+                dd=Detalle_das.objects.filter(das=idas).order_by('id')
+                mercancias=Mercancia.objects.select_related().all()
+                dtd=Detalle_das.objects.filter(das=idas)
+                cant=""
+                for i in range(len(dtd)):
+                    print("el tamaño de ñ cantidad es ",dtd[i].id)
+                    cant=cant+str(dtd[i].id)+";"
+                datos={"id":id,"idas":idas,
+                        "ddas":dd,'mercancia':mercancias,
+                        "cant":cant,
+                        "cant1":len(dd)
+                }
+                return render (request, 'core/detalle_das.html',datos)
+        
         id_dd=[]
         for i in range(len(id_d)):    
             id_dd.append(id_d[i].id)
@@ -89,7 +110,7 @@ def detalleDas(request,id,idas):
         else:
             return redirect('startafianzado',id,idas)
     else: 
-        dd=Detalle_das.objects.filter(das=idas)
+        dd=Detalle_das.objects.filter(das=idas).order_by('id')
         mercancias=Mercancia.objects.select_related().all()
         dtd=Detalle_das.objects.filter(das=idas)
         cant=""
@@ -98,7 +119,8 @@ def detalleDas(request,id,idas):
             cant=cant+str(dtd[i].id)+";"
         datos={"id":id,"idas":idas,
                 "ddas":dd,'mercancia':mercancias,
-                "cant":cant
+                "cant":cant,
+                "cant1":len(dd)
         }
     return render (request, 'core/detalle_das.html',datos)
 

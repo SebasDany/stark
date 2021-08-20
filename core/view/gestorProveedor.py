@@ -9,10 +9,11 @@ def startFactProve(request,id):
     if request.method=='POST':
         idf=Factura_proveedor.objects.filter(importacion=id)
         #fc=Importacion.objects.get(id = 365)
+        num_proveedor= request.POST.get('num_proveedor')
         prove= request.POST.getlist('proveedor')
         if len(prove)!=1:
             result=np.unique(prove) 
-            if len(result)==1:
+            if len(result)< int(num_proveedor):
                 messages.success(request, "El proveedor debe ser distinto")
                 fp=Factura_proveedor.objects.filter(importacion=id)
                 proveedores=Proveedor.objects.select_related().all()
@@ -22,7 +23,7 @@ def startFactProve(request,id):
                 datos={"id":id,
                         "proveedores":proveedores,
                         "cantidad":fp,
-                        "cant":len(fp),
+                        "cant1":len(fp),
                         "cant":cant}
                 return render(request,'core/proveedor.html',datos)
         print("valor de proveedor",prove)
@@ -57,7 +58,7 @@ def startFactProve(request,id):
         datos={"id":id,
                 "proveedores":proveedores,
                 "cantidad":fp,
-                "cant":len(fp),
+                "cant1":len(fp),
                 "cant":cant}
     return render(request,'core/proveedor.html',datos)
 

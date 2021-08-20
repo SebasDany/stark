@@ -5,23 +5,23 @@
 {% block body %}
 
 <div class="centro">
-<div class="container">
-    <div class="progress-container">
-        <div class="progress" id="progress" style="width: 30%;"></div>
-        <div class="circle active"><i class="fa-html5">1</i>
-            <li>Proveedor</li>
-        </div>
-        <div class="circle active"><i class="fa-js">2</i>
-            <li>DAS</li>
-        </div>
-        <div class="circle "><i class="fa-react">3</i>
-            <li>Afianzado</li>
-        </div>
-        <div class="circle "><i class="fa-html5">5</i>
-            <li>Importación</li>
+    <div class="container">
+        <div class="progress-container">
+            <div class="progress" id="progress" style="width: 30%;"></div>
+            <div class="circle active"><i class="fa-html5">1</i>
+                <li>Proveedor</li>
+            </div>
+            <div class="circle active"><i class="fa-js">2</i>
+                <li>DAS</li>
+            </div>
+            <div class="circle "><i class="fa-react">3</i>
+                <li>Afianzado</li>
+            </div>
+            <div class="circle "><i class="fa-html5">5</i>
+                <li>Importación</li>
+            </div>
         </div>
     </div>
-</div>
 </div>
 <h1 class="mt-4">Ingreso Detalle Das </h1>
 
@@ -42,14 +42,12 @@
 <form action="" method="POST">
     {% csrf_token %}
 
-
-    <br>
-
-
-
+    {% for message in messages %}
+    <div class="alert alert-warning alert-dismissable">
+        <strong>¡Alerta!</strong> {{ message }}
+    </div>
+    {% endfor %}
     <table class="table">
-
-
         <tr>
             <td>Tipo mercancia</td>
 
@@ -63,6 +61,7 @@
 
 
         <input type="text" style="display:none;" id="n" value={{cant}}>
+        <input type="text" style="display:none;" name="cant_mercancia" value={{cant1}}>
 
 
         {% for lista in ddas %}
@@ -81,28 +80,21 @@
             </td>
 
             <td> <input type="number" class="form-control" step="0.0001" id='advalorem{{lista.id}}' name="advalorem"
-                    value={{lista.advalorem1}} onChange="sumar()" /></td>
-            <td> <input type="number" class="form-control" step="0.0001" id='fodinfa{{lista.id}}' name="fodinfa" value={{lista.fodinfa1}}
-                    onChange="sumar()" /></td>
-            <td> <input type="number" class="form-control" step="0.0001" id='iva{{lista.id}}' name="iva" value={{lista.iva1}}
-                    onChange="sumar()" /></td>
-            <td> <input type="text" class="form-control" id='sub_total{{lista.id}}' name="sub_total" value={{lista.subtotal1}}
-                    onChange="sumar()" readonly /></td>
+                    value={{lista.advalorem1}} onChange="sumar()" min="0" required /></td>
+            <td> <input type="number" class="form-control" step="0.0001" id='fodinfa{{lista.id}}' name="fodinfa"
+                    value={{lista.fodinfa1}} onChange="sumar()" min="0" required /></td>
+            <td> <input type="number" class="form-control" step="0.0001" id='iva{{lista.id}}' name="iva"
+                    value={{lista.iva1}} onChange="sumar()" min="0" required /></td>
+            <td> <input type="text" class="form-control" id='sub_total{{lista.id}}' name="sub_total"
+                    value={{lista.subtotal1}} onChange="sumar()" readonly /></td>
         </tr>
         {% endfor %}
     </table>
 
-    <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
-
-        {% comment %} <a class="btn btn-primary" href="{% url 'importacion' fecha.id %}">Atras</a> {% endcomment %}
-        {% comment %} <a class="btn btn-primary" href="{% url 'editar' fecha.id %}">editar</a>
-        {% endcomment %}
+    {% comment %} <div class="d-flex align-items-center justify-content-between mt-4 mb-0"> {% endcomment %}
         <a class="btn btn-primary" href="{% url 'datosdas' id idas %}">Atras</a>
-        <button type="submit" class="btn btn-primary">Guardar y continuar</button>
-        {% comment %} <a class="btn btn-primary" type="submit" href="{% url 'das' %}">Guardar y continuar</a> 
-        {% endcomment %}
-
-    </div>
+        <button type="submit" class="btn btn-primary">Siguiente</button>
+    {% comment %} </div> {% endcomment %}
     <script>
         function sumar() {
             var s = document.getElementById("n").value;
@@ -120,15 +112,14 @@
                 console.log("valor factura", vf)
                 var isd = document.getElementById("isd" + ss[i] + "").value = (vf + ve) * 0.05;
                 console.log(isd)
-                var t_pago = document.getElementById("t_pago" + ss[i] + "").value = ve + vf + ce + ct + ((vf + ve) * 0.05);
+                var t_pago = document.getElementById("t_pago" + ss[i] + "").value = ve + vf + ce + ct + ((vf + ve) *
+                    0.05);
                 var extra = document.getElementById("extra" + ss[i] + "").value = ve + ce + ct + ((vf + ve) * 0.05);
                 console.log(extra)
 
 
             }
         }
-
-
     </script>
 </form>
 

@@ -46,6 +46,7 @@
 
         {% csrf_token %}
         <input type="text" style="display:none;" id="n" value={{cant}}>
+        <input type="text" style="display:none;"  name="num_proveedor" value={{cant1}}>
         {% for message in messages %}
         <div class="alert alert-warning alert-dismissable">
 
@@ -74,39 +75,39 @@
                         <div class="col-sm-3">
 
                             <label>Numero cajas</label> <input type="number" class="form-control"
-                                id='num_cajas{{lista.id}}' name="ncajas" value={{lista.num_cajas}} onChange="sumar()">
+                                id='num_cajas{{lista.id}}' name="ncajas" value={{lista.num_cajas}} min="1" onChange="sumar()" required>
                         </div>
                         <div class="col-sm-3">
 
                             <label>Valor_envio</label> <input type="number" class="form-control"
-                                id='v_envio{{lista.id}}' step="0.0001" name="v_envio" value={{lista.valor_envio}}
-                                onChange="sumar()" />
+                                id='v_envio{{lista.id}}' step="0.0001" name="v_envio" value={{lista.valor_envio}} min="0" 
+                                onChange="sumar()" required/>
                         </div>
                         <div class="col-sm-3">
 
-                            <label>Valor_factura</label> <input type="number" class="form-control"
-                                id='v_factura{{lista.id}}' step="0.0001" name="v_factura" value={{lista.valor_factura}}
-                                onChange="sumar()" /></div>
+                            <label>Valor_factura</label> <input type="number" class="form-control" 
+                                id='v_factura{{lista.id}}' step="0.0001" name="v_factura" value={{lista.valor_factura}} min="1"
+                                onChange="sumar()"  required/></div>
                     </div>
                     <div class="row">
                         <div class="col-sm-3">
 
                             <label>Comision_envio </label> <input type="number" class="form-control"
-                                id='comis_envio{{lista.id}}' step="0.0001" name="comis_envio"
-                                value={{lista.comision_envio}} onChange="sumar()" />
+                                id='comis_envio{{lista.id}}' step="0.0001" name="comis_envio" min="0"
+                                value={{lista.comision_envio}} onChange="sumar()" required/>
                         </div>
 
 
                         <div class="col-sm-3">
 
                             <label>Comision_tarjeta </label> <input class="form-control" type="number"
-                                id='comis_tarjeta{{lista.id}}' step="0.0001" name="comis_tarjeta"
-                                value={{lista.comision_tarjeta}} onChange="sumar()" />
+                                id='comis_tarjeta{{lista.id}}' step="0.0001" name="comis_tarjeta" min="0"
+                                value={{lista.comision_tarjeta}} onChange="sumar()" required />
                         </div>
                         <div class="col-sm-3">
 
-                            <label>ISD</label> <input class="form-control" type="text" id='isd{{lista.id}}' name="isd"
-                                value={{lista.isd}} onChange="sumar()"  /></div>
+                            <label>ISD</label> <input class="form-control" type="text" id='isd{{lista.id}}' min="0" name="isd"
+                                value={{lista.isd}} onChange="sumar()" required /></div>
                         <div class="col-sm-3">
 
                             <label>Total pago</label> <input type="text" class="form-control" id='t_pago{{lista.id}}'
@@ -130,7 +131,7 @@
             <a class="btn btn-primary" href="{% url 'importacion' id %}">Atras</a>
 
 
-            <button class="btn" id="next" type="submit">Siguiente</button>
+            <button class="btn"  type="submit">Siguiente</button>
         </div>
 
 

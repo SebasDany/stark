@@ -31,6 +31,7 @@ urlpatterns = [
     path('startafianzado/<int:id>/<int:idas>/',gestorAfianzado.startAfianzado,name='startafianzado'),
     path('datosafianzado/<int:id>/<int:idas>/<int:idfa>/',gestorAfianzado.datosAfianzado,name='datosafianzado'),
     path('detalleafianzado/<int:id>/<int:idas>/<int:idfa>/',gestorAfianzado.detalleAfianzado,name='detalleafianzado'),
+    
    
     path('buscarproducto/<int:id>/<int:idas>/<int:idfa>/',gestorImportacion.buscarProductos,name='buscarproducto'),
     path('viewproduct/<int:id>/<int:idas>/<int:idfa>/',gestorImportacion.viewProduct,name='viewproduct'),

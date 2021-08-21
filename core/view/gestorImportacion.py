@@ -128,6 +128,23 @@ def viewResults(request,id,idas,idfa):# get per mite viszualizar los calculos re
             else:
                 messages.error(request, "Se han encontrado todos los SKU ")
             PW.calcular(id)
+        if d_tienda["error1"]==True:
+            messages.error(request, "No se ha podido conectar a la tienda error autenticacion")
+            pr=Detalle_importacion.objects.filter(importacion=id)    
+            proveedores=Factura_proveedor.objects.filter(importacion=id)
+            mercancias=Mercancia.objects.select_related().all()
+            datos={
+                    "id":id,
+                    "idas":idas,
+                    "idfa":idfa,
+                    'error':False,
+                "productos":pr,
+                "tipoerror":"alert alert-danger",
+                "proveedores":proveedores,
+                "mercancias":mercancias
+            } 
+            return render(request, 'core/resultados.html',datos  )
+
         updateEstado(id,8)
         return redirect('previewsyncronizar',id,idas,idfa )
     pr=Detalle_importacion.objects.filter(importacion=id)    
@@ -138,6 +155,7 @@ def viewResults(request,id,idas,idfa):# get per mite viszualizar los calculos re
             "idas":idas,
             "idfa":idfa,
             'error':False,
+            "tipoerror":"alert alert-success",
         "productos":pr,
         "proveedores":proveedores,
         "mercancias":mercancias

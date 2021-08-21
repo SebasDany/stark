@@ -21,13 +21,19 @@ class Sincronizacion:
         id_dI=[]
         cantidad_base=[]
         costoUnitario=[]
+        print("\tDatos de base de db_stark " )
+        print("\t Cantidad \t Costo_unitario \t SKU \t Nombre Producto" )
         
         for valores in Detalle_importacion.objects.filter(importacion=id).order_by('id'):
-            print(valores.id)
+            #print(valores.id)
             id_dI.append(valores.id)
             cantidad_base.append(valores.cantidad)
             costoUnitario.append(valores.costo_unitario)
-        print("Base", cantidad_base,costoUnitario)
+        #print("Base", cantidad_base,costoUnitario)
+        
+        
+            print("\t",valores.cantidad,'\t\t' ,valores.costo_unitario,"\t\t",valores.producto.sku,"\t\t",valores.producto.nombre)
+        print()
         datos={
                 "id_dI":id_dI,
                 "cantidad_base":cantidad_base,
@@ -40,40 +46,56 @@ class Sincronizacion:
         purchase_price=[]
         cantida_tienda=[]
         tipo_producto=[]
-        error=False
+        
 
         no_encontrado=[]
+        error1=''
+        error=''
+        print("\tDatos de tienda de pruebas " )
+        print("\t Cantidad \t Costo_unitario \t SKU \t Nombre Producto" )
         for dt in  Detalle_importacion.objects.filter(importacion=id).order_by('id'):
-            product =self.wc.get_producto_by_sku(dt.producto.sku)
+            product =self.wc.get_producto_by_sku(dt.producto.sku)           
+           
+            if type(product) is dict:
+                #print("estatid code ",product.get('data').get('status'))
+                error1=True
             
-            
-            if(len(product)!=0):
-                if (len(product)!=0 and product[0].get('type')=='simple'):           
-                    purchase_price.append(product[0].get('purchase_price'))
-                    cantida_tienda.append(product[0].get('stock_quantity'))
-                    tipo_producto.append(0)
-                    updateIdWooProduct(dt.producto.id,product[0].get('id'),0)
-                
-                if(len(product)!=0 and product[0].get('type')=='variation' ):
-                    padre=self.wc.get_producto_by_sku(dt.producto.sku.split("-")[0])
-                    purchase_price.append(product[0].get('purchase_price'))
-                    cantida_tienda.append(product[0].get('stock_quantity'))
-                    tipo_producto.append(1)
-                    updateIdWooProduct(dt.producto.id,padre[0].get('id'), product[0].get('id'))
             else:
-                print("no se ha encontardo el producto con este sku",dt.producto.sku, " iteracion " )  
-                no_encontrado.append(dt.producto.sku)
-                purchase_price.append(0)
-                cantida_tienda.append(0)
-                tipo_producto.append(0) 
-                error=False 
-        print("tienda", purchase_price,cantida_tienda, tipo_producto )
+                error1=False
+                
+            
+                if(len(product)!=0):
+                    error=False
+                    if (len(product)!=0 and product[0].get('type')=='simple'):           
+                        purchase_price.append(product[0].get('purchase_price'))
+                        cantida_tienda.append(product[0].get('stock_quantity'))
+                        tipo_producto.append(0)
+                        updateIdWooProduct(dt.producto.id,product[0].get('id'),0)
+                    
+                    if(len(product)!=0 and product[0].get('type')=='variation' ):
+                        padre=self.wc.get_producto_by_sku(dt.producto.sku.split("-")[0])
+                        purchase_price.append(product[0].get('purchase_price'))
+                        cantida_tienda.append(product[0].get('stock_quantity'))
+                        tipo_producto.append(1)
+                        updateIdWooProduct(dt.producto.id,padre[0].get('id'), product[0].get('id'))
+                else:
+                    #print("no se ha encontardo el producto con este sku",dt.producto.sku, " iteracion " )  
+                    no_encontrado.append(dt.producto.sku)
+                    purchase_price.append(0)
+                    cantida_tienda.append(0)
+                    tipo_producto.append(0) 
+                    error=False 
+            print("\t", product[0].get('stock_quantity'),"\t\t",product[0].get('purchase_price'),"\t\t",product[0].get('sku'),"\t\t",product[0].get('name') )
+        print()
+           
         datos={ "error":error,
+                "error1":error1,
                 "purchase_price":purchase_price,
                 "cantida_tienda":cantida_tienda,
                 "tipo_producto":tipo_producto,
                 "no_encontrado":no_encontrado
                 }
+        
                     
         return datos
 
@@ -87,15 +109,25 @@ class Sincronizacion:
             print(len(datosTienda["tipo_producto"]))
             for i in range(len(datosTienda["tipo_producto"])):
                 t1= datoBase["costoUnitario"][i]*datoBase["cantidad_base"][i]
-                t2= datosTienda["purchase_price"][i]*datosTienda["cantida_tienda"][i]
-                t_cant=datoBase["cantidad_base"][i]+datosTienda["cantida_tienda"][i]
-                t_cost=float(t1)+float(t2)
-                print("calculo", datoBase["costoUnitario"][i],datoBase["cantidad_base"][i] )
-                print("suma",datoBase["cantidad_base"][i], datosTienda["cantida_tienda"][i])
-                nueva_cantidad.append(t_cant)
-                nv=t_cost/t_cant
+                if(datosTienda["cantida_tienda"][i]<0):
+                    t2= datosTienda["purchase_price"][i]*0
+                    nv=datoBase["costoUnitario"][i]
+                    t_cant=datoBase["cantidad_base"][i]+datosTienda["cantida_tienda"][i]#eliminar
+                    
+                    
+                else:
+                    t2= datosTienda["purchase_price"][i]*datosTienda["cantida_tienda"][i]
+
+                    t_cant=datoBase["cantidad_base"][i]+datosTienda["cantida_tienda"][i]#sacar del else
+                    print("total cantidad",datoBase["cantidad_base"][i],datosTienda["cantida_tienda"][i])
+                    t_cost=float(t1)+float(t2)
+                    print("calculo", datoBase["costoUnitario"][i],datoBase["cantidad_base"][i] )
+                    print("suma",datoBase["cantidad_base"][i], datosTienda["cantida_tienda"][i])
+                    nueva_cantidad.append(t_cant)
+                    nv=t_cost/t_cant#sacar hasta aca
                 nuevo_cost.append(nv)
                 updateCost_Invent(datoBase["id_dI"][i],nv, t_cant)
+                print()
         else :
             error:True 
         datos={ "error":error,

@@ -67,7 +67,7 @@ class Producto(models.Model):
                     ]
                 }
             woo.create_producto_variacion(self.parent_id, data1)
-            print(woo.create_producto_variacion(self.parent_id, data1))
+            
             
         else:
             if(len(self.imagen)==0):
@@ -91,8 +91,8 @@ class Producto(models.Model):
                         },   
                     ]
                 }
-            #woo.create_producto(data)
-            print(woo.create_producto(data))
+
+            woo.create_producto(data)
         self.iva=float(self.precio_compra)*0.12
         self.precio_neto = float(self.iva)+float(self.precio_compra)
         super(Producto, self).save(*args, **kwargs) # Call the "real" save() method.

@@ -37,6 +37,11 @@ class Producto(models.Model):
             raise  ValidationError ("El sku de una de un producto simple sigue esta estructura SKU123")
         woo = Woocommerce()
         producto=woo.get_producto_by_sku(self.sku)
+        if type(producto) is dict:
+            if(producto.get('data').get('status')==401):
+                
+                raise  ValidationError ("No se ha podido conectar a la tienda error autenticacion")
+        
         if len(producto)!=0:#verifica si esxite o no el producto dentro de la tienda
              raise  ValidationError ("El prodcuto "+ "SKU: " + str(producto[0].get('sku')) + ", \nNombre : " + str(producto[0].get('name'))+" YA EXISTE")
         if ( self.variacion == True and s!=1):

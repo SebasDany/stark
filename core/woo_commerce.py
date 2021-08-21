@@ -6,8 +6,8 @@ class Woocommerce:
         # Create object to connect to woo api
         self.wcapi = API(
             url="http://3.17.224.172/", # Your store URL
-            consumer_key="ck_08810b8606578f3a5f8649d075a365f4f5d26f70", # Your consumer key
-            consumer_secret="cs_e8b018ebad63d03deac1d9e2e446ad741fbd1291", # Your consumer secret
+            consumer_key="ck_08810b8606578f3a5f8", # Your consumer key
+            consumer_secret="cs_e8b018ebad63d03dea", # Your consumer secret
             wp_api=True, # Enable the WP REST API integration
             version="wc/v3" # WooCommerce WP REST API version
         )

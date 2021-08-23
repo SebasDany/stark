@@ -7,8 +7,8 @@ Al participar, se espera que respete este código.
 
 El proceso que se describe para la contribución al código de STARK tiene varios objetivos:
 
-Mantener la calidad de STARK
-Solucione problemas que son importantes para los usuarios
-Involucrar a la comunidad en el trabajo hacia el mejor STARK posible
-Habilite un sistema sostenible para que los mantenedores de STARK revisen las contribuciones
+* Mantener la calidad de STARK.
+* Solucione problemas que son importantes para los usuarios.
+* Involucrar a la comunidad en el trabajo hacia el mejor STARK posible.
+* Habilite un sistema sostenible para que los mantenedores de STARK revisen las contribuciones.
 

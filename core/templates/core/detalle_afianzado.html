@@ -39,7 +39,7 @@
                   {% csrf_token %} 
                 
             {% for message in messages %}
-        <div class="alert alert-warning alert-dismissable">
+        <div class="alert alert-danger alert-dismissable">
 
             <strong>¡Alerta!</strong> {{ message }}
         </div>

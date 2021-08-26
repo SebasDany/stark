@@ -7,14 +7,19 @@
 <h1 class="mt-4">Producto importados </h1>
 
 <body onload="nobackbutton();"></body>
-{%include 'core/messages.html'%}
+
 <link href="{% static 'core/css/proveedor.css' %}" rel="stylesheet" />
-<form role="form" method="POST" action="{% url 'productosimportados' id idas idfa %}">
+<form role="form" method="POST" onsubmit="ShowLoading()" action="{% url 'productosimportados' id idas idfa %}">
 
 
 
    {% csrf_token %}
-
+   {% for message in messages %}
+   <div class="alert alert-danger alert-dismissable">
+   
+       <strong>¡Alerta!</strong> {{ message }}
+   </div>
+   {% endfor %}
 <div id="Layer1" style="width:100%; height:100%; overflow: scroll;">
   <table class="table">
       <thead>
@@ -39,9 +44,9 @@
             <th scope="row">{{ lista.producto.sku}}</th>
             <td>{{lista.producto.nombre}}</td>
             <td><select name="proveedor" class="form-select">
-                        <option value={{ lista.proveedor.id }}>{{ lista.proveedor }}</option>
+                        <option value={{ lista.proveedor.id }}>{{ lista.proveedor.nombre }}</option>
                         {% for prv in proveedores %}
-                        <option value={{ prv.proveedor.id }}>{{ prv.proveedor }}</option>
+                        <option value={{ prv.proveedor.id }}>{{ prv.proveedor.nombre }}</option>
                         {% endfor %}
                      </select></td>
                       <td><input type="number" class="form-control" name="cantidad" value={{lista.cantidad}} min="1" required></td>
@@ -49,11 +54,11 @@
                         value={{ lista.valor_unitario }}></td>
             <td><input class="form-control" type="number"  name="peso" value={{ lista.peso}} min="1" required></td>
             <td><select name="mercancia" class="form-select">
-                        <option value={{ lista.mercancia.id }} selected>{{ lista.mercancia }}</option>
+                        <option value={{ lista.mercancia.id }} selected>{{ lista.mercancia.nombre }}</option>
 
                         {% for mer in mercancias %}
 
-                        <option value={{ mer.mercancia.id }}>{{ mer.mercancia }}</option>
+                        <option value={{ mer.mercancia.id }}>{{ mer.mercancia.nombre }}</option>
 
                         {% endfor %}
                      </select></td>
@@ -70,161 +75,23 @@
 </div>
 
 
-         <button type="submit" class="btn btn-primary btn-user btn-block">Guardar y Ver resultados</button>
+         <button type="submit"  class="btn btn-primary btn-user btn-block">Guardar y Ver resultados</button>
       
-   
-
-   {% comment %} <div class="cont">
-
-      {% for lista in productos_detalle_importacion %}
-      <input type="number" style="display:none;" name="id_df" value={{ lista.id }}>
-      <input type="text" name="id_producto" style="display:none;" value={{ lista.producto.id }}>
-
-
-      <div class="col-xl-12 col-md-12">
-         <div class="card" style="text-align: left;">
-            <div class="container-fluid px-4">
-            
-                     <label><b>SKU :</b></label>
-                     <label >{{ lista.producto.sku}}</label>
-                     <br>
-                     <label><b>Nombre: </b></label>
-                     <label >{{lista.producto.nombre}} </label>
-
-
-               <div class="row">
-                               
-                  <div class="col-sm-3">
-                     <label>Tienda </label>
-                     <select name="proveedor" class="form-select">
-                        <option value={{ lista.proveedor.id }}>{{ lista.proveedor }}</option>
-                        {% for prv in proveedores %}
-                        <option value={{ prv.proveedor.id }}>{{ prv.proveedor }}</option>
-                        {% endfor %}
-                     </select>
-                  </div>
-                  
-                  <div class="col-sm-3">
-                     <label>Precio </label>
-                     <input class="form-control" type="number" step="0.0001" name="precio"
-                        value={{ lista.valor_unitario }}>
-                  </div>
-               
-                  <div class="col-sm-3">
-                     <label>Peso </label>
-                     <input class="form-control" type="number"  name="peso" value={{ lista.peso}} min="1" required>
-                  </div>
-                  
-                  <div class="col-sm-3">
-                     <label>Mercancia </label>
-                     <select name="mercancia" class="form-select">
-                        <option value={{ lista.mercancia.id }} selected>{{ lista.mercancia }}</option>
-
-                        {% for mer in mercancias %}
-
-                        <option value={{ mer.mercancia.id }}>{{ mer.mercancia }}</option>
-
-                        {% endfor %}
-                     </select>
-                  </div>
-                  </div>
-               <div class="row">
-                  <div class="col-sm-3">
-                     <label>Cantidad</label>
-                     <input type="number" class="form-control" name="cantidad" value={{lista.cantidad}} min="1" required>
-                  </div>
-                  <div class="col-sm-3">
-                     <label>SKU Proveedor</label> <input type="text" class="form-control" name="sk_prove">
-                  </div>
-                  <div class="col-sm-3">
-                     <label>Nombre_Producto_Proveedor</label> <input type="text" class="form-control"
-                        name="nombreProve">
-                        <br>
-                  </div>
-               </div>
-            </div>
-         </div>
-      </div>
-      <br>
-      {% endfor %}
-      <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
-
-         <button type="submit" class="btn btn-primary btn-user btn-block">Guardar y Ver resultados</button>
-      </div>
-   </div> {% endcomment %}
-
-
-
-
-
-
-
-
-
-
-
-
-   {% comment %} <div class="cont">
-      <div class="col-xl-12 col-md-1">
-         <div class="container-fluid px-4">
-            {% csrf_token %}
-
-
-            {% for lista in productos_detalle_importacion %}
-            <input type="number" style="display:none;" name="id_df" value={{ lista.id }}>
-            <input type="text" name="id_producto" style="display:none;" value={{ lista.producto.id }}>
-            <div class="card">
-               <div class="contenedor">
-
-                  <div class="contenedor-fila">
-                     <div class="contenedor-columna">SKU <input type="text" class="form-control"
-                           value={{ lista.producto.sku}} class="field left" readonly>
-                     </div>
-                     <div class="contenedor-columna">Tienda <select name="proveedor" class="form-select">
-                           <option value={{ lista.proveedor.id }}>{{ lista.proveedor }}</option>
-                           {% for prv in proveedores %}
-                           <option value={{ prv.proveedor.id }}>{{ prv.proveedor }}</option>
-                           {% endfor %}
-                        </select> </div>
-                     <div class="contenedor-columna">Nombre <input class="form-control" type="text"
-                           value={{lista.producto.nombre}} readonly> </div>
-                     <div class="contenedor-columna">Precio <input class="form-control" type="number" step="0.0001"
-                           name="precio" value={{ lista.valor_unitario }}></div>
-                     <div class="contenedor-columna">Peso <input class="form-control" type="number" step="0.0001"
-                           name="peso" value={{ lista.peso}}></div>
-                  </div>
-
-
-
-                  <div class="contenedor-columna">Mercancia <select name="mercancia" class="form-select">
-                        <option value={{ lista.mercancia.id }} selected>{{ lista.mercancia }}</option>
-
-                        {% for mer in mercancias %}
-
-                        <option value={{ mer.mercancia.id }}>{{ mer.mercancia }}</option>
-
-                        {% endfor %}
-                     </select></div>
-                  <div class="contenedor-columna">Cantidad <input type="number" class="form-control" name="cantidad"
-                        value={{lista.cantidad}}></div>
-                  <div class="contenedor-columna">SKU Proveedor <input type="text" class="form-control" name="sk_prove">
-                  </div>
-                  <div class="contenedor-columna">Nombre Producto Proveedor <input type="text" class="form-control"
-                        name="nombreProve"></div>
-               </div>
-
-            </div>
-
-            {% endfor %}
-         </div>
-
-
-
-         <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
-            <button type="submit" class="btn btn-primary btn-user btn-block">Guardar y Ver resultados</button>
-         </div> {% endcomment %}
 </form>
 <script>
+   function ShowLoading(e) {
+        var div = document.createElement('div');
+        var img = document.createElement('img');
+        img.src = "https://www.gifde.com/gif/otros/decoracion/cargando-loading/cargando-loading-039.gif";
+        
+        div.style.cssText = 'position: fixed; top: 50%; left: 31%; z-index: 5000; width: 500px; text-align: center';
+        div.appendChild(img);
+        document.body.appendChild(div);
+        return true;
+        // These 2 lines cancel form submission, so only use if needed.
+        //window.event.cancelBubble = true;
+        //e.stopPropagation();
+    }
    function nobackbutton() {
 
       window.location.hash = "no-back-button";

@@ -14,7 +14,7 @@ def startFactProve(request,id):
         if len(prove)!=1:
             result=np.unique(prove) 
             if len(result)< int(num_proveedor):
-                messages.success(request, "El proveedor debe ser distinto")
+                messages.error(request, "El proveedor debe ser distinto")
                 fp=Factura_proveedor.objects.filter(importacion=id)
                 proveedores=Proveedor.objects.select_related().all()
                 cant=""
@@ -22,7 +22,7 @@ def startFactProve(request,id):
                     cant=cant+str(fp[i].id)+";"
                 datos={"id":id,
                         "proveedores":proveedores,
-                        "cantidad":fp,
+                        "facturaProveedor":fp,
                         "cant1":len(fp),
                         "cant":cant}
                 return render(request,'core/proveedor.html',datos)
@@ -57,7 +57,7 @@ def startFactProve(request,id):
 
         datos={"id":id,
                 "proveedores":proveedores,
-                "cantidad":fp,
+                "facturaProveedor":fp,
                 "cant1":len(fp),
                 "cant":cant}
     return render(request,'core/proveedor.html',datos)

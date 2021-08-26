@@ -48,12 +48,12 @@
         <input type="text" style="display:none;" id="n" value={{cant}}>
         <input type="text" style="display:none;"  name="num_proveedor" value={{cant1}}>
         {% for message in messages %}
-        <div class="alert alert-warning alert-dismissable">
+        <div class="alert alert-danger alert-dismissable">
 
             <strong>¡Alerta!</strong> {{ message }}
         </div>
         {% endfor %}
-        {% for lista in cantidad %}
+        {% for lista in facturaProveedor %}
         <div class="col-xl-12 col-md-12">
             <div class="card" style="text-align: left;">
                 <div class="container-fluid px-4">
@@ -64,7 +64,7 @@
 
                             <label>Proveedor </label>
                             <select name="proveedor" class="form-select">
-                                <option value={{ lista.proveedor.id }} selected>{{ lista.proveedor }}</option>
+                                <option value={{ lista.proveedor.id }} selected>{{ lista.proveedor.nombre }}</option>
                                 {% for prv in proveedores %}
 
                                 <option value={{ prv.id }}>{{ prv.nombre }}</option>

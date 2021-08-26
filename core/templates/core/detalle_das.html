@@ -43,7 +43,7 @@
     {% csrf_token %}
 
     {% for message in messages %}
-    <div class="alert alert-warning alert-dismissable">
+    <div class="alert alert-danger alert-dismissable">
         <strong>¡Alerta!</strong> {{ message }}
     </div>
     {% endfor %}
@@ -69,7 +69,7 @@
         <tr>
             <td>
                 <select name="mercancia" class="form-select">
-                    <option value={{ lista.mercancia.id }} selected>{{ lista.mercancia }}</option>
+                    <option value={{ lista.mercancia.id }} selected>{{ lista.mercancia.nombre}}</option>
 
                     {% for mer in mercancia %}
 

@@ -1,4 +1,3 @@
-
 from core.woo_commerce import Woocommerce
 from django.db import models
 from django.core.exceptions import ValidationError
@@ -48,18 +47,19 @@ class Producto(models.Model):
             padre=producto=woo.get_producto_by_sku(str(self.sku).split('-')[0])
             if(len(padre)==0):
                 raise  ValidationError ("El producto  padre no existe debe crearse en la tienda de forma manual se debe traer el id del padre")
-            if(padre[0].get('id')!=self.parent_id):
-                raise  ValidationError ("El id padre  o el parent_id no se encuentra en la tienda")
-
 
 
 
     def save(self, *args, **kwargs):
         woo = Woocommerce()        
-        if(self.variacion==True and self.parent_id!=0):
+        if(self.variacion==True):
+            padre=producto=woo.get_producto_by_sku(str(self.sku).split('-')[0])
             data1 = {
                     "regular_price": str(self.precio_neto),
-                    "purchase_price": str(self.precio_compra),
+                    "purchase_price": 0,
+                    "stock_quantity":0,
+                    "atum_controlled": True,
+                    "manage_stock":True,
                     "sku":str(self.sku),
                     "image": {
                         "id": 423
@@ -71,7 +71,7 @@ class Producto(models.Model):
                         }
                     ]
                 }
-            woo.create_producto_variacion(self.parent_id, data1)
+            woo.create_producto_variacion(str(padre[0].get('id')), data1)
             
             
         else:
@@ -84,8 +84,11 @@ class Producto(models.Model):
                     "type": "simple",
                     "sku":str(self.sku),
                     "regular_price": str(self.precio_neto),
-                    "purchase_price": str(self.precio_compra),
+                    "purchase_price": 0,
+                    "atum_controlled": True,
                     "description": " ",
+                    "manage_stock":True,
+                    "stock_quantity":0,
                     "short_description": "",
                     "categories": [
                     
@@ -267,17 +270,3 @@ class Historial(models.Model):
     das=models.IntegerField(default=0)
     afianzado=models.IntegerField(default=0)
     estado=models.IntegerField(default=0)
-    
-    
-
-
-
-
-
-
-    
-
-
-
-
-

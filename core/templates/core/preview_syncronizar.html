@@ -4,7 +4,7 @@
 {% block title %}<title>Creacion de Importacion</title> {% endblock title %}
     {% block body %}
     {% comment %} {% url 'updateProductoTienda' id idas idfa %} {% endcomment %}
-      <form role="form" method="POST" action="">
+      <form role="form" method="POST" action="" onsubmit="ShowLoading()">
                             {% csrf_token %}  
                             <div class="alert alert-info"><h2> Alerta estos productos seran actualizados en la tienda </h2> 
                               </div>                      
@@ -54,9 +54,24 @@
 
                </table>  
 <a class="btn btn-primary"  href="{% url 'viewresults' id idas idfa %}">Atras</a> 
-              <button type="submit" class="btn btn-primary btn-user btn-block" {{desha}}>Actualizar en al tienda</button>   
+              <button type="submit" class="btn btn-primary btn-user btn-block" {{desha}} >Actualizar en la tienda</button>   
               
                 
    </form>
-
+   <script>
+      function ShowLoading(e) {
+           var div = document.createElement('div');
+           var img = document.createElement('img');
+           img.src = "https://www.gifde.com/gif/otros/decoracion/cargando-loading/cargando-loading-039.gif";
+           
+           div.style.cssText = 'position: fixed; top: 50%; left: 31%; z-index: 5000; width: 500px; text-align: center';
+           div.appendChild(img);
+           document.body.appendChild(div);
+           return true;
+           // These 2 lines cancel form submission, so only use if needed.
+           //window.event.cancelBubble = true;
+           //e.stopPropagation();
+      }
+   
+   </script>
 {% endblock body %}

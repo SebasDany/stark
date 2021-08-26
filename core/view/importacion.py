@@ -109,7 +109,7 @@ def importacion(request,id):
             for k in  range(int(cantidad)-len(fac)):
                 pf=Factura_proveedor(proveedor=proveedor,importacion=importacion,num_cajas=0,valor_factura=0,valor_envio=0,comision_envio=0,isd=0,total_pago=0,extra=0)  
                 pf.save()
-        messages.success(request, 'Se ha registrado correctamente!')
+       # messages.success(request, 'Se ha registrado correctamente!')
         return redirect('startFP',id)
     num_proveedores=len(Proveedor.objects.all())
     

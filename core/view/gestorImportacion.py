@@ -88,6 +88,30 @@ def productosImportados(request,id,idas,idfa):
         print("Subtotal",sub2["SumaSub2"], subt1["suma_sub1"])
         print("AranceL AD",arancel["suma_ad"], subt1["ad_das"], arancel["advalorem"])
         print("Fodinfa",arancel["suma_fod"], subt1["fod_das"], arancel["fodinfa"])
+   
+        for i in Detalle_importacion.objects.values('proveedor').filter(importacion=id).distinct():
+            acum=0
+            for val  in Detalle_importacion.objects.filter(importacion=id).order_by('proveedor'):
+                #print(i.get('proveedor'), val.proveedor.id )
+                #print(i.get('proveedor')==val.proveedor.id)
+                if(i.get('proveedor')==val.proveedor.id):
+                    acum+=val.prt
+
+            print(acum)
+      
+             
+
+            
+            
+        
+
+        #val=Detalle_importacion.objects.values('prt').filter(id=id).distinct()
+        
+
+    
+        
+        #print(sum(Detalle_importacion.objects.filter(id=id).Prt))
+
         if(sub2["SumaSub2"]!=subt1["suma_sub1"]):
             
             messages.error(request, "Validación INCORRECTA de suma de subtotales. Revisar los datos")

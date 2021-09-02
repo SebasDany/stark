@@ -23,27 +23,33 @@ class Woocommerce:
         pedido = self.wcapi.get(url).json()
         return pedido
 
-    def get_producto_by_sku(self, sku):
+    def get_producto_by_sku(self, sku):#busca el producto mediante el sku dentro de la tienda
         product = self.wcapi.get("products",params={'sku':sku}).json()
 
         
         return product
+    def get_producto_variation_by_parent_id(self, parent_id):#busca el producto mediante el sku dentro de la tienda
+        product = self.wcapi.get("products/"+str(parent_id)+"/variations").json()
 
-    def set_producto_simple(self, id_producto, data):
+        
+        return product
+
+
+    def set_producto_simple(self, id_producto, data):#actualiza el producto simple dentro de la tienda
         request = self.wcapi.put(f"products/{id_producto}", data)
         if request.status_code != 200:
             return request.text
         else:
             return request.reason
 
-    def set_producto_variacion(self, parent_id, id_variacion, data):
+    def set_producto_variacion(self, parent_id, id_variacion, data):#actualiza el producto variacion en la teinda
         request = self.wcapi.put(f"products/{parent_id}/variations/{id_variacion}", data)
         if request.status_code != 200:
             return request.text
         else:
             return request.reason
 
-    def create_producto(self,data):
+    def create_producto(self,data):#crea el producto simple dentro de la tienda
         request= self.wcapi.post("products", data)
         if request.status_code != 200:
             return request.text
@@ -52,7 +58,7 @@ class Woocommerce:
 
     
 
-    def create_producto_variacion(self,parent_id,data):
+    def create_producto_variacion(self,parent_id,data):#crea el producto de tipo variacion
         request= self.wcapi.post(f"products/{parent_id}/variations", data)
         if request.status_code != 200:
             return request.text

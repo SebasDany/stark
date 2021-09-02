@@ -17,5 +17,6 @@ estados de la importacion
 5 Detalle afianzado registrado
 6 Productos agregados en la importacion
 7 Datos calculados
-8 Productos actualizados
+8 Nuevo costo y cantidad calculados
+9 Productos actualizados
 

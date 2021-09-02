@@ -7,7 +7,7 @@
 {% block title %}<title>Creacion de Importacion</title> {% endblock title %}
     {% block body %}
                         
-      <form role="form" method="POST" action="{% url 'viewresults' id idas idfa %}">
+      <form role="form" method="POST" onsubmit="ShowLoading()" action="{% url 'viewresults' id idas idfa %}">
                             {% csrf_token %}  
 
                             {% for message in messages %}
@@ -49,12 +49,12 @@
                    {% for lista in productos %}
         <tr>
             <th scope="row">{{ lista.producto.sku}}</th>
-            <td>{{ lista.proveedor }}</td>
-            <td>{{ lista.producto}}</td>
+            <td>{{ lista.proveedor.nombre }}</td>
+            <td>{{ lista.producto.nombre}}</td>
             <td>{{ lista.valor_unitario }}</td>
             <td>{{ lista.cantidad }}</td>
             <td>{{ lista.subtotal2 }}</td>
-            <td>{{ lista.mercancia }}</td>
+            <td>{{ lista.mercancia.nombre }}</td>
             <td>{{ lista.peso }}</td>
             <td>{{ lista.advalorem2 }}</td>
             <td>{{ lista.fodinfa2 }}</td>
@@ -76,15 +76,28 @@
   </table>
 </div>
 <a class="btn btn-primary"  href="{% url 'viewproduct' id idas idfa %}">Atras</a> 
+<a class="btn btn-primary" href="{%  url 'exportarimportacion' id %}">Exportar csv</a>
                 
 
-  <button  id="sincronizar" class="btn" type="submit" >Calcular</button>    
+  <button  id="sincronizar" class="btn" type="submit" >Calcular costos</button>    
  
    </form>
 
  
 <script>
-
+   function ShowLoading(e) {
+        var div = document.createElement('div');
+        var img = document.createElement('img');
+        img.src = "https://www.gifde.com/gif/otros/decoracion/cargando-loading/cargando-loading-039.gif";
+        
+        div.style.cssText = 'position: fixed; top: 50%; left: 31%; z-index: 5000; width: 500px; text-align: center';
+        div.appendChild(img);
+        document.body.appendChild(div);
+        return true;
+        // These 2 lines cancel form submission, so only use if needed.
+        //window.event.cancelBubble = true;
+        //e.stopPropagation();
+   }
 function activar(){
   document.getElementById("sincronizar").disabled = true
 }

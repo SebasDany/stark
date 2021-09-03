@@ -483,14 +483,8 @@ def calcularPorcentuales(id_imp):
 
             if(valores.proveedor==valor.proveedor):#busqueda del proveedor dentro de la tabla detalle importacion
                 prT.append(valores.subtotal2/valor.valor_factura)#calculo del pocentual prT
-                if(suma_peso==0):
-                    ps.append(0)#calculo del porcentual del peso
-                else:
-                    ps.append(valores.peso/suma_peso)#calculo del porcentual del peso
-                if (suma_subtotal2["SumaSub2"]==0):
-                    pr.append(0)#calculo del porcentual del precio
-                else:
-                    pr.append(valores.subtotal2/suma_subtotal2["SumaSub2"])#calculo del porcentual del precio
+                ps.append(valores.peso/suma_peso)#calculo del porcentual del peso
+                pr.append(valores.subtotal2/suma_subtotal2["SumaSub2"])#calculo del porcentual del precio
                 producto_id.append(valores.id)#toma de los id de los objetos de la importacion
                 #print("--------",valores.id, ps,pr,prT)
                 

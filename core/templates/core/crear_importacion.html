@@ -2,9 +2,9 @@
 {% load static %}
 
 
-{% block title %}<title>Producto importados </title> {% endblock title %}
+{% block title %}<title>Productos importados </title> {% endblock title %}
 {% block body %}
-<h1 class="mt-4">Producto importados </h1>
+<h1 class="mt-4">Productos importados </h1>
 
 <body onload="nobackbutton();"></body>
 
@@ -26,11 +26,11 @@
       <tr>
           <th scope="col">SKU</th>
           <th scope="col">Nombre</th>
-          <th scope="col">Tienda_Proveedor</th>
+          <th scope="col">Tienda Proveedor</th>
           <th scope="col">Cantidad</th>
-          <th scope="col">ValorUnid o Precio</th>
-          <th scope="col">Peso (g)</th>
-          <th scope="col">Tipo_Mercancia</th>
+          <th scope="col">ValorUnidad o Precio</th>
+          <th scope="col">Peso (gramos)</th>
+          <th scope="col">Tipo Mercancía</th>
           <th scope="col">SKU Proveedor</th>
           <th scope="col">Nombre Producto Proveedor</th>
          </tr>
@@ -49,10 +49,10 @@
                         <option value={{ prv.proveedor.id }}>{{ prv.proveedor.nombre }}</option>
                         {% endfor %}
                      </select></td>
-                      <td><input type="number" class="form-control" name="cantidad" value={{lista.cantidad}} min="0" required></td>
-            <td><input class="form-control" type="number" step="0.0001" name="precio"
-                        value={{ lista.valor_unitario }} min="0" required></td>
-            <td><input class="form-control" type="number"  name="peso" value={{ lista.peso}} min="0" required></td>
+                      <td><input type="number" class="form-control" name="cantidad" value={{lista.cantidad}} min="1" required></td>
+            <td><input class="form-control" type="number" step="0.0001" min="0.0001" name="precio"
+                        value={{ lista.valor_unitario }}></td>
+            <td><input class="form-control" type="number"  name="peso" value={{ lista.peso}} min="1" required></td>
             <td><select name="mercancia" class="form-select">
                         <option value={{ lista.mercancia.id }} selected>{{ lista.mercancia.nombre }}</option>
 
@@ -75,7 +75,7 @@
 </div>
 
 
-         <button type="submit"  class="btn btn-primary btn-user btn-block">Calcular importación</button>
+         <button type="submit"  class="btn btn-primary btn-user btn-block">Calcular Importacion</button>
       
 </form>
 <script>

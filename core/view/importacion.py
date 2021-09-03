@@ -18,6 +18,8 @@ categorias=[]
 observaciones=[]
 #saveProducto(mercan,id_w,sku,nombre,precio_compra,precio_neto,variacion,parent_id,categorias,imagen) #crear productos
 
+##
+
 def startImport(request):
     imp=Importacion(fecha=str(datetime.datetime.today()).split()[0],descripcion="",tipo="",origen="",estado=0)
     imp.save()
@@ -66,6 +68,8 @@ def register(request):
     print(context)
     return render(request,'core/register.html',context)
 
+## Funcion que guardar los producto 
+
 def saveProduct(request):
     if request.method=='POST':
         form=ProductRegister(request.POST)
@@ -87,6 +91,8 @@ def saveProduct(request):
             }
     print(context)
     return render(request,'core/product.html',context)
+
+##Función que extrae datos del formulario del inicio de importación
 
 def importacion(request,id):
     if request.method=='POST':

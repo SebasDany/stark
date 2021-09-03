@@ -2,6 +2,9 @@
 from woocommerce import API
 
 class Woocommerce:
+
+    ## Credenciales de la tienda
+    
     def __init__(self):
         # Create object to connect to woo api
         self.wcapi = API(
@@ -12,22 +15,27 @@ class Woocommerce:
             version="wc/v3" # WooCommerce WP REST API version
         )
     
-    
+    ## obtiene los pedidos en json
+
     def get_pedidos(self, after):
         url = 'orders/?per_page=50&after={}&order=asc'.format(after)
         pedidos = self.wcapi.get(url).json()
         return pedidos
 
+    ##  obtiene los pedidos en json
+
     def get_pedido(self, id_pedido):
         url = 'orders/' + str(id_pedido)
         pedido = self.wcapi.get(url).json()
         return pedido
-
+## productos por sku
     def get_producto_by_sku(self, sku):
         product = self.wcapi.get("products",params={'sku':sku}).json()
 
         
         return product
+
+## productos simples
 
     def set_producto_simple(self, id_producto, data):
         request = self.wcapi.put(f"products/{id_producto}", data)
@@ -36,12 +44,17 @@ class Woocommerce:
         else:
             return request.reason
 
+## productos variación
+
     def set_producto_variacion(self, parent_id, id_variacion, data):
         request = self.wcapi.put(f"products/{parent_id}/variations/{id_variacion}", data)
         if request.status_code != 200:
             return request.text
         else:
             return request.reason
+
+
+## crear productos
 
     def create_producto(self,data):
         request= self.wcapi.post("products", data)
@@ -51,6 +64,7 @@ class Woocommerce:
             return request.reason
 
     
+## crear productos con variaciones
 
     def create_producto_variacion(self,parent_id,data):
         request= self.wcapi.post(f"products/{parent_id}/variations", data)

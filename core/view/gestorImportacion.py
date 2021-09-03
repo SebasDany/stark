@@ -105,15 +105,15 @@ def productosImportados(request,id,idas,idfa):
             messages.error(request, "Validación INCORRECTA de suma de subtotales. Revisar los datos")
             return redirect('viewproduct',id,idas,idfa)
         if(round(arancel["suma_ad"],4)!=round(subt1["ad_das"],4)):
-                messages.error(request, "Validación INCORRECTA de suma de Advalorem. Revisar mercancias")
+                messages.error(request, "Validación INCORRECTA de suma de Advalorem. Revisar mercancías")
                 return redirect('viewproduct',id,idas,idfa)
                 
         if(round(arancel["suma_fod"],4)!=round(subt1["fod_das"],4)):
                 #print("ArancelFod",arancel["suma_fod"], subt1["fod_das"])
-                messages.error(request, "Validación INCORRECTA de suma de Fodinfa. Revisar mercancias")
+                messages.error(request, "Validación INCORRECTA de suma de Fodinfa. Revisar mercancías")
                 return redirect('viewproduct',id,idas,idfa)
         if(float(round(arancel["suma_iva"],4))!=float(round(subt1["iva_das"],4))):
-                messages.error(request, "Validación INCORRECTA de suma de Iva. Revisar mercancias")
+                messages.error(request, "Validación INCORRECTA de suma de Iva. Revisar mercancías")
                # print("ArancelIVA",arancel["suma_iva"],subt1["iva_das"])
                 return redirect('viewproduct',id,idas,idfa)
 
@@ -217,7 +217,7 @@ def buscarProductos(request,id,idas,idfa):#Recoge los sku ingresados en el formu
         productos=buscarSKU(list_sku,id,idas)#llamada al metodo de busqueda
         desha=""
         if(productos['error']==False):
-            messages.success(request, 'Se han encontrado todos los sku ')
+            messages.success(request, 'Se han encontrado todos los SKU ')
         if(productos['error']==True):
             messages.error(request, 'No se ha encontrado '+str(productos['mensage']))
             if(len(productos['productos'])==0):

@@ -207,8 +207,8 @@ class Detalle_das(models.Model):
 
 
 class Detalle_importacion(models.Model):
-    SI=1
-    NO=0
+    SI='SI'
+    NO='NO'
     estado_actualizaciOn = [
                         (SI, 'SI'),
                         (NO, 'NO') ]

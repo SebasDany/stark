@@ -6,6 +6,8 @@ import datetime
 import numpy as np
 from django.contrib import messages
 
+
+## Por defecto agregar valores en el formulario de la factura DAS
 def startDas(request,id):
     d2=Das.objects.all()
     fecha=str(datetime.datetime.today()).split()[0]
@@ -17,6 +19,8 @@ def startDas(request,id):
     das.save()
     d=Das.objects.last()     
     return redirect('datosdas',id,d.id)
+    
+## Guarda en variables los campos del formulario de la factura DAS
 
 def datosDas(request,id,idas):
     if request.method=='POST':
@@ -70,6 +74,8 @@ def datosDas(request,id,idas):
                 }
     return render(request,'core/das.html',datos)
 
+## Extrae todos los valores del formulario detalle DAS
+
 def detalleDas(request,id,idas):
     if request.method=='POST':
         cant_mercancia=request.POST.get('cant_mercancia')#obtiene la cantidad de mecancia par avalidar si la mercacia se repite o no
@@ -79,6 +85,8 @@ def detalleDas(request,id,idas):
         fodinfa=request.POST.getlist('fodinfa')
         iva=request.POST.getlist('iva')
         sub_total=request.POST.getlist('sub_total')
+        ## Validacion si el campo mercancía es diferente de uno y verifica que 
+        ## el usuario ingrese diferentes mercancias
         if len(mercancia)!=1:
             result=np.unique(mercancia) 
             if len(result)< int(cant_mercancia):
@@ -124,6 +132,8 @@ def detalleDas(request,id,idas):
         }
     return render (request, 'core/detalle_das.html',datos)
 
+## Guardar datos en la factura DAS
+
 def saveDas(idas,idfechaImport,numero_atribuido,numero_entrega,
 fecha_embarque,fecha_llegada,documento_transporte,
 tipo_carga,pais_procedncia,via_transporte,puerto_enbarque,
@@ -159,6 +169,8 @@ total_tributos,valor_seguros,cif,peso_bruto,unidades_fisicas,valor_fob):
     das.save() #Contiene una realcion de uno auno
     return {'error':False}
 
+## Guardar datos en la tabla detalle DAS
+
 def saveDetalleDas(id_dd,idas,mercancia=[],advalorem=[],fodinfa=[],iva=[],sub_total=[]):
     das=Das.objects.get(id=idas)# obtiene el utlimo dato del la consulta
     for i in  range(len(mercancia)):
@@ -173,6 +185,9 @@ def saveDetalleDas(id_dd,idas,mercancia=[],advalorem=[],fodinfa=[],iva=[],sub_to
         dD.save()
  
     return {'error':False}
+
+
+## Actualizar subtotal para el boton de atras
 
 def updateSubtotal1(id_dd,sub1):
     for i in range(len(id_dd)):

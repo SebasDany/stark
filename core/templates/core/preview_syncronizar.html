@@ -1,12 +1,12 @@
 {% extends 'core/base.html'%}
 
 
-{% block title %}<title>Creacion de Importacion</title> {% endblock title %}
+{% block title %}<title>Creación de Importación</title> {% endblock title %}
     {% block body %}
     {% comment %} {% url 'updateProductoTienda' id idas idfa %} {% endcomment %}
       <form role="form" method="POST" action="" onsubmit="ShowLoading()">
                             {% csrf_token %}  
-                            <div class="alert alert-info"><h2> Alerta estos productos seran actualizados en la tienda </h2> 
+                            <div class="alert alert-info"><h2> Alerta estos productos serán actualizados en la tienda </h2> 
                               </div>                      
 
                         
@@ -23,7 +23,7 @@
                <tr>
                   <td>SKU</td>
                  
-                  <td>Nombre</td>
+                  <td align="left">Nombre</td>
                   <td>Nuevo costo</td>
                   <td>Total Inventario</td>
 
@@ -40,7 +40,7 @@
                      <td><input type="checkbox" name="id_producto" value={{lista.producto.id}} checked> {{ lista.producto.sku}}</td>
                         </td>
                               
-                        <td><label>{{ lista.producto.nombre}} </label> </td>
+                        <td align="left"><label>{{ lista.producto.nombre}} </label> </td>
                          <td><label>{{ lista.nuevo_costo}} </label> </td>
                           <td><label>{{ lista.total_inventario}} </label> </td>
                         
@@ -53,7 +53,7 @@
                      
 
                </table>  
-<a class="btn btn-primary"  href="{% url 'viewresults' id idas idfa %}">Atras</a> 
+<a class="btn btn-primary"  href="{% url 'viewresults' id idas idfa %}">Atrás</a> 
               <button type="submit" class="btn btn-primary btn-user btn-block" {{desha}} >Actualizar en la tienda</button>   
               
                 

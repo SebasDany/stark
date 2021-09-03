@@ -26,7 +26,7 @@ def startFactProve(request,id):
                         "cant1":len(fp),
                         "cant":cant}
                 return render(request,'core/proveedor.html',datos)
-        print("valor de proveedor",prove)
+    
         ncajas=request.POST.getlist('ncajas')
         v_envio=request.POST.getlist('v_envio')
         v_factura=request.POST.getlist('v_factura')
@@ -61,6 +61,8 @@ def startFactProve(request,id):
                 "cant1":len(fp),
                 "cant":cant}
     return render(request,'core/proveedor.html',datos)
+
+# Guarda los datos en la factura proveedor
 
 def saveFacuturaProveedor(idfp,prove,id,ncajas,v_envio,v_factura,comis_envio,comis_tarjeta,isd,t_pago,extra):
     for j in range (len(prove)):

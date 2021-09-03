@@ -1,13 +1,13 @@
 {% extends 'core/base.html'%}
 
 
-{% block title %}<title>Creacion de Importacion</title> {% endblock title %}
+{% block title %}<title>Creación de Importación</title> {% endblock title %}
     {% block body %}
 
-    <h1 class="mt-4">Creacion de Importacion </h1>
+    <h1 class="mt-4">Creación de Importación </h1>
       <form role="form" method="POST" action="{% url 'addproductimport' id idas idfa %}">
                             {% csrf_token %}  
-                            <div class="alert alert-info"><h2> Alerta estos productos ya no podran ser modificados una vez presionado continuar </h2> 
+                            <div class="alert alert-info"><h2> Alerta estos productos ya no podrán ser modificados una vez presionado continuar </h2> 
                               </div>                      
 
                         
@@ -25,7 +25,7 @@
                <tr>
                   <td>SKU</td>
                  
-                  <td>Nombre</td>
+                  <td align="left">Nombre</td>
                  
                
                   
@@ -36,7 +36,7 @@
                      <tr>
                      <td><input type="checkbox" name="id_producto" value={{lista.sku}} checked> {{ lista.sku}}</td>
                               
-                        <td><label>{{ lista.nombre}} </label> </td>
+                        <td align="left"><label >{{ lista.nombre}} </label> </td>
                           
                               </tr>
                      {% endfor %}
@@ -44,7 +44,7 @@
                      
 
                </table>  
-<a class="btn btn-primary"  href="{% url 'detalleimportacion' id idas idfa %}">Atras</a> 
+<a class="btn btn-primary"  href="{% url 'detalleimportacion' id idas idfa %}">Atrás</a> 
               <button type="submit" class="btn btn-primary btn-user btn-block" {{desha}}>Continuar</button>   
               
                 

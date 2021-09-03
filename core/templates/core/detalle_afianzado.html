@@ -25,7 +25,7 @@
                               <nav aria-label="breadcrumb" class="breadcrumb">
                             <ol class="breadcrumb mb-4">
                                 <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
-                                <li class="breadcrumb-item"><a href="{% url 'importacion' id %}">Inicio Importacion</a></li>
+                                <li class="breadcrumb-item"><a href="{% url 'importacion' id %}">Inicio Importación</a></li>
                                 <li class="breadcrumb-item"><a href="{% url 'startFP' id %}">Detalle factura</a></li>
                                 <li class="breadcrumb-item"><a href="{% url 'datosdas' id idas %}">Datos DAS</a></li>
                                 <li class="breadcrumb-item"><a href="{% url 'detalledas' id idas %}">Detalle Das</a></li>
@@ -52,8 +52,8 @@
     
   <tr>
     
-    <td>Descripcion</td>
-    <td>Al perso</td>
+    <td>Descripción</td>
+    <td>Al peso</td>
     <td>Al precio</td>
     <td>Iva</td>
    
@@ -83,7 +83,7 @@
         {% comment %} <a class="btn btn-primary" href="{% url 'importacion' fecha.id %}">Atras</a> {% endcomment %}
         {% comment %} <a class="btn btn-primary"  href="{% url 'editar' fecha.id %}">editar</a>
          {% endcomment %}
-<a class="btn btn-primary"  href="{% url 'datosafianzado' id idas idfa  %}">Atras</a>
+<a class="btn btn-primary"  href="{% url 'datosafianzado' id idas idfa  %}">Atrás</a>
         <button type="submit" class="btn btn-primary" >Siguiente</button>
         {% comment %} <a class="btn btn-primary" type="submit"  href="{% url 'das' %}">Guardar y continuar</a> {% endcomment %}
         

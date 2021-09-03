@@ -15,11 +15,11 @@
 <table class="table">
     <thead>
         <tr>
-            <th scope="col">SKU</th>
+            <th scope="col" >SKU</th>
 
-            <th scope="col">Nombre</th>
+            <th scope="col" align="left">Nombre</th>
             <th scope="col">Id producto tienda</th>
-            <th scope="col">Variacion </th>
+            <th scope="col">Variación </th>
             <th scope="col">Nuevo costo</th>
             <th scope="col">Total inventario</th>
 
@@ -31,7 +31,7 @@
         {% for lista in productos %}
         <tr>
             <th scope="row">{{ lista.producto.sku}}</th>
-            <td>{{ lista.producto}}</td>
+            <td align="left">{{ lista.producto}}</td>
             <td>{{ lista.producto.id_woocommerce }}</td>
             <td>{{ lista.producto.variacion }}</td>
             <td>{{ lista.nuevo_costo }}</td>

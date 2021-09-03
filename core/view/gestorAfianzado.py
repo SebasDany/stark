@@ -4,6 +4,9 @@ from django.shortcuts import render, redirect
 from ..models import Detalle_afianzado, Factura_afianzado,Importacion,Afianzado, Mercancia, Producto, Proveedor
 import datetime
 from django.contrib import messages 
+
+##
+
 def startAfianzado(request,id,idas):
     fecha=str(datetime.datetime.today()).split()[0]
     imprt=Importacion.objects.get(id=id)
@@ -12,6 +15,9 @@ def startAfianzado(request,id,idas):
     as_af=Factura_afianzado.objects.last()
     idfa=as_af.id
     return redirect('datosafianzado',id,idas,idfa)
+
+## Función  que extrae  los datos del formulario factura afianzado con la actualización
+## del estado y del historial.
 
 def datosAfianzado(request,id,idas,idfa):
     if request.method=='POST':
@@ -35,6 +41,8 @@ def datosAfianzado(request,id,idas,idfa):
             }
     return render(request,'core/factura_afianzado.html',datos)
 
+## Función para guardar en la tabla detalle afianzado
+
 def crearDetalleAfianzado(request,id,idas,idfa):
     dA=Detalle_afianzado.objects.filter(factura_afianzado=idfa).first()
     if dA == None:
@@ -43,6 +51,8 @@ def crearDetalleAfianzado(request,id,idas,idfa):
             dta=Detalle_afianzado(factura_afianzado=f_afianzado,descripcion="____",al_peso=0,al_precio=0,iva=0,total=0)
             dta.save()
     return redirect('detalleafianzado',id,idas,idfa) 
+
+## Función que obtiene los datos del formulario del detalle afianzado
 
 def detalleAfianzado(request,id,idas,idfa):
     if request.method=='POST':
@@ -56,13 +66,17 @@ def detalleAfianzado(request,id,idas,idfa):
         alpeso=0
         alprecio=0
         iva=0
+        ## Guarda todos los datos de alpeso, alprecio e iva dentro de variables.
         for i in range(len(idd)): 
             idda.append(idd[i].id)
             alpeso+=float(ape[i])
             alprecio+=float(apr[i])
             iva+=float(iv[i])
         resul=round(alprecio+alpeso+iva,2)
-        fak=Factura_afianzado.objects.get(importacion=id)        
+        fak=Factura_afianzado.objects.get(importacion=id) 
+        
+        ## Validación del subtotal de la factura afianzado 
+        ## con la suma de todos los valores del detalle afianzado       
         if(float(fak.subtotal) !=resul):
             messages.error(request, "Las asignaciones estan  INCORRECTA alpeso+alprecio+iva deben ser igual a: "+str(fak.subtotal))
             dat_d=Detalle_afianzado.objects.filter(factura_afianzado=idfa)
@@ -81,6 +95,7 @@ def detalleAfianzado(request,id,idas,idfa):
                 }  
             return render(request,'core/detalle_afianzado.html',dato) 
 
+        ## cambio de estado y guardar en la tabla historial
         saveDetalleAfianzado(id,idda,desc,ape,apr,iv,t)
         updateEstado(id,5)
         updateH(id,idas,idfa,5)
@@ -102,6 +117,8 @@ def detalleAfianzado(request,id,idas,idfa):
             }  
     return render(request,'core/detalle_afianzado.html',dato)
 
+
+## Función que guarda a la tabla afianzado
 def saveAfianzado(idaf,afianzado,idfechaImport,fecha,numero,subtotal):
     af=Factura_afianzado()
     af.afianzado=Afianzado.objects.get(id=afianzado)
@@ -119,6 +136,9 @@ def saveAfianzado(idaf,afianzado,idfechaImport,fecha,numero,subtotal):
             'cantidad':cant, 
             'afz':afz
             }
+
+## Función que guarda a el detalle afianzado
+
 def saveDetalleAfianzado(id,idda,desc=[],ape=[],apr=[],iv=[], t=[]):
     faf=Factura_afianzado.objects.get(importacion=id)
     for i in  range(len(ape)):

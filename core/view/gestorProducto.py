@@ -1,7 +1,7 @@
 
 from core.models import Mercancia, Producto
 
-
+## Función para guardar la mercancia
 def saveMercacia(mer=[],sub=[],adv=[]):
     print(len(mer))
     print(len(sub))
@@ -13,12 +13,11 @@ def saveMercacia(mer=[],sub=[],adv=[]):
         m.subpartida=sub[i]
         m.por_advalorem=adv[i]
         m.save()
+
+## Funcion de guardar productos
+
 def saveProducto(mercancia=[],id_wo=[],sku=[],nombre=[],precio_compra=[],precio_neto=[],variacion =[],
 parent_id=[],imagen=[],categorias=[],observaciones=[]):
-    print(len(mercancia))
-    print(len(nombre))
-    print(len(sku))
-    print(mercancia[0])
 
     for i in range(len(mercancia)):
         pr=Producto()

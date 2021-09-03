@@ -33,7 +33,7 @@
         <nav aria-label="breadcrumb" class="breadcrumb">
             <ol class="breadcrumb mb-4">
                 <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
-                <li class="breadcrumb-item"><a href="{% url 'importacion' id %}">Inicio Importacion</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'importacion' id %}">Inicio Importación</a></li>
                 <li class="breadcrumb-item"><a href="{% url 'startFP' id %}">Detalle factura</a></li>
 
                 <li class="breadcrumb-item active" aria-current="page">Datos DAS</li>
@@ -50,12 +50,12 @@
                     <div class="row">
 
                         <div class="col-sm-3">
-                            <label for="id_numero_entrega">Numero entrega:</label>
+                            <label for="id_numero_entrega">Número entrega:</label>
                             <input type="text" class="form-control" name="numero_entrega" value={{das.numero_entrega}}
                                 maxlength="128" id="id_numero_entrega">
                         </div>
                         <div class="col-sm-3">
-                            <label for="id_numero_atribuido">Numero atribuido:</label>
+                            <label for="id_numero_atribuido">Número atribuido:</label>
                             <input type="text" class="form-control" name="numero_atribuido"
                                 value={{das.numero_atribuido}} maxlength="128" id="id_numero_atribuido">
                         </div>
@@ -90,14 +90,14 @@
                                 maxlength="255" id="id_pais_procedncia">
                         </div>
                         <div class="col-sm-3">
-                            <label for="id_via_transporte">Via transporte:</label>
+                            <label for="id_via_transporte">Vía transporte:</label>
                             <input type="text" class="form-control" name="via_transporte" value={{das.via_transporte}}
                                 maxlength="64" id="id_via_transporte">
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-sm-3">
-                            <label for="id_puerto_enbarque">Puerto enbarque:</label>
+                            <label for="id_puerto_enbarque">Puerto embarque:</label>
                             <input type="text" class="form-control" name="puerto_enbarque" value={{das.puerto_enbarque}}
                                 maxlength="128" id="id_puerto_enbarque">
                         </div>
@@ -107,13 +107,13 @@
                                 value={{das.ciudad_importador}} maxlength="128" id="id_ciudad_importador">
                         </div>
                         <div class="col-sm-3">
-                            <label for="id_empresa_tranporte">Empresa tranporte:</label>
+                            <label for="id_empresa_tranporte">Empresa transporte:</label>
                             <input type="text" class="form-control" name="empresa_tranporte"
                                 value={{das.empresa_tranporte}} maxlength="128" required="" id="id_empresa_tranporte">
                         </div>
 
                         <div class="col-sm-3">
-                            <label for="id_identificacion_carga">Identificacion carga:</label>
+                            <label for="id_identificacion_carga">Identificación carga:</label>
                             <input type="text" class="form-control" name="identificacion_carga"
                                 value={{das.identificacion_carga}} maxlength="128" id="id_identificacion_carga">
                         </div>
@@ -174,7 +174,7 @@
                                 step="0.01" required="" id="id_peso_bruto">
                         </div>
                         <div class="col-sm-3">
-                            <label for="id_unidades_fisicas">Unidades fisicas:</label>
+                            <label for="id_unidades_fisicas">Unidades físicas:</label>
                             <input type="number" class="form-control" name="unidades_fisicas" value="0" required=""
                                 id="id_unidades_fisicas">
                         </div>
@@ -185,7 +185,7 @@
                                 step="0.01" required="" id="id_valor_fob">
                         </div>
                         <div class="col-sm-3">
-                            <label for="id_mer"><b>Numero de mercancia </b></label>
+                            <label for="id_mer" style="color: #9c27b0;"><b>Número de mercancía </b></label>
                             <input type="number" class="form-control" name="cantidad" value=2 requiered>
                         </div>
                         
@@ -197,7 +197,7 @@
 
 
 <br />
-                    {% comment %} <a class="btn btn-primary" href="{% url 'proveedor' %}">Atras</a> {% endcomment %}
+                    {% comment %} <a class="btn btn-primary" href="{% url 'proveedor' %}">Atrás</a> {% endcomment %}
                     <a class="btn btn-primary" href="{% url 'startFP' id %}">Atras</a>
                     <button type="submit" class="btn btn-primary">Continuar</button>
                 

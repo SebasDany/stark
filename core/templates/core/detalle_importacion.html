@@ -17,7 +17,7 @@
         
 
         
-         <h1 class="mt-4">Busqueda de productos por SKU </h1>
+         <h1 class="mt-4">Búsqueda de productos por SKU </h1>
 <br/>
  <div class="bg-light">
                     <div class="container-fluid px-4">
@@ -25,13 +25,13 @@
                               <nav aria-label="breadcrumb" class="breadcrumb">
                             <ol class="breadcrumb mb-4">
                                 <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
-                                <li class="breadcrumb-item"><a href="{% url 'importacion' id %}">Inicio Importacion</a></li>
+                                <li class="breadcrumb-item"><a href="{% url 'importacion' id %}">Inicio Importación</a></li>
                                 <li class="breadcrumb-item"><a href="{% url 'startFP' id %}">Detalle factura</a></li>
                                 <li class="breadcrumb-item"><a href="{% url 'datosdas' id idas %}">Datos DAS</a></li>
                                 <li class="breadcrumb-item"><a href="{% url 'detalledas' id idas %}">Detalle Das</a></li>
                                  <li class="breadcrumb-item"><a href="{% url 'datosafianzado' id idas idfa  %}">Factura afianzado</a></li>
                                  <li class="breadcrumb-item"><a href="{% url 'detalleafianzado' id idas idfa  %}">Detalle afianzado</a></li>
-                                <li class="breadcrumb-item active" aria-current="page"> Busqueda SKU</li>
+                                <li class="breadcrumb-item active" aria-current="page"> Búsqueda SKU</li>
                             </ol>
                             </nav>           
                         </div>
@@ -40,7 +40,7 @@
                   {% csrf_token %} 
                   <div class="card-body" style="text-align: left;" >
                         <div class="form-group">
-                                <label for="id_sku">Ingrese los sku</label>
+                                <label for="id_sku">Ingrese los SKU</label>
                                 <input type="text" class="form-control" class="form-control" id="id_sku" name="skus"  required>
                                 </div>
                 </div>

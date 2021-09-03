@@ -31,7 +31,7 @@
         <nav aria-label="breadcrumb" class="breadcrumb">
             <ol class="breadcrumb mb-4">
                 <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
-                <li class="breadcrumb-item"><a href="{% url 'importacion' id %}">Inicio Importacion</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'importacion' id %}">Inicio Importación</a></li>
                 <li class="breadcrumb-item"><a href="{% url 'startFP' id %}">Detalle factura</a></li>
                 <li class="breadcrumb-item"><a href="{% url 'datosdas' id idas %}">Datos DAS</a></li>
                 <li class="breadcrumb-item"><a href="{% url 'detalledas' id idas %}">Detalle Das</a></li>
@@ -60,11 +60,11 @@
                 </div>
                 <div class="col-sm-3">
 
-                    <label>Fecha Emision:</label>
+                    <label>Fecha Emisión:</label>
                     <input class="form-control" type="date" name="fecha" value={{fecha}} required id="id_fecha">
                 </div>
                 <div class="col-sm-3">
-                    <label>Numero Autorizacion:</label>
+                    <label>Número Autorización:</label>
                     <input class="form-control" type="text" name="numero" value={{faf.numero}} maxlength="64"
                         id="id_numero">
                 </div>
@@ -72,13 +72,13 @@
 
                     <label>Valor Total</label>
 
-                    <input class="form-control" type="text" name="subtotal" value={{faf.subtotal}} maxlength="64"
+                    <input class="form-control" type="number" name="subtotal" min="1" step="0.0001" value={{faf.subtotal}} maxlength="64"
                         id="id_subtotal">
                 </div>
                 <br>
 
                 <div class="col-sm-3">
-                <a class="btn btn-primary" href="{% url 'detalledas' id idas %}">Atras</a>
+                <a class="btn btn-primary" href="{% url 'detalledas' id idas %}">Atrás</a>
                 <button type="submit" class="btn btn-primary">Siguiente</button>
  </div>
             </div>

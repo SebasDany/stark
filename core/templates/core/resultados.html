@@ -4,7 +4,7 @@
 {% extends 'core/base.html'%}
 
 
-{% block title %}<title>Creacion de Importacion</title> {% endblock title %}
+{% block title %}<title>Creación de Importación</title> {% endblock title %}
     {% block body %}
                         
       <form role="form" method="POST" onsubmit="ShowLoading()" action="{% url 'viewresults' id idas idfa %}">
@@ -19,17 +19,17 @@
                       <h2>  Resultado de los productos importados </h2>
                      
 <div id="Layer1" style="width:100%; height:100%; overflow: scroll;">
-  <table class="table">
+  <table class="table table-bordered" >
   
   <thead>
       <tr>
           <th scope="col">SKU</th>
           <th scope="col">Proveedor</th>
           <th scope="col">Nombre</th>
-          <th scope="col">ValorUnid</th>
+          <th scope="col">Valor Unidad</th>
           <th scope="col">Cantidad</th>
           <th scope="col">Subtotal</th>
-          <th scope="col">Mercancia</th>
+          <th scope="col">Mercancía</th>
           <th scope="col">Peso</th>
           <th scope="col">Advalorem</th>
           <th scope="col">Fodinfa</th>
@@ -75,7 +75,7 @@
       </tbody>
   </table>
 </div>
-<a class="btn btn-primary"  href="{% url 'viewproduct' id idas idfa %}">Atras</a> 
+<a class="btn btn-primary"  href="{% url 'viewproduct' id idas idfa %}">Atrás</a> 
                 
 
   <button  id="sincronizar" class="btn" type="submit" >Calcular</button>    

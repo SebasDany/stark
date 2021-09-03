@@ -5,7 +5,7 @@ from ..models import Das, Importacion,Mercancia,Factura_proveedor,Proveedor
 import numpy as np 
 from django.contrib import messages 
 
-def startFactProve(request,id):
+def startFactProve(request,id):#Obtiene los datos de la factura proveedor y alamacena en la base de datos
     if request.method=='POST':
         idf=Factura_proveedor.objects.filter(importacion=id)
         #fc=Importacion.objects.get(id = 365)

@@ -42,6 +42,7 @@ urlpatterns = [
     path('previewsyncronizar/<int:id>/<int:idas>/<int:idfa>/',login_required(gestorImportacion.previewSyncronizar),name='previewsyncronizar'),
     path('updatetienda/<int:id>/',login_required(gestorImportacion.updateTienda),name='updatetienda'),
     path('listresults/<int:id>/',login_required(gestorImportacion.listresults),name='listresults'),
+    path('exportarimportacion/<int:id>/',login_required(gestorImportacion.exportarCalculoImportacion),name='exportarimportacion'),
     
     
 

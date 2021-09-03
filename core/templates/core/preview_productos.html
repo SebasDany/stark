@@ -9,11 +9,11 @@
                             {% csrf_token %}  
                             <div class="alert alert-info"><h2> Alerta estos productos ya no podrán ser modificados una vez presionado continuar </h2> 
                               </div>                      
-
+                     
                         
                            {% for message in messages %}
            
-                        <div class="alert alert-danger alert-dismissable">
+                        <div class='{{tipoMess}}'>
                         
                         <strong>¡ATENCIÓN!</strong> {{ message }}
                         </div>

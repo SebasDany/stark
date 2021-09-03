@@ -180,7 +180,7 @@ class Sincronizacion:
                     
                     updateActualizacionTienda(valor.id,'SI')
 
-                datos={"error":False,
+        datos={"error":False,
                 "mensaje":"Productos actualizados correctamemte"}
         return datos
 

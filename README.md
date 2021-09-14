@@ -18,7 +18,7 @@
 
 2) Configurar las credenciales para el acceso a la base de datos en el archivo settings.py 
 
-![](image/im1.PNG) 
+![](images/im1.PNG) 
 
 3) Vefificar que la aplicación este ejecutandose corrrectamnete con el siguinete comando:
 
@@ -35,21 +35,21 @@ python manage.py createsuperuser
 
 6) Una vez finalizada con los pasos anteriores volvemos a correr la aplicación el cual pedirá su usario y contraseña creada en el paso 5, el cual al ingresar nos carga la siguinete pantalla.
 
-![](image/im2.PNG) 
+![](images/im2.PNG) 
 
 7) Una vez dentro ya podemos acceder a sitio de adminstracion de django dando click en el usuario y selecionando la opción de admisntracion o directamente colo cando la dirección http://localhost:8000/admin/ en el navegador, se visualiza de la siguinete manera.
 
-![](image/admin.PNG) 
+![](images/admin.PNG) 
 
 8) Para poder realizar todo el proceso de calculo del nuevo costo y del nuevo inventario se debe cambiar la configuracion de las credenciales del api-rest en el archivo woo_commerce.py, para que pueda aceder a los datos de su tienda.
 
-![](image/conectTienda.PNG) 
+![](images/conectTienda.PNG) 
 
 9) Dentro del proceso de la importación se maneja 10 estados que se detallan acontinuación. 
 
 ## Estados de la importacion
 
-'#' Descripción 
+- '#' Descripción 
 0   Importacion Iniciada                                
 1   Factura detalle registrada
 2   Das registrado

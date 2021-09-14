@@ -105,14 +105,19 @@ def productosImportados(request,id,idas,idfa):
             
             messages.error(request, "Validación INCORRECTA de suma de subtotales. Revisar los datos")
             return redirect('viewproduct',id,idas,idfa)
+        
+        print("Aranceladvarolem",arancel["suma_ad"], subt1["ad_das"])
+        print("ArancelFod",arancel["suma_fod"], subt1["fod_das"])
+        print("Aranceliva",arancel["suma_iva"], subt1["iva_das"])
         if(round(arancel["suma_ad"],4)!=round(subt1["ad_das"],4)):#verifica que los arance advalorem sean iguales de la tabla general y del detalle das
                 messages.error(request, "Validación INCORRECTA de suma de Advalorem. Revisar mercancias")
                 return redirect('viewproduct',id,idas,idfa)
-        #print("ArancelFod",arancel["suma_fod"], subt1["fod_das"])
+        
         if(round(arancel["suma_fod"],4)!=round(subt1["fod_das"],4)):#verifica que los arance fodinfa sean iguales de la tabla general y del detalle das
                 ##print("ArancelFod",arancel["suma_fod"], subt1["fod_das"])
                 messages.error(request, "Validación INCORRECTA de suma de Fodinfa. Revisar mercancías")
                 return redirect('viewproduct',id,idas,idfa)
+        
         if(float(round(arancel["suma_iva"],4))!=float(round(subt1["iva_das"],4))):#verifica que los arance iva sean iguales de la tabla general y del detalle das
                 messages.error(request, "Validación INCORRECTA de suma de Iva. Revisar mercancías")
                # print("ArancelIVA",arancel["suma_iva"],subt1["iva_das"])
@@ -161,7 +166,7 @@ def viewResults(request,id,idas,idfa):
         updateEstado(id,8)#actulaiza el estado de la importacion
         updateH(id,idas,idfa,8)
         return redirect('previewsyncronizar',id,idas,idfa )#redirige a la vista de previzualizacion para la altualizacion en la tirnda 
-    pr=Detalle_importacion.objects.filter(importacion=id)    
+    pr=Detalle_importacion.objects.filter(importacion=id).order_by('id')    
     proveedores=Factura_proveedor.objects.filter(importacion=id)
     mercancias=Mercancia.objects.select_related().all()
     datos={
